@@ -28,19 +28,19 @@
                   </a>
                 </nav>
               </div>
-              <div class="flex flex-shrink-0 border-t border-indigo-800 p-4">
-                <a href="#" class="group block flex-shrink-0">
-                  <div class="flex items-center">
-                    <div>
-                      <img class="inline-block h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
-                    </div>
-                    <div class="ml-3">
-                      <p class="text-base font-medium text-white">Tom Cook</p>
-                      <p class="text-sm font-medium text-indigo-200 group-hover:text-white">View profile</p>
-                    </div>
-                  </div>
-                </a>
-              </div>
+<!--              <div class="flex flex-shrink-0 border-t border-indigo-800 p-4">-->
+<!--                <a href="#" class="group block flex-shrink-0">-->
+<!--                  <div class="flex items-center">-->
+<!--                    <div>-->
+<!--                      <img class="inline-block h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />-->
+<!--                    </div>-->
+<!--                    <div class="ml-3">-->
+<!--                      <p class="text-base font-medium text-white">Tom Cook</p>-->
+<!--                      <p class="text-sm font-medium text-indigo-200 group-hover:text-white">View profile</p>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </a>-->
+<!--              </div>-->
             </DialogPanel>
           </TransitionChild>
           <div class="w-14 flex-shrink-0" aria-hidden="true">
@@ -108,23 +108,32 @@
 </template>
 
 
-
-<script setup>
-import { ref } from 'vue'
-import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
+<script>
+import {
+  DialogPanel,
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems, TransitionChild,
+  TransitionRoot
+} from '@headlessui/vue'
+import { Bars3Icon,  CalendarIcon,  ChartBarIcon,  FolderIcon,  HomeIcon,  InboxIcon,  UsersIcon,  XMarkIcon,} from '@heroicons/vue/24/outline'
 import fermenttempLogoUrl from "@/assets/fermenttemp_logo.svg";
 
-import {
-  Bars3Icon,
-  CalendarIcon,
-  ChartBarIcon,
-  FolderIcon,
-  HomeIcon,
-  InboxIcon,
-  UsersIcon,
-  XMarkIcon,
-} from '@heroicons/vue/24/outline'
 
+import { ref, reactive } from "vue";
+import { useTempControlStore } from "@/stores/TempControlStore.js";
+
+
+const user = {
+  name: 'Tom Cook',
+  email: 'tom@example.com',
+  imageUrl:
+      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+}
 const navigation = [
   { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
   { name: 'Configure Upstream', href: '#', icon: UsersIcon, current: false },
@@ -134,7 +143,43 @@ const navigation = [
   { name: 'Reports', href: '#', icon: ChartBarIcon, current: false },
 ]
 
-const sidebarOpen = ref(false)
+export default {
+  name: "App",
+  components: {
+    DialogPanel,
+    TransitionChild,
+    TransitionRoot,
+    Disclosure,
+    DisclosureButton,
+    DisclosurePanel,
+    Bars3Icon,
+    XMarkIcon,
+    Menu,
+    MenuButton,
+    MenuItem,
+    MenuItems,
+  },
+  setup() {
+    const sidebarOpen = ref(false);
+
+    return {
+      sidebarOpen,
+      navigation,
+      fermenttempLogoUrl,
+      TempControlStore: useTempControlStore()  // Updated in App.vue
+    }
+  },
+  mounted() {
+    // Retrieve initial data
+    this.TempControlStore.getTempInfo();
+
+    // Set up periodic refreshes
+    window.setInterval(() => {
+      this.TempControlStore.getTempInfo();
+    }, 7000)
+  },
+
+}
 </script>
 
 

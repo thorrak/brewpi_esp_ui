@@ -2,10 +2,10 @@
   <div class="lcd-font" style="height: 125px; width: 290px">
     <div class="lcddisplay">
       <span class="lcd-text">
-          <span class="lcd-line" id="lcd-line-0" v-html="cleanLCDText(LCDStore.LCDTextLines[0])"></span>
-          <span class="lcd-line" id="lcd-line-1" v-html="cleanLCDText(LCDStore.LCDTextLines[1])"></span>
-          <span class="lcd-line" id="lcd-line-2" v-html="cleanLCDText(LCDStore.LCDTextLines[2])"></span>
-          <span class="lcd-line" id="lcd-line-3" v-html="cleanLCDText(LCDStore.LCDTextLines[3])"></span>
+          <span class="lcd-line" id="lcd-line-0" v-html="cleanLCDText(line1)"></span>
+          <span class="lcd-line" id="lcd-line-1" v-html="cleanLCDText(line2)"></span>
+          <span class="lcd-line" id="lcd-line-2" v-html="cleanLCDText(line3)"></span>
+          <span class="lcd-line" id="lcd-line-3" v-html="cleanLCDText(line4)"></span>
       </span>
     </div>
   </div>
@@ -13,15 +13,27 @@
 
 <script>
 import { useLCDStore } from "@/stores/LCDStore";
+import { toRef } from 'vue'
 
 export default {
   name: "LCD",
   props: {
-    LCDText: {
-      // TODO - Convert to use this rather than loading the LCD text in this componnent (to allow reuse with Fermentrack)
-      type: Array,
-      required: false,
-    }
+    line1: {
+      type: String,
+      required: true,
+    },
+    line2: {
+      type: String,
+      required: true,
+    },
+    line3: {
+      type: String,
+      required: true,
+    },
+    line4: {
+      type: String,
+      required: true,
+    },
   },
   methods: {
     cleanLCDText(line) {
@@ -46,18 +58,18 @@ export default {
       return lineText;
     }
   },
-  mounted() {
-    this.LCDStore.LCDTextLines = [
-        "Loading data from",
-        "controler...",
-        "",
-        ""
-    ]
-    this.LCDStore.getLCD();
-    window.setInterval(() => {
-      this.LCDStore.getLCD();
-    }, 5000)  // Extending the delay as we don't update that often
-  },
+  // mounted() {
+  //   this.LCDStore.LCDTextLines = [
+  //       "Loading data from",
+  //       "controler...",
+  //       "",
+  //       ""
+  //   ]
+  //   this.LCDStore.getLCD();
+  //   window.setInterval(() => {
+  //     this.LCDStore.getLCD();
+  //   }, 5000)  // Extending the delay as we don't update that often
+  // },
   setup() {
     return {
       LCDStore: useLCDStore(),

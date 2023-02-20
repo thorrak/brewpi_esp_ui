@@ -5,7 +5,12 @@ import { genCSRFOptions } from './CSRF';
 export const useLCDStore = defineStore("LCDStore", {
     state: () => {
         return {
-            LCDTextLines: [],
+            LCDTextLines: [
+                "Loading data from",
+                "controller...",
+                "",
+                ""
+            ],
         };
     },
     actions: {
