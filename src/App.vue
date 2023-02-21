@@ -94,20 +94,7 @@
         </button>
       </div>
       <main class="flex-1">
-        <div class="py-6">
-          <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
-            <h1 class="text-2xl font-semibold text-gray-900">Dashboard</h1>
-          </div>
-          <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
-            <!-- Replace with your content -->
-            <div class="py-4">
-              <router-view class="us__content"  />
-
-              <div class="h-96 rounded-lg border-4 border-dashed border-gray-200" />
-            </div>
-            <!-- /End replace -->
-          </div>
-        </div>
+        <router-view class="us__content"  />
       </main>
     </div>
   </div>
@@ -127,7 +114,7 @@ import {
   MenuItems, TransitionChild,
   TransitionRoot
 } from '@headlessui/vue'
-import { Bars3Icon,  CalendarIcon,  ChartBarIcon,  FolderIcon,  HomeIcon,  InboxIcon,  UsersIcon,  XMarkIcon,} from '@heroicons/vue/24/outline'
+import { Bars3Icon,  CalendarIcon,  ChartBarIcon,  FolderIcon,  HomeIcon,  InboxIcon,  UsersIcon,  XMarkIcon, CloudArrowUpIcon} from '@heroicons/vue/24/outline'
 import fermenttempLogoUrl from "@/assets/fermenttemp_logo.svg";
 
 
@@ -143,7 +130,7 @@ const user = {
 }
 const navigation = [
   { name: 'Dashboard', icon: HomeIcon, route_name: 'Home' },
-  { name: 'Configure Upstream', icon: UsersIcon, route_name: 'UpstreamSettings' },
+  { name: 'Fermentrack Settings', icon: CloudArrowUpIcon, route_name: 'UpstreamSettings' },
   // { name: 'Change Controls', href: '#', icon: FolderIcon, current: false },
   // { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
   // { name: 'Documents', href: '#', icon: InboxIcon, current: false },
