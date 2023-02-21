@@ -22,10 +22,13 @@
                   <img class="h-8 w-auto" :src="fermenttempLogoUrl" alt="FermentTemp" />
                 </div>
                 <nav class="mt-5 space-y-1 px-2">
-                  <a v-for="item in navigation" :key="item.name" :href="item.href" :class="[item.current ? 'bg-indigo-800 text-white' : 'text-white hover:bg-indigo-600 hover:bg-opacity-75', 'group flex items-center px-2 py-2 text-base font-medium rounded-md']">
-                    <component :is="item.icon" class="mr-4 h-6 w-6 flex-shrink-0 text-indigo-300" aria-hidden="true" />
-                    {{ item.name }}
-                  </a>
+                  <!-- Mobile (small) navigation -->
+                  <router-link v-for="item in navigation" :key="item.name" :to="{name: item.route_name}" v-slot="{ href, navigate, isActive }" custom>
+                    <a :href="href" :class="[isActive ? 'bg-indigo-800 text-white' : 'text-white hover:bg-indigo-600 hover:bg-opacity-75', 'group flex items-center px-2 py-2 text-base font-medium rounded-md']" @click="navigate">
+                      <component :is="item.icon" class="mr-4 h-6 w-6 flex-shrink-0 text-indigo-300" aria-hidden="true" />
+                      {{ item.name }}
+                    </a>
+                  </router-link>
                 </nav>
               </div>
 <!--              <div class="flex flex-shrink-0 border-t border-indigo-800 p-4">-->
@@ -59,25 +62,28 @@
             <img class="h-8 w-auto" :src="fermenttempLogoUrl" alt="FermentTemp" />
           </div>
           <nav class="mt-5 flex-1 space-y-1 px-2">
-            <a v-for="item in navigation" :key="item.name" :href="item.href" :class="[item.current ? 'bg-indigo-800 text-white' : 'text-white hover:bg-indigo-600 hover:bg-opacity-75', 'group flex items-center px-2 py-2 text-sm font-medium rounded-md']">
-              <component :is="item.icon" class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300" aria-hidden="true" />
-              {{ item.name }}
-            </a>
+            <!-- Desktop (big) sidebar navigation -->
+            <router-link v-for="item in navigation" :key="item.name" :to="{name: item.route_name}" v-slot="{ href, navigate, isActive }" custom>
+              <a :href="href" :class="[isActive ? 'bg-indigo-800 text-white' : 'text-white hover:bg-indigo-600 hover:bg-opacity-75', 'group flex items-center px-2 py-2 text-sm font-medium rounded-md']">
+                <component :is="item.icon" class="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300" aria-hidden="true" />
+                {{ item.name }}
+              </a>
+            </router-link>
           </nav>
         </div>
-        <div class="flex flex-shrink-0 border-t border-indigo-800 p-4">
-          <a href="#" class="group block w-full flex-shrink-0">
-            <div class="flex items-center">
-              <div>
-                <img class="inline-block h-9 w-9 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
-              </div>
-              <div class="ml-3">
-                <p class="text-sm font-medium text-white">Tom Cook</p>
-                <p class="text-xs font-medium text-indigo-200 group-hover:text-white">View profile</p>
-              </div>
-            </div>
-          </a>
-        </div>
+<!--        <div class="flex flex-shrink-0 border-t border-indigo-800 p-4">-->
+<!--          <a href="#" class="group block w-full flex-shrink-0">-->
+<!--            <div class="flex items-center">-->
+<!--              <div>-->
+<!--                <img class="inline-block h-9 w-9 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />-->
+<!--              </div>-->
+<!--              <div class="ml-3">-->
+<!--                <p class="text-sm font-medium text-white">Tom Cook</p>-->
+<!--                <p class="text-xs font-medium text-indigo-200 group-hover:text-white">View profile</p>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </a>-->
+<!--        </div>-->
       </div>
     </div>
     <div class="flex flex-1 flex-col md:pl-64">
@@ -110,6 +116,7 @@
 
 <script>
 import {
+  Dialog,
   DialogPanel,
   Disclosure,
   DisclosureButton,
@@ -135,17 +142,18 @@ const user = {
       'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 }
 const navigation = [
-  { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
-  { name: 'Configure Upstream', href: '#', icon: UsersIcon, current: false },
-  { name: 'Change Controls', href: '#', icon: FolderIcon, current: false },
-  { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
-  { name: 'Documents', href: '#', icon: InboxIcon, current: false },
-  { name: 'Reports', href: '#', icon: ChartBarIcon, current: false },
+  { name: 'Dashboard', icon: HomeIcon, route_name: 'Home' },
+  { name: 'Configure Upstream', icon: UsersIcon, route_name: 'UpstreamSettings' },
+  // { name: 'Change Controls', href: '#', icon: FolderIcon, current: false },
+  // { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
+  // { name: 'Documents', href: '#', icon: InboxIcon, current: false },
+  // { name: 'Reports', href: '#', icon: ChartBarIcon, current: false },
 ]
 
 export default {
   name: "App",
   components: {
+    Dialog,
     DialogPanel,
     TransitionChild,
     TransitionRoot,
