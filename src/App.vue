@@ -114,7 +114,18 @@ import {
   MenuItems, TransitionChild,
   TransitionRoot
 } from '@headlessui/vue'
-import { Bars3Icon,  CalendarIcon,  ChartBarIcon,  FolderIcon,  HomeIcon,  InboxIcon,  UsersIcon,  XMarkIcon, CloudArrowUpIcon} from '@heroicons/vue/24/outline'
+import {
+  Bars3Icon,
+  CalendarIcon,
+  ChartBarIcon,
+  FolderIcon,
+  HomeIcon,
+  InboxIcon,
+  UsersIcon,
+  XMarkIcon,
+  CloudArrowUpIcon,
+  CpuChipIcon
+} from '@heroicons/vue/24/outline'
 import fermenttempLogoUrl from "@/assets/fermenttemp_logo.svg";
 
 
@@ -131,6 +142,8 @@ const user = {
 const navigation = [
   { name: 'Dashboard', icon: HomeIcon, route_name: 'Home' },
   { name: 'Fermentrack Settings', icon: CloudArrowUpIcon, route_name: 'UpstreamSettings' },
+  { name: 'Set Up Sensors/Actuators', icon: CpuChipIcon, route_name: 'ConfigSensorsActuators' },
+
   // { name: 'Change Controls', href: '#', icon: FolderIcon, current: false },
   // { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
   // { name: 'Documents', href: '#', icon: InboxIcon, current: false },
@@ -153,6 +166,7 @@ export default {
     MenuButton,
     MenuItem,
     MenuItems,
+    CpuChipIcon,
   },
   setup() {
     const sidebarOpen = ref(false);
