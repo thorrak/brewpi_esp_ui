@@ -1,21 +1,21 @@
 
 export const DeviceFunctions = [
-    "None",
-    "Chamber Door",
-    "Chamber Heat",
-    "Chamber Cool",
-    "Chamber Light",
-    "Chamber Temp",
-    "Room Temp",
-    "Chamber Fan",
-    "Chamber Reserved1",
-    "Beer Temp",
-    "Secondary Beer Temp",
-    "Beer Heat",
-    "Beer Cool",
-    "Beer SG",
-    "Beer Reserved1",
-    "Beer Reserved2",
+    "None",                 // 0
+    "Chamber Door",         // 1
+    "Chamber Heat",         // 2
+    "Chamber Cool",         // 3
+    "Chamber Light",        // 4 (Maybe unused)
+    "Chamber Temp",         // 5
+    "Room Temp",            // 6
+    "Chamber Fan",          // 7 (Maybe unused)
+    "Chamber Reserved1",    // 8 (Unused)
+    "Beer Temp",            // 9
+    "Secondary Beer Temp",  // 10 (Unused)
+    "Beer Heat",            // 11 (Unused)
+    "Beer Cool",            // 12 (Unused)
+    "Beer SG",              // 13 (Unused*) - We may break this out, due to the reuse of a single tilt for temps and SG
+    "Beer Reserved1",       // 14 (Unused)
+    "Beer Reserved2",       // 15 (Unused)
 ]
 
 export const DeviceHardware = [
@@ -92,8 +92,33 @@ export class BrewPiSensor {
             device_spec.r = this.device_alias;
         if(this.child_id.length > 0)
             device_spec.n = this.child_id;
-        if(this.calibrate_adjust != 0)
+        if(this.calibrate_adjust !== 0 && (this.hardware_int === 2 || this.hardware_int === 5 || this.hardware_int === 6))
             device_spec.j = this.calibrate_adjust;
         return device_spec;
+    }
+
+    valid_functions() {
+        // List of valid functions for this hardware type
+        let valid_functions = [];
+        valid_functions.push({id: 0, function_name: DeviceFunctions[0]});  // None (always available)
+
+        if(this.hardware_int === 1) {  // Pin
+            valid_functions.push({id: 1, function_name: DeviceFunctions[1]});  // Chamber Door
+        }
+
+        if(this.hardware_int === 2 || this.hardware_int === 3 || this.hardware_int === 7) {  // Pin / 2413 / TPLink
+            valid_functions.push({id: 2, function_name: DeviceFunctions[2]});  // Chamber Heat
+            valid_functions.push({id: 3, function_name: DeviceFunctions[3]});  // Chamber Cool
+            // valid_functions.push({id: 4, function_name: DeviceFunctions[4]});  // Chamber Light
+            // valid_functions.push({id: 7, function_name: DeviceFunctions[7]});  // Chamber Fan
+        }
+
+        if(this.hardware_int === 2 || this.hardware_int === 5 || this.hardware_int === 6) {  // OW / Inkbird / Tilt
+            valid_functions.push({id: 5, function_name: DeviceFunctions[5]});  // Chamber Temp
+            valid_functions.push({id: 6, function_name: DeviceFunctions[6]});  // Room Temp
+            valid_functions.push({id: 9, function_name: DeviceFunctions[9]});  // Beer Temp
+        }
+
+        return valid_functions;
     }
 }

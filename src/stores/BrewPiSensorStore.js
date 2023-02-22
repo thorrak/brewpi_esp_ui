@@ -12,6 +12,7 @@ export const useBrewPiSensorStore = defineStore("BrewPiSensorStore", {
             devices: [],
             loaded: false,
             devicesError: false,
+            deviceUpdateError: false,
         };
     },
     actions: {
@@ -38,6 +39,23 @@ export const useBrewPiSensorStore = defineStore("BrewPiSensorStore", {
                 this.devices = [];
             }
         },
+        async sendDeviceDefinition(newDeviceDefinition) {
+            try {
+                const remote_api = mande("/api/devices/", genCSRFOptions());
+                // newDeviceDefinition is assumed to be in the BrewPi native format
+                const response = await remote_api.put(newDeviceDefinition);
+                if (response && response.message) {
+                    // TODO - Check response.message
+                    await this.getDevices();
+                    this.deviceUpdateError = false;
+                    return;
+                } else {
+                    this.deviceUpdateError = true;
+                }
+            } catch (error) {
+                this.deviceUpdateError = true;
+            }
+        }
 
 
     },

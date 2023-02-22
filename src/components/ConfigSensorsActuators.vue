@@ -45,11 +45,12 @@
 <!--                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ sensor.chamber }}</td>-->
                       <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ sensor.device_function }}</td>
                       <td class="relative whitespace-nowrap py-4 pl-3 pr-6 text-right text-sm font-medium">
-                        <a href="#" class="text-indigo-600 hover:text-indigo-900">
-                          <span v-if="sensor.device_function === 'None'">Assign</span>
-                          <span v-else>Assign</span>
-                          <span class="sr-only">, {{ sensor.device_hardware }}</span>
-                        </a>
+                        <AssignSensorModal :sensor="sensor" />
+<!--                        <a href="#" class="text-indigo-600 hover:text-indigo-900">-->
+<!--                          <span v-if="sensor.device_function === 'None'">Assign</span>-->
+<!--                          <span v-else>Assign</span>-->
+<!--                          <span class="sr-only">, {{ sensor.device_hardware }}</span>-->
+<!--                        </a>-->
                       </td>
                     </tr>
                     </tbody>
@@ -68,9 +69,11 @@
 
 <script>
 import { useBrewPiSensorStore } from "@/stores/BrewPiSensorStore";
+import AssignSensorModal from "@/components/sensors/AssignSensorModal.vue";
 
 export default {
   name: "ConfigSensorsActuators",
+  components: {AssignSensorModal},
   mounted() {
     // Retrieve initial data
     this.BrewPiSensorStore.getDevices();
