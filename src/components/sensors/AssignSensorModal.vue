@@ -30,31 +30,39 @@
                       Configure Device
                     </DialogTitle>
 
-                    <Listbox as="div" v-model="new_function">
-                      <ListboxLabel class="block text-sm font-medium text-gray-700">Device Function</ListboxLabel>
-                      <div class="relative mt-1">
-                        <ListboxButton class="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
-                          <span class="block truncate">{{ DeviceFunctions[new_function] }}</span>
-                          <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                            <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
-                          </span>
-                        </ListboxButton>
+                    <!-- Not using the listbox, as it gets hidden by the modal -->
+<!--                    <Listbox as="div" v-model="new_function">-->
+<!--                      <ListboxLabel class="block text-sm font-medium text-gray-700">Device Function</ListboxLabel>-->
+<!--                      <div class="relative mt-1">-->
+<!--                        <ListboxButton class="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">-->
+<!--                          <span class="block truncate">{{ DeviceFunctions[new_function] }}</span>-->
+<!--                          <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">-->
+<!--                            <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />-->
+<!--                          </span>-->
+<!--                        </ListboxButton>-->
 
-                        <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
-                          <ListboxOptions class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                            <ListboxOption as="template" v-for="valid_function in sensor.valid_functions()" :key="valid_function.id" :value="valid_function.id" v-slot="{ active, selected }">
-                              <li :class="[active ? 'text-white bg-indigo-600' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
-                                <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ valid_function.function_name }}</span>
+<!--                        <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">-->
+<!--                          <ListboxOptions class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">-->
+<!--                            <ListboxOption as="template" v-for="valid_function in sensor.valid_functions()" :key="valid_function.id" :value="valid_function.id" v-slot="{ active, selected }">-->
+<!--                              <li :class="[active ? 'text-white bg-indigo-600' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">-->
+<!--                                <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{ valid_function.function_name }}</span>-->
 
-                                <span v-if="selected" :class="[active ? 'text-white' : 'text-indigo-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
-                                  <CheckIcon class="h-5 w-5" aria-hidden="true" />
-                                </span>
-                              </li>
-                            </ListboxOption>
-                          </ListboxOptions>
-                        </transition>
-                      </div>
-                    </Listbox>
+<!--                                <span v-if="selected" :class="[active ? 'text-white' : 'text-indigo-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">-->
+<!--                                  <CheckIcon class="h-5 w-5" aria-hidden="true" />-->
+<!--                                </span>-->
+<!--                              </li>-->
+<!--                            </ListboxOption>-->
+<!--                          </ListboxOptions>-->
+<!--                        </transition>-->
+<!--                      </div>-->
+<!--                    </Listbox>-->
+
+                    <div>
+                      <label for="device_function" class="block text-sm font-medium text-gray-700">Device Function</label>
+                      <select id="device_function" name="device_function" v-model="new_function" class="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
+                        <option v-for="valid_function in sensor.valid_functions()" :key="valid_function.id" :value="valid_function.id">{{ valid_function.function_name }}</option>
+                      </select>
+                    </div>
 
 
                     <!-- Temp Calibration Offset -->
@@ -64,7 +72,6 @@
                       <input type="text" ref="calibration" v-model="new_calibration" id="calibration" class="border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm flex-1" placeholder="0.0" />
                       <span class="flex-none w-auto min-w-max max-w-max">&deg; {{ TempControlStore.tempFormat }}</span>
                     </div>
-
 
                   </div>
                 </div>
@@ -101,7 +108,22 @@
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
         <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200" leave-from="opacity-100 translate-y-0 sm:scale-100" leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
           <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
-            <div v-if="updateSuccessful">
+            <div v-if="BrewPiSensorStore.deviceUpdateError">
+              <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+                <NoSymbolIcon class="h-6 w-6 text-red-600" aria-hidden="true" />
+              </div>
+              <div class="mt-3 text-center sm:mt-5">
+                <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900">
+                  Update Failed
+                </DialogTitle>
+                <div class="mt-2">
+                  <p class="text-sm text-gray-500">
+                    Unable to connect to the controller or the update was rejected. Please check the information provided and reattempt to update.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div v-else>
               <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
                 <CheckIcon class="h-6 w-6 text-green-600" aria-hidden="true" />
               </div>
@@ -112,21 +134,6 @@
                 <div class="mt-2">
                   <p class="text-sm text-gray-500">
                     This device definition has been updated.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div v-else>
-              <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
-                <NoSymbolIcon class="h-6 w-6 text-red-600" aria-hidden="true" />
-              </div>
-              <div class="mt-3 text-center sm:mt-5">
-                <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900">
-                  Update Failed
-                </DialogTitle>
-                <div class="mt-2">
-                  <p class="text-sm text-gray-500">
-                    Unable to connect to the controller or the update was rejected. Please recheck the information provided and reattempt to update.
                   </p>
                 </div>
               </div>
@@ -231,9 +238,21 @@ export default {
       if(function_sendable === 5 || function_sendable === 6 || function_sendable === 9)
         device_definition.c = calibration_sendable;
 
+      if(device_definition.i === -1) {
+        // This is a new device - we need to assign it a device index
+        let device_index = await this.BrewPiSensorStore.findNextDeviceIndex();
+        if(device_index === -1) {
+          this.form_error_message = `Unable to find an unused device index for this device`;
+          return;
+        }
+        device_definition.i = device_index;
+      }
+
       this.isOpen = false;
       let loader = this.$loading.show({});
       await this.BrewPiSensorStore.sendDeviceDefinition(device_definition);
+      await this.BrewPiSensorStore.clearDevices();  // Clear the devices so we can reload them
+      this.BrewPiSensorStore.getDevices().then();  // Reload devices in the background
       loader.hide();
       this.updateSuccessful = this.BrewPiSensorStore.deviceUpdateError;
       this.alertOpen = true;

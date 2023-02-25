@@ -41,6 +41,7 @@ export class BrewPiSensor {
     device_alias = "";
     child_id = "";
     calibrate_adjust = 0;
+    index;
 
     convertFromBrewPi(device_spec) {
         this.chamber = device_spec.c;
@@ -50,6 +51,7 @@ export class BrewPiSensor {
         this.pin = device_spec.p;
         this.invert = device_spec.x;
         this.deactivated = device_spec.d;
+        this.index = device_spec.i;
         if(device_spec.a)
             this.address = device_spec.a;
         if(device_spec.r)
@@ -85,15 +87,19 @@ export class BrewPiSensor {
             p: this.pin,
             x: this.invert,
             d: this.deactivated,
+            i: this.index,
         };
         if(this.address.length > 0)
             device_spec.a = this.address;
-        if(this.device_alias.length > 0)
-            device_spec.r = this.device_alias;
+        // if(this.device_alias.length > 0)
+        //     device_spec.r = this.device_alias;
         if(this.child_id.length > 0)
             device_spec.n = this.child_id;
         if(this.calibrate_adjust !== 0 && (this.hardware_int === 2 || this.hardware_int === 5 || this.hardware_int === 6))
             device_spec.j = this.calibrate_adjust;
+        if(this.index === -1)
+            console.warn("Device index is -1 -- this device will not get saved");
+
         return device_spec;
     }
 
@@ -106,7 +112,7 @@ export class BrewPiSensor {
             valid_functions.push({id: 1, function_name: DeviceFunctions[1]});  // Chamber Door
         }
 
-        if(this.hardware_int === 2 || this.hardware_int === 3 || this.hardware_int === 7) {  // Pin / 2413 / TPLink
+        if(this.hardware_int === 1 || this.hardware_int === 2 || this.hardware_int === 3 || this.hardware_int === 7) {  // Pin / 2413 / TPLink
             valid_functions.push({id: 2, function_name: DeviceFunctions[2]});  // Chamber Heat
             valid_functions.push({id: 3, function_name: DeviceFunctions[3]});  // Chamber Cool
             // valid_functions.push({id: 4, function_name: DeviceFunctions[4]});  // Chamber Light

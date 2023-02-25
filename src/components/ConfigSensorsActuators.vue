@@ -79,7 +79,9 @@ import AssignSensorModal from "@/components/sensors/AssignSensorModal.vue";
 
 export default {
   name: "ConfigSensorsActuators",
-  components: {AssignSensorModal},
+  components: {
+    AssignSensorModal
+  },
   mounted() {
     // Retrieve initial data
     this.BrewPiSensorStore.getDevices();
