@@ -235,7 +235,7 @@ export default {
       let loader = this.$loading.show({});
       await this.BrewPiSensorStore.sendDeviceDefinition(device_definition);
       loader.hide();
-      this.updateSuccessful = BrewPiSensorStore.deviceUpdateError;
+      this.updateSuccessful = this.BrewPiSensorStore.deviceUpdateError;
       this.alertOpen = true;
     },
 

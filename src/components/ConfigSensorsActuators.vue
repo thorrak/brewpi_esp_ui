@@ -25,32 +25,38 @@
                     <thead class="bg-gray-50">
                     <tr>
                       <th scope="col" class="py-3.5 pl-6 pr-3 text-left text-sm font-semibold text-gray-900">Type</th>
-                      <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Identifier</th>
+                      <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell">Identifier</th>
 <!--                      <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Email</th>-->
                       <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Function</th>
-                      <th scope="col" class="relative py-3.5 pl-3 pr-6">
+                      <th scope="col" class="relative py-3.5 pl-3 pr-6 text-right">
+                        <a href="#" type="button" class="inline-flex items-center rounded-full border border-transparent bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" @click="refreshDevices">
+                          <span class="hidden md:flex">Refresh Devices</span>
+                          <span class="md:hidden">Refresh</span>
+                        </a>
                         <span class="sr-only">Edit</span>
                       </th>
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 bg-white">
                     <tr v-for="sensor in BrewPiSensorStore.devices" >
-                      <td class="whitespace-nowrap py-4 pl-6 pr-3 text-sm font-medium text-gray-900">{{ sensor.device_hardware }}</td>
-                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      <td class="whitespace-nowrap py-4 pl-6 pr-3 text-sm font-medium text-gray-900">
+                        {{ sensor.device_hardware }}
+                        <div class="md:hidden">
+                          <div class="text-gray-500" v-if="sensor.device_hardware === 'Pin'">Pin {{ sensor.pin }}</div>
+                          <div class="text-gray-500" v-if="sensor.device_hardware === 'OneWire Temp' || sensor.device_hardware === 'OneWire 2413' || sensor.device_hardware === 'Inkbird Bluetooth'">{{ sensor.address }}</div>
+                          <div class="text-gray-500" v-if="sensor.device_hardware === 'TPLink Switch' || sensor.device_hardware === 'Tilt'">{{ sensor.device_alias }}</div>
+                          <div class="text-gray-400" v-if="sensor.device_hardware === 'TPLink Switch'">{{ sensor.address }}</div>
+                        </div>
+                      </td>
+                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 hidden md:table-cell">
                         <div class="text-gray-900" v-if="sensor.device_hardware === 'Pin'">Pin {{ sensor.pin }}</div>
                         <div class="text-gray-900" v-if="sensor.device_hardware === 'OneWire Temp' || sensor.device_hardware === 'OneWire 2413' || sensor.device_hardware === 'Inkbird Bluetooth'">{{ sensor.address }}</div>
                         <div class="text-gray-900" v-if="sensor.device_hardware === 'TPLink Switch' || sensor.device_hardware === 'Tilt'">{{ sensor.device_alias }}</div>
                         <div class="text-gray-500" v-if="sensor.device_hardware === 'TPLink Switch'">{{ sensor.address }}</div>
                       </td>
-<!--                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ sensor.chamber }}</td>-->
                       <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ sensor.device_function }}</td>
                       <td class="relative whitespace-nowrap py-4 pl-3 pr-6 text-right text-sm font-medium">
                         <AssignSensorModal :sensor="sensor" />
-<!--                        <a href="#" class="text-indigo-600 hover:text-indigo-900">-->
-<!--                          <span v-if="sensor.device_function === 'None'">Assign</span>-->
-<!--                          <span v-else>Assign</span>-->
-<!--                          <span class="sr-only">, {{ sensor.device_hardware }}</span>-->
-<!--                        </a>-->
                       </td>
                     </tr>
                     </tbody>
@@ -88,6 +94,14 @@ export default {
       BrewPiSensorStore: useBrewPiSensorStore(),  // Updated in ConfigSensorsActuators.vue
     }
   },
+  methods: {
+    refreshDevices() {
+      let loader = this.$loading.show({});
+      this.BrewPiSensorStore.clearDevices();
+      this.BrewPiSensorStore.getDevices();
+      loader.hide();
+    }
+  }
 }
 </script>
 

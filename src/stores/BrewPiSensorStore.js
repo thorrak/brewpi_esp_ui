@@ -29,14 +29,12 @@ export const useBrewPiSensorStore = defineStore("BrewPiSensorStore", {
                     this.loaded = true;
                     this.devicesError = false;
                 } else {
-                    this.loaded = false;
+                    this.clearDevices();
                     this.devicesError = true;
-                    this.devices = [];
                 }
             } catch (error) {
-                this.loaded = false;
+                this.clearDevices();
                 this.devicesError = true;
-                this.devices = [];
             }
         },
         async sendDeviceDefinition(newDeviceDefinition) {
@@ -55,6 +53,11 @@ export const useBrewPiSensorStore = defineStore("BrewPiSensorStore", {
             } catch (error) {
                 this.deviceUpdateError = true;
             }
+        },
+        async clearDevices() {
+            this.devices = [];
+            this.loaded = false;
+            this.deviceUpdateError = false;
         }
 
 
