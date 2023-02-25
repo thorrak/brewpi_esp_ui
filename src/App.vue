@@ -124,7 +124,8 @@ import {
   UsersIcon,
   XMarkIcon,
   CloudArrowUpIcon,
-  CpuChipIcon
+  CpuChipIcon,
+  LightBulbIcon
 } from '@heroicons/vue/24/outline'
 import fermenttempLogoUrl from "@/assets/fermenttemp_logo.svg";
 
@@ -143,6 +144,7 @@ const navigation = [
   { name: 'Dashboard', icon: HomeIcon, route_name: 'Home' },
   { name: 'Fermentrack Settings', icon: CloudArrowUpIcon, route_name: 'UpstreamSettings' },
   { name: 'Set Up Sensors/Actuators', icon: CpuChipIcon, route_name: 'ConfigSensorsActuators' },
+  { name: 'About Controller', icon: LightBulbIcon, route_name: 'About' },
 
   // { name: 'Change Controls', href: '#', icon: FolderIcon, current: false },
   // { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
@@ -167,6 +169,7 @@ export default {
     MenuItem,
     MenuItems,
     CpuChipIcon,
+    LightBulbIcon
   },
   setup() {
     const sidebarOpen = ref(false);
