@@ -64,6 +64,20 @@
                       </select>
                     </div>
 
+                    <div class="border-l-4 border-yellow-400 bg-yellow-50 p-4 mt-2 mb-2" v-if="new_function !== 0 && this.BrewPiSensorStore.hasDeviceWithFunction(new_function) && this.BrewPiSensorStore.findDeviceByFunction(new_function).index !== device_index">
+                      <!-- If an existing device will get uninstalled here if the user continues, alert him/her -->
+                      <div class="flex columns-2">
+                        <div class="flex flex-shrink-0 align-middle justify-center items-center">
+                          <ExclamationTriangleIcon class="h-5 w-5 text-yellow-400" aria-hidden="true" />
+                        </div>
+                        <div class="ml-3">
+                          <p class="text-sm text-yellow-700 text-left">
+                            A device with this function already exists. If you continue, it will be removed.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
 
                     <!-- Temp Calibration Offset -->
                     <div class="relative border border-gray-300 rounded-md px-3 py-2 my-3 shadow-sm focus-within:ring-1 focus-within:ring-indigo-600 focus-within:border-indigo-600"
@@ -73,6 +87,7 @@
                       <span class="flex-none w-auto min-w-max max-w-max">&deg; C <!-- TODO - Convert to/from celsius using Javascript --></span>
                       <!-- TODO - Add note about how this only saves in 1/16ths of a degree -->
                     </div>
+                    <span v-if="new_function === 5 || new_function === 6 || new_function === 9" class="flex-none w-auto min-w-max max-w-max">Note - Calibration will be rounded to nearest 1/16&deg; C</span>
 
                   </div>
                 </div>
@@ -164,7 +179,7 @@ import {
   TransitionChild,
   TransitionRoot,
 } from '@headlessui/vue'
-import { CheckIcon, NoSymbolIcon, ChevronUpDownIcon, CogIcon } from '@heroicons/vue/24/outline'
+import { CheckIcon, NoSymbolIcon, ChevronUpDownIcon, CogIcon, ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 import FormErrorMsg from "@/components/generic/FormErrorMsg.vue";
 import { useBrewPiSensorStore } from "@/stores/BrewPiSensorStore";
 import { DeviceFunctions } from "@/mixins/BrewPiSensor";
@@ -188,7 +203,8 @@ export default {
     CogIcon,
     CheckIcon,
     NoSymbolIcon,
-    ChevronUpDownIcon
+    ChevronUpDownIcon,
+    ExclamationTriangleIcon
   },
   setup() {
     const isOpen = ref(false);
@@ -206,6 +222,7 @@ export default {
   data: () => ({
     new_function: 0,
     new_calibration: 0.0,
+    device_index: 0,
     form_error_message: "",
     DeviceFunctions: DeviceFunctions,
   }),
@@ -264,6 +281,7 @@ export default {
       // this.device = StructuredClone(this.$props.sensor);
       this.new_function = this.$props.sensor.device_function_int;
       this.new_calibration = this.$props.sensor.calibrate_adjust;
+      this.device_index = this.$props.sensor.index;
       this.form_error_message = "";
       this.isOpen = true;
     },
