@@ -17,6 +17,63 @@
 <!--              <button type="button" class="block rounded-md bg-indigo-600 py-1.5 px-3 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add user</button>-->
 <!--            </div>-->
           </div>
+
+          <div class="border-l-4 border-red-400 bg-red-50 p-4 mt-8" v-if="!hasFridgeSensor">
+            <!-- If no fridge/chamber temp sensor is configured, show this warning -->
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <ExclamationTriangleIcon class="h-5 w-5 text-red-400" aria-hidden="true" />
+              </div>
+              <div class="ml-3">
+                <p class="text-sm text-red-700">
+                  No fridge/chamber temperature sensor selected. No temperature control can take place.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="border-l-4 border-yellow-400 bg-yellow-50 p-4 mt-8" v-else-if="!hasBeerSensor">
+            <!-- If no beer temp sensor is configured, show this warning -->
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <ExclamationTriangleIcon class="h-5 w-5 text-yellow-400" aria-hidden="true" />
+              </div>
+              <div class="ml-3">
+                <p class="text-sm text-yellow-700">
+                  No beer temperature sensor selected. Cannot use beer constant/profile control modes.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="border-l-4 border-red-400 bg-red-50 p-4 mt-8" v-if="!hasHeatActuator && !hasCoolActuator">
+            <!-- If there is neither a heat or cool relay configured, show this warning -->
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <ExclamationTriangleIcon class="h-5 w-5 text-red-400" aria-hidden="true" />
+              </div>
+              <div class="ml-3">
+                <p class="text-sm text-red-700">
+                  Neither a heat or cool switch/relay is selected. No temperature control can take place.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="border-l-4 border-blue-400 bg-blue-50 p-4 mt-8" v-else-if="!hasHeatActuator || !hasCoolActuator">
+            <!-- If there is neither a heat or cool relay configured, show this warning -->
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <InformationCircleIcon class="h-5 w-5 text-blue-400" aria-hidden="true" />
+              </div>
+              <div class="ml-3">
+                <p class="text-sm text-blue-700">
+                  <span v-if="!hasHeatActuator">No heat switch/relay is selected - temperature control will be cooling only.</span>
+                  <span v-else>No cooling switch/relay is selected - temperature control will be heating only.</span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+
           <div class="mt-8 flow-root">
             <div class="-my-2 -mx-6 overflow-x-auto lg:-mx-8">
               <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
@@ -76,15 +133,22 @@
 <script>
 import { useBrewPiSensorStore } from "@/stores/BrewPiSensorStore";
 import AssignSensorModal from "@/components/sensors/AssignSensorModal.vue";
+import { ExclamationTriangleIcon, InformationCircleIcon } from '@heroicons/vue/24/outline'
 
 export default {
   name: "ConfigSensorsActuators",
   components: {
-    AssignSensorModal
+    AssignSensorModal,
+    ExclamationTriangleIcon,
+    InformationCircleIcon,
   },
   mounted() {
     // Retrieve initial data
     this.BrewPiSensorStore.getDevices();
+    this.hasBeerSensor = this.BrewPiSensorStore.hasDeviceWithFunction(9);
+    this.hasFridgeSensor = this.BrewPiSensorStore.hasDeviceWithFunction(5);
+    this.hasHeatActuator = this.BrewPiSensorStore.hasDeviceWithFunction(2);
+    this.hasCoolActuator = this.BrewPiSensorStore.hasDeviceWithFunction(3);
 
     // Set up periodic refreshes
     // window.setInterval(() => {
@@ -94,15 +158,23 @@ export default {
   setup() {
     return {
       BrewPiSensorStore: useBrewPiSensorStore(),  // Updated in ConfigSensorsActuators.vue
+      hasFridgeSensor: false,
+      hasBeerSensor: false,
+      hasHeatActuator: false,
+      hasCoolActuator: false,
     }
   },
   methods: {
-    refreshDevices() {
+    async refreshDevices() {
       let loader = this.$loading.show({});
-      this.BrewPiSensorStore.clearDevices();
-      this.BrewPiSensorStore.getDevices();
+      await this.BrewPiSensorStore.clearDevices();
+      await this.BrewPiSensorStore.getDevices();
+      this.hasBeerSensor = this.BrewPiSensorStore.hasDeviceWithFunction(9);
+      this.hasFridgeSensor = this.BrewPiSensorStore.hasDeviceWithFunction(5);
+      this.hasHeatActuator = this.BrewPiSensorStore.hasDeviceWithFunction(2);
+      this.hasCoolActuator = this.BrewPiSensorStore.hasDeviceWithFunction(3);
       loader.hide();
-    }
+    },
   }
 }
 </script>

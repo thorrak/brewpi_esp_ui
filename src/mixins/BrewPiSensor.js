@@ -2,8 +2,8 @@
 export const DeviceFunctions = [
     "None",                 // 0
     "Chamber Door",         // 1
-    "Chamber Heat",         // 2
-    "Chamber Cool",         // 3
+    "Heating Switch",       // 2 "Chamber Heat"
+    "Cooling Switch",       // 3 "Chamber Cool"
     "Chamber Light",        // 4 (Maybe unused)
     "Chamber Temp",         // 5
     "Room Temp",            // 6
