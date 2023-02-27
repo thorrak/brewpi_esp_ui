@@ -16,6 +16,9 @@ export const useTempControlStore = defineStore("TempControlStore", {
             beerTemp: 0,
             roomTemp: 0,
             tempFormat: "X",
+
+            controlMode: "o",
+            controlState: 0,
         };
     },
     actions: {
@@ -34,6 +37,8 @@ export const useTempControlStore = defineStore("TempControlStore", {
                     this.beerTemp = response.temp.BeerTemp;
                     this.roomTemp = response.temp.RoomTemp;
                     this.tempFormat = response.cc.tempFormat;
+                    this.controlState = response.temp.State;
+                    this.controlMode = response.cs.mode;
                 } else {
                     await this.clearTempInfo();
                     this.tempInfoError = true;
@@ -53,6 +58,8 @@ export const useTempControlStore = defineStore("TempControlStore", {
             this.beerTemp = 0;
             this.roomTemp = 0;
             this.tempFormat = "X";
+            this.controlState = 0;
+            this.controlMode = "o";
         }
     },
 });

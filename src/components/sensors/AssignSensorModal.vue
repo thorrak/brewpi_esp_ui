@@ -85,7 +85,6 @@
                       <label for="calibration" class="absolute -top-2 left-2 -mt-px inline-block px-1 bg-white text-xs font-medium text-gray-900">Sensor Calibration Offset</label>
                       <input type="text" ref="calibration" v-model="new_calibration" id="calibration" class="border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm flex-1" placeholder="0.0" />
                       <span class="flex-none w-auto min-w-max max-w-max">&deg; C <!-- TODO - Convert to/from celsius using Javascript --></span>
-                      <!-- TODO - Add note about how this only saves in 1/16ths of a degree -->
                     </div>
                     <span v-if="new_function === 5 || new_function === 6 || new_function === 9" class="flex-none w-auto min-w-max max-w-max">Note - Calibration will be rounded to nearest 1/16&deg; C</span>
 
@@ -287,14 +286,5 @@ export default {
     },
 
   },
-  // computed:{
-  //   genID(){
-  //     return (c)=>{
-  //       let id_start = this.$props.kt_id.trim() + "_" + this.$props.port.portIndex.toString() + "_"
-  //       return id_start + c;
-  //     }
-  //   }
-  // },
-
 }
 </script>
