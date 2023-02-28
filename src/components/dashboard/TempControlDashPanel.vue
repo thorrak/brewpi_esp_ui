@@ -28,8 +28,9 @@
           <span v-else-if="TempControlStore.controlMode === 'o'">Off</span>
           <span v-else-if="TempControlStore.controlMode === 't'">Test Mode</span>
           <div class=" text-green-800 inline-flex items-baseline px-2.5 py-0.5 rounded-full text-sm font-medium md:mt-2 lg:mt-0">
-            <InformationCircleIcon class="-ml-1 mr-0.5 h-5 w-5 flex-shrink-0 self-center text-green-500" aria-hidden="true" />
-            Change Mode
+<!--            <InformationCircleIcon class="-ml-1 mr-0.5 h-5 w-5 flex-shrink-0 self-center text-green-500" aria-hidden="true" />-->
+<!--            Change Mode-->
+            <ModeChangeModal />
           </div>
         </dd>
         <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900" v-else>--</dd>
@@ -57,10 +58,12 @@
 <script>
 import { useTempControlStore } from "@/stores/TempControlStore";
 import { ExclamationTriangleIcon, InformationCircleIcon } from '@heroicons/vue/24/outline'
+import ModeChangeModal from "@/components/dashboard/ModeChangeModal.vue";
 
 export default {
   name: "TempControlDashPanel",
   components: {
+    ModeChangeModal,
     ExclamationTriangleIcon,
     InformationCircleIcon
   },

@@ -19,6 +19,8 @@ export const useTempControlStore = defineStore("TempControlStore", {
 
             controlMode: "o",
             controlState: 0,
+
+            setModeError: false,
         };
     },
     actions: {
@@ -60,6 +62,26 @@ export const useTempControlStore = defineStore("TempControlStore", {
             this.tempFormat = "X";
             this.controlState = 0;
             this.controlMode = "o";
+        },
+        async setMode(new_mode, new_setpoint) {
+            try {
+                const remote_api = mande("/api/mode/", genCSRFOptions());
+                const response = await remote_api.put({
+                    mode: new_mode,  // Char (String)
+                    setPoint: new_setpoint,  // Double
+                });
+                if (response && response.message) {
+                    // TODO - Check response.message
+                    this.setModeError = false;
+                } else {
+                    await this.clearTempInfo();
+                    this.setModeError = true;
+                }
+            } catch (error) {
+                await this.clearTempInfo();
+                this.setModeError = true;
+            }
+            await this.getTempInfo();
         }
     },
 });
