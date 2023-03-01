@@ -20,7 +20,7 @@
                       Firmware Version
                     </th>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      Fermenttemp v{{ VersionInfoStore.fermenttempVersion }} ({{ VersionInfoStore.gitRevision }})
+                      BrewPi-ESP v{{ VersionInfoStore.fermenttempVersion }} ({{ VersionInfoStore.gitRevision }})
                     </td>
                   </tr>
                   <tr>

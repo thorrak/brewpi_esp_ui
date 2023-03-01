@@ -19,7 +19,7 @@
               </TransitionChild>
               <div class="h-0 flex-1 overflow-y-auto pt-5 pb-4">
                 <div class="flex flex-shrink-0 items-center px-4">
-                  <img class="h-8 w-auto" :src="fermenttempLogoUrl" alt="FermentTemp" />
+                  <img class="h-8 w-auto" src="/fermenttemp_logo.svg" alt="FermentTemp" />
                 </div>
                 <nav class="mt-5 space-y-1 px-2">
                   <!-- Mobile (small) navigation -->
@@ -59,7 +59,7 @@
       <div class="flex min-h-0 flex-1 flex-col bg-indigo-700">
         <div class="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
           <div class="flex flex-shrink-0 items-center px-4">
-            <img class="h-8 w-auto" :src="fermenttempLogoUrl" alt="FermentTemp" />
+            <img class="h-8 w-auto" src="/fermenttemp_logo.svg" alt="FermentTemp" />
           </div>
           <nav class="mt-5 flex-1 space-y-1 px-2">
             <!-- Desktop (big) sidebar navigation -->
@@ -127,7 +127,7 @@ import {
   CpuChipIcon,
   LightBulbIcon
 } from '@heroicons/vue/24/outline'
-import fermenttempLogoUrl from "@/assets/fermenttemp_logo.svg";
+// import fermenttempLogoUrl from "@/assets/fermenttemp_logo.svg";
 
 
 import { ref, reactive } from "vue";
@@ -177,7 +177,7 @@ export default {
     return {
       sidebarOpen,
       navigation,
-      fermenttempLogoUrl,
+      // fermenttempLogoUrl,
       TempControlStore: useTempControlStore()  // Updated in App.vue
     }
   },
