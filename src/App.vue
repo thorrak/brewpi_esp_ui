@@ -116,16 +116,12 @@ import {
 } from '@headlessui/vue'
 import {
   Bars3Icon,
-  CalendarIcon,
-  ChartBarIcon,
-  FolderIcon,
   HomeIcon,
-  InboxIcon,
-  UsersIcon,
   XMarkIcon,
   CloudArrowUpIcon,
   CpuChipIcon,
-  LightBulbIcon
+  LightBulbIcon,
+  Cog8ToothIcon
 } from '@heroicons/vue/24/outline'
 // import fermenttempLogoUrl from "@/assets/fermenttemp_logo.svg";
 
@@ -133,23 +129,12 @@ import {
 import { ref, reactive } from "vue";
 import { useTempControlStore } from "@/stores/TempControlStore.js";
 
-
-const user = {
-  name: 'Tom Cook',
-  email: 'tom@example.com',
-  imageUrl:
-      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-}
 const navigation = [
   { name: 'Dashboard', icon: HomeIcon, route_name: 'Home' },
-  { name: 'Fermentrack Settings', icon: CloudArrowUpIcon, route_name: 'UpstreamSettings' },
+  // { name: 'Fermentrack Settings', icon: CloudArrowUpIcon, route_name: 'UpstreamSettings' },
   { name: 'Set Up Sensors/Actuators', icon: CpuChipIcon, route_name: 'ConfigSensorsActuators' },
+  { name: 'Controller Settings', icon: Cog8ToothIcon, route_name: 'ExtendedSettings' },
   { name: 'About Controller', icon: LightBulbIcon, route_name: 'About' },
-
-  // { name: 'Change Controls', href: '#', icon: FolderIcon, current: false },
-  // { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
-  // { name: 'Documents', href: '#', icon: InboxIcon, current: false },
-  // { name: 'Reports', href: '#', icon: ChartBarIcon, current: false },
 ]
 
 export default {
@@ -169,7 +154,8 @@ export default {
     MenuItem,
     MenuItems,
     CpuChipIcon,
-    LightBulbIcon
+    LightBulbIcon,
+    Cog8ToothIcon
   },
   setup() {
     const sidebarOpen = ref(false);

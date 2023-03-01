@@ -3,6 +3,7 @@ import Dashboard from "@/components/Dashboard.vue";
 import UpstreamSettings from "@/components/UpstreamSettings.vue";
 import ConfigSensorsActuators from "@/components/ConfigSensorsActuators.vue";
 import About from "@/components/About.vue";
+import ExtendedSettings from "@/components/ExtendedSettings.vue";
 
 // NOTE - The below paths MUST also be set up in the relevant firmware!
 const routes = [
@@ -25,6 +26,11 @@ const routes = [
         path: "/about",
         name: "About",
         component: About,
+    },
+    {
+        path: "/settings",
+        name: "ExtendedSettings",
+        component: ExtendedSettings,
     },
 ];
 

@@ -51,7 +51,6 @@ export const useUpstreamSettingsStore = defineStore("UpstreamSettingsStore", {
                 if (response && response.message) {
                     // TODO - Check response.message
                     await this.getUpstreamSettings()
-                    return;
                 } else {
                     await this.clearUpstreamSettings();
                     this.upstreamSettingsError = true;

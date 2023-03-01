@@ -83,7 +83,6 @@
                     <tr>
                       <th scope="col" class="py-3.5 pl-6 pr-3 text-left text-sm font-semibold text-gray-900">Type</th>
                       <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell">Identifier</th>
-<!--                      <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Email</th>-->
                       <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Function</th>
                       <th scope="col" class="relative py-3.5 pl-3 pr-6 text-right">
                         <a href="#" type="button" class="inline-flex items-center rounded-full border border-transparent bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" @click="refreshDevices">
