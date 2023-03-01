@@ -30,11 +30,12 @@ export const useBrewPiSensorStore = defineStore("BrewPiSensorStore", {
                     this.loaded = true;
                     this.devicesError = false;
                 } else {
-                    this.clearDevices();
+                    await this.clearDevices();
                     this.devicesError = true;
                 }
             } catch (error) {
-                this.clearDevices();
+                console.warn(error);
+                await this.clearDevices();
                 this.devicesError = true;
             }
         },
@@ -45,9 +46,7 @@ export const useBrewPiSensorStore = defineStore("BrewPiSensorStore", {
                 const response = await remote_api.put(newDeviceDefinition);
                 if (response && response.message) {
                     // TODO - Check response.message
-                    await this.getDevices();
                     this.deviceUpdateError = false;
-                    return;
                 } else {
                     this.deviceUpdateError = true;
                 }
@@ -60,7 +59,7 @@ export const useBrewPiSensorStore = defineStore("BrewPiSensorStore", {
             this.loaded = false;
             this.deviceUpdateError = false;
         },
-        async findNextDeviceIndex() {
+        findNextDeviceIndex() {
             let next_index = 0;
             let indices = [];
 
@@ -94,10 +93,7 @@ export const useBrewPiSensorStore = defineStore("BrewPiSensorStore", {
             return null;
         },
         hasDeviceWithFunction(device_function) {
-            if(this.findDeviceByFunction(device_function) != null)
-                return true;
-            else
-                return false;
+            return this.findDeviceByFunction(device_function) != null;
         }
 
 

@@ -113,7 +113,7 @@
                       </td>
                       <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ sensor.device_function }}</td>
                       <td class="relative whitespace-nowrap py-4 pl-3 pr-6 text-right text-sm font-medium">
-                        <AssignSensorModal :sensor="sensor" />
+                        <AssignSensorModal :sensor="sensor" v-on:device-updated="refreshDevices" />
                       </td>
                     </tr>
                     </tbody>
@@ -134,6 +134,7 @@
 import { useBrewPiSensorStore } from "@/stores/BrewPiSensorStore";
 import AssignSensorModal from "@/components/sensors/AssignSensorModal.vue";
 import { ExclamationTriangleIcon, InformationCircleIcon } from '@heroicons/vue/24/outline'
+import { ref } from "vue";
 
 export default {
   name: "ConfigSensorsActuators",
@@ -144,11 +145,9 @@ export default {
   },
   mounted() {
     // Retrieve initial data
-    this.BrewPiSensorStore.getDevices();
-    this.hasBeerSensor = this.BrewPiSensorStore.hasDeviceWithFunction(9);
-    this.hasFridgeSensor = this.BrewPiSensorStore.hasDeviceWithFunction(5);
-    this.hasHeatActuator = this.BrewPiSensorStore.hasDeviceWithFunction(2);
-    this.hasCoolActuator = this.BrewPiSensorStore.hasDeviceWithFunction(3);
+    this.BrewPiSensorStore.getDevices().then((response) => {
+      this.updateDeviceFunctions();
+    });
 
     // Set up periodic refreshes
     // window.setInterval(() => {
@@ -156,25 +155,33 @@ export default {
     // }, 5000)
   },
   setup() {
+    const hasFridgeSensor = ref(false);
+    const hasBeerSensor = ref(false);
+    const hasHeatActuator = ref(false);
+    const hasCoolActuator = ref(false);
+
     return {
       BrewPiSensorStore: useBrewPiSensorStore(),  // Updated in ConfigSensorsActuators.vue
-      hasFridgeSensor: false,
-      hasBeerSensor: false,
-      hasHeatActuator: false,
-      hasCoolActuator: false,
+      hasFridgeSensor,
+      hasBeerSensor,
+      hasHeatActuator,
+      hasCoolActuator,
     }
   },
   methods: {
-    async refreshDevices() {
+    refreshDevices: async function() {
       let loader = this.$loading.show({});
       await this.BrewPiSensorStore.clearDevices();
       await this.BrewPiSensorStore.getDevices();
+      this.updateDeviceFunctions();
+      loader.hide();
+    },
+    updateDeviceFunctions: function() {
       this.hasBeerSensor = this.BrewPiSensorStore.hasDeviceWithFunction(9);
       this.hasFridgeSensor = this.BrewPiSensorStore.hasDeviceWithFunction(5);
       this.hasHeatActuator = this.BrewPiSensorStore.hasDeviceWithFunction(2);
       this.hasCoolActuator = this.BrewPiSensorStore.hasDeviceWithFunction(3);
-      loader.hide();
-    },
+    }
   }
 }
 </script>

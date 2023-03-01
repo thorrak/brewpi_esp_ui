@@ -41,7 +41,7 @@ export class BrewPiSensor {
     device_alias = "";
     child_id = "";
     calibrate_adjust = 0;
-    index;
+    index=-1;
 
     convertFromBrewPi(device_spec) {
         this.chamber = device_spec.c;
@@ -97,8 +97,6 @@ export class BrewPiSensor {
             device_spec.n = this.child_id;
         if(this.calibrate_adjust !== 0 && (this.hardware_int === 2 || this.hardware_int === 5 || this.hardware_int === 6))
             device_spec.j = this.calibrate_adjust;
-        if(this.index === -1)
-            console.warn("Device index is -1 -- this device will not get saved");
 
         return device_spec;
     }

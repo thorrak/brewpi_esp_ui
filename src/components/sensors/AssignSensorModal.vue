@@ -1,4 +1,5 @@
 <template>
+  <div>
   <a href="#" @click="popModal()" class="text-indigo-600 hover:text-indigo-900">
     <span v-if="sensor.device_function_int === 0">Assign</span>
     <span v-else>Assign</span>
@@ -88,6 +89,16 @@
                     </div>
                     <span v-if="new_function === 5 || new_function === 6 || new_function === 9" class="flex-none w-auto min-w-max max-w-max">Note - Calibration will be rounded to nearest 1/16&deg; C</span>
 
+                    <SwitchGroup as="div" class="flex items-center my-3" v-if="new_function !== 0 && sensor.hardware_int === 1">
+                      <Switch v-model="new_invert" :class="[new_invert ? 'bg-indigo-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2']">
+                        <span aria-hidden="true" :class="[new_invert ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                      </Switch>
+                      <SwitchLabel as="span" class="ml-3">
+                        <span class="text-sm font-medium text-gray-900">Invert Pin</span>
+                        <span class="text-sm text-gray-500 mx-1">(Generally true for mechanical relays)</span>
+                      </SwitchLabel>
+                    </SwitchGroup>
+
                   </div>
                 </div>
 
@@ -113,7 +124,7 @@
   </TransitionRoot>
 
   <TransitionRoot as="template" :show="alertOpen">
-    <Dialog as="div" class="fixed z-10 inset-0 overflow-y-auto" @close="alertOpen = false">
+    <Dialog as="div" class="fixed z-10 inset-0 overflow-y-auto" @close="closeResponseModal">
       <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
           <DialogOverlay class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
@@ -155,7 +166,7 @@
             </div>
 
             <div class="mt-5 sm:mt-6">
-              <button type="button" class="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm" @click="alertOpen = false">
+              <button type="button" class="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm" @click="closeResponseModal">
                 Close
               </button>
             </div>
@@ -164,7 +175,7 @@
       </div>
     </Dialog>
   </TransitionRoot>
-
+  </div>
 </template>
 
 <script>
@@ -177,6 +188,9 @@ import {
   ListboxLabel, ListboxOption, ListboxOptions,
   TransitionChild,
   TransitionRoot,
+  Switch,
+  SwitchGroup,
+  SwitchLabel,
 } from '@headlessui/vue'
 import { CheckIcon, NoSymbolIcon, ChevronUpDownIcon, CogIcon, ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 import FormErrorMsg from "@/components/generic/FormErrorMsg.vue";
@@ -203,8 +217,12 @@ export default {
     CheckIcon,
     NoSymbolIcon,
     ChevronUpDownIcon,
-    ExclamationTriangleIcon
+    ExclamationTriangleIcon,
+    Switch,
+    SwitchGroup,
+    SwitchLabel
   },
+  emits: ['DeviceUpdated'],
   setup() {
     const isOpen = ref(false);
     const alertOpen = ref(false);
@@ -221,6 +239,7 @@ export default {
   data: () => ({
     new_function: 0,
     new_calibration: 0.0,
+    new_invert: true,
     device_index: 0,
     form_error_message: "",
     DeviceFunctions: DeviceFunctions,
@@ -233,7 +252,7 @@ export default {
   },
   methods: {
     // submit the form to our backend api
-    async submitForm() {
+    submitForm: function() {
 
       let calibration_sendable = parseFloat(this.new_calibration);
       let function_sendable = parseInt(this.new_function);
@@ -250,13 +269,17 @@ export default {
       let device_definition = this.$props.sensor.convertToBrewPi();
       device_definition.f = function_sendable;
 
+      // Update invert, but only if it's a pin
+      if(device_definition.h === 1)
+        device_definition.x = this.new_invert;
+
       // Update the calibration, but only if it's a temperature sensor
       if(function_sendable === 5 || function_sendable === 6 || function_sendable === 9)
         device_definition.c = calibration_sendable;
 
       if(device_definition.i === -1) {
         // This is a new device - we need to assign it a device index
-        let device_index = await this.BrewPiSensorStore.findNextDeviceIndex();
+        let device_index = this.BrewPiSensorStore.findNextDeviceIndex();
         if(device_index === -1) {
           this.form_error_message = `Unable to find an unused device index for this device`;
           return;
@@ -266,12 +289,17 @@ export default {
 
       this.isOpen = false;
       let loader = this.$loading.show({});
-      await this.BrewPiSensorStore.sendDeviceDefinition(device_definition);
-      await this.BrewPiSensorStore.clearDevices();  // Clear the devices so we can reload them
-      this.BrewPiSensorStore.getDevices().then();  // Reload devices in the background
-      loader.hide();
-      this.updateSuccessful = this.BrewPiSensorStore.deviceUpdateError;
-      this.alertOpen = true;
+      this.BrewPiSensorStore.sendDeviceDefinition(device_definition).then(
+          () => {
+            this.alertOpen = true;
+            loader.hide();
+            this.updateSuccessful = this.BrewPiSensorStore.deviceUpdateError;
+          }
+      );
+    },
+    closeResponseModal: function() {
+      this.alertOpen = false;
+      this.$emit('DeviceUpdated');
     },
 
     popModal: function() {
@@ -280,6 +308,7 @@ export default {
       // this.device = StructuredClone(this.$props.sensor);
       this.new_function = this.$props.sensor.device_function_int;
       this.new_calibration = this.$props.sensor.calibrate_adjust;
+      this.new_invert = this.$props.sensor.invert;
       this.device_index = this.$props.sensor.index;
       this.form_error_message = "";
       this.isOpen = true;
