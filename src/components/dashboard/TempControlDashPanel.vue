@@ -11,7 +11,7 @@
       </div>
       <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
         <dt class="truncate text-sm font-medium text-gray-500">Beer Temp</dt>
-        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900" v-if="TempControlStore.hasTempInfo"><span v-html="formatTemp(TempControlStore.BeerTemp)"></span></dd>
+        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900" v-if="TempControlStore.hasTempInfo"><span v-html="formatTemp(TempControlStore.beerTemp)"></span></dd>
         <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900" v-else>--&deg; --</dd>
       </div>
       <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
