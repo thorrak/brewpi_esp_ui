@@ -99,6 +99,7 @@
                         {{ sensor.device_hardware }}
                         <div class="md:hidden">
                           <div class="text-gray-500" v-if="sensor.device_hardware === 'Pin'">Pin {{ sensor.pin }}</div>
+                          <div class="text-gray-400" v-if="sensor.device_hardware === 'Pin' && sensor.device_alias.length > 0">({{ sensor.device_alias }})</div>
                           <div class="text-gray-500" v-if="sensor.device_hardware === 'OneWire Temp' || sensor.device_hardware === 'OneWire 2413' || sensor.device_hardware === 'Inkbird Bluetooth'">{{ sensor.address }}</div>
                           <div class="text-gray-500" v-if="sensor.device_hardware === 'TPLink Switch' || sensor.device_hardware === 'Tilt'">{{ sensor.device_alias }}</div>
                           <div class="text-gray-400" v-if="sensor.device_hardware === 'TPLink Switch'">{{ sensor.address }}</div>
@@ -106,6 +107,7 @@
                       </td>
                       <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 hidden md:table-cell">
                         <div class="text-gray-900" v-if="sensor.device_hardware === 'Pin'">Pin {{ sensor.pin }}</div>
+                        <div class="text-gray-500" v-if="sensor.device_hardware === 'Pin' && sensor.device_alias.length > 0">({{ sensor.device_alias }})</div>
                         <div class="text-gray-900" v-if="sensor.device_hardware === 'OneWire Temp' || sensor.device_hardware === 'OneWire 2413' || sensor.device_hardware === 'Inkbird Bluetooth'">{{ sensor.address }}</div>
                         <div class="text-gray-900" v-if="sensor.device_hardware === 'TPLink Switch' || sensor.device_hardware === 'Tilt'">{{ sensor.device_alias }}</div>
                         <div class="text-gray-500" v-if="sensor.device_hardware === 'TPLink Switch'">{{ sensor.address }}</div>
