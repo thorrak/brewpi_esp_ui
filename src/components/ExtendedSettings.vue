@@ -18,15 +18,15 @@
                   <p class="mt-1 text-sm text-gray-500">Controller-wide settings that impact operation</p>
                 </div>
 
-<!--                <SwitchGroup as="div" class="flex items-center my-3">-->
-<!--                  <Switch v-model="lowdelay" :class="[lowdelay ? 'bg-indigo-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2']">-->
-<!--                    <span aria-hidden="true" :class="[lowdelay ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />-->
-<!--                  </Switch>-->
-<!--                  <SwitchLabel as="span" class="ml-3">-->
-<!--                    <span class="text-sm font-medium text-gray-900">Low Delay Mode</span>-->
-<!--                    <span class="text-sm text-gray-500 mx-1">(Lowers "waiting to cool/heat" times - do not use with compressor-based cooling)</span>-->
-<!--                  </SwitchLabel>-->
-<!--                </SwitchGroup>-->
+                <SwitchGroup as="div" class="flex items-center my-3">
+                  <Switch v-model="lowDelay" :class="[lowDelay ? 'bg-indigo-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2']">
+                    <span aria-hidden="true" :class="[lowDelay ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                  </Switch>
+                  <SwitchLabel as="span" class="ml-3">
+                    <span class="text-sm font-medium text-gray-900">Low Delay Mode</span>
+                    <span class="text-sm text-gray-500 mx-1">(Lowers "waiting to cool/heat" times - do not use with compressor-based cooling)</span>
+                  </SwitchLabel>
+                </SwitchGroup>
 
 <!--                <SwitchGroup as="div" class="flex items-center my-3">-->
 <!--                  <Switch v-model="glycol" :class="[glycol ? 'bg-indigo-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2']">-->
@@ -80,7 +80,7 @@ export default {
   },
   data() {
     return {
-      lowdelay: false,
+      lowDelay: false,
       glycol: false,
       invertTFT: false
     }
@@ -102,7 +102,7 @@ export default {
       // Nothing needed here for now, as the form is just switches
 
       let loader = this.$loading.show({});
-      this.ExtendedSettingsStore.setExtendedSettings(this.glycol, this.lowdelay, this.invertTFT).then(() => {
+      this.ExtendedSettingsStore.setExtendedSettings(this.glycol, this.lowDelay, this.invertTFT).then(() => {
         this.updateCachedSettings();
         loader.hide();
         // this.updateSuccessful = res.ok;
@@ -111,7 +111,7 @@ export default {
 
     },
     updateCachedSettings: function() {
-      this.lowdelay = this.ExtendedSettingsStore.lowdelay;
+      this.lowDelay = this.ExtendedSettingsStore.lowDelay;
       this.invertTFT = this.ExtendedSettingsStore.invertTFT;
       this.glycol = this.ExtendedSettingsStore.glycol;
     }

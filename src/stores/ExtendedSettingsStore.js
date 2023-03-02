@@ -10,7 +10,7 @@ export const useExtendedSettingsStore = defineStore("ExtendedSettingsStore", {
             extendedSettingsUpdateError: false,
 
             glycol: false,
-            lowdelay: false,
+            lowDelay: false,
             invertTFT: false,
         };
     },
@@ -23,7 +23,7 @@ export const useExtendedSettingsStore = defineStore("ExtendedSettingsStore", {
                     this.hasExtendedSettings = true;
                     this.extendedSettingsError = false;
                     this.glycol = response.glycol;
-                    this.lowdelay = response.lowdelay;
+                    this.lowDelay = response.lowDelay;
                     this.invertTFT = response.invertTFT;
                 } else {
                     await this.clearExtendedSettings();
@@ -37,15 +37,15 @@ export const useExtendedSettingsStore = defineStore("ExtendedSettingsStore", {
         async clearExtendedSettings() {
             this.hasExtendedSettings = false;
             this.glycol = false;
-            this.lowdelay = false;
+            this.lowDelay = false;
             this.invertTFT = false;
         },
-        async setExtendedSettings(glycol, lowdelay, invertTFT) {
+        async setExtendedSettings(glycol, lowDelay, invertTFT) {
             try {
                 const remote_api = mande("/api/extended/", genCSRFOptions());
                 const response = await remote_api.put({
                     glycol: glycol,  // Boolean
-                    lowdelay: lowdelay,  // Boolean
+                    lowDelay: lowDelay,  // Boolean
                     invertTFT: invertTFT, // Boolean
                 });
                 if (response && response.message) {
