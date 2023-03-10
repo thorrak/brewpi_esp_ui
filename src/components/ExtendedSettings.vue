@@ -14,7 +14,6 @@
               <div v-if="ExtendedSettingsStore.hasExtendedSettings">
                 <div>
                   <h3 class="text-lg font-medium leading-6 text-gray-900">Controller Settings</h3>
-                  <!-- TODO - Change "Fermentrack" out here if Lee ever adds support for REST controllers to BPR -->
                   <p class="mt-1 text-sm text-gray-500">Controller-wide settings that impact operation</p>
                 </div>
 
@@ -63,16 +62,24 @@
         </div>
       </div>
     </div>
+
+    <MinTimesPanel />
   </div>
 </template>
 
 <script>
 import { useExtendedSettingsStore } from "@/stores/ExtendedSettingsStore";
 import {Switch, SwitchGroup, SwitchLabel} from "@headlessui/vue";
+import MinTimesPanel from "@/components/settings/MinTimesPanel.vue";
 
 export default {
   name: "ExtendedSettings",
-  components: {SwitchLabel, Switch, SwitchGroup},
+  components: {
+    SwitchLabel,
+    Switch,
+    SwitchGroup,
+    MinTimesPanel
+  },
   setup() {
     return {
       ExtendedSettingsStore: useExtendedSettingsStore()  // Updated in ExtendedSettings.vue
