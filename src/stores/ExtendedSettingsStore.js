@@ -14,7 +14,6 @@ export const useExtendedSettingsStore = defineStore("ExtendedSettingsStore", {
             invertTFT: false,
 
             SETTINGS_CHOICE: 0,  // 0 = defaults, 1 = lowdelay, 2 = custom
-
             MIN_COOL_OFF_TIME: 0,
             MIN_HEAT_OFF_TIME: 0,
             MIN_COOL_ON_TIME: 0,
@@ -73,13 +72,23 @@ export const useExtendedSettingsStore = defineStore("ExtendedSettingsStore", {
             this.COOL_PEAK_DETECT_TIME = 0;
             this.HEAT_PEAK_DETECT_TIME = 0;
         },
-        async setExtendedSettings(glycol, largeTFT, invertTFT) {
+        async setExtendedSettings(glycol, largeTFT, invertTFT, SETTINGS_CHOICE, MIN_COOL_OFF_TIME, MIN_HEAT_OFF_TIME, MIN_COOL_ON_TIME, MIN_HEAT_ON_TIME, MIN_COOL_OFF_TIME_FRIDGE_CONSTANT, MIN_SWITCH_TIME, COOL_PEAK_DETECT_TIME, HEAT_PEAK_DETECT_TIME) {
             try {
                 const remote_api = mande("/api/extended/", genCSRFOptions());
                 const response = await remote_api.put({
                     glycol: glycol,  // Boolean
                     largeTFT: largeTFT,  // Boolean
                     invertTFT: invertTFT, // Boolean
+
+                    SETTINGS_CHOICE: SETTINGS_CHOICE,
+                    MIN_COOL_OFF_TIME: MIN_COOL_OFF_TIME,
+                    MIN_HEAT_OFF_TIME: MIN_HEAT_OFF_TIME,
+                    MIN_COOL_ON_TIME: MIN_COOL_ON_TIME,
+                    MIN_HEAT_ON_TIME: MIN_HEAT_ON_TIME,
+                    MIN_COOL_OFF_TIME_FRIDGE_CONSTANT: MIN_COOL_OFF_TIME_FRIDGE_CONSTANT,
+                    MIN_SWITCH_TIME: MIN_SWITCH_TIME,
+                    COOL_PEAK_DETECT_TIME: COOL_PEAK_DETECT_TIME,
+                    HEAT_PEAK_DETECT_TIME: HEAT_PEAK_DETECT_TIME,
                 });
                 if (response && response.message) {
                     // TODO - Check response.message
@@ -94,32 +103,5 @@ export const useExtendedSettingsStore = defineStore("ExtendedSettingsStore", {
                 this.extendedSettingsUpdateError = true;
             }
         },
-        async setMinTimes(SETTINGS_CHOICE, MIN_COOL_OFF_TIME, MIN_HEAT_OFF_TIME, MIN_COOL_ON_TIME, MIN_HEAT_ON_TIME, MIN_COOL_OFF_TIME_FRIDGE_CONSTANT, MIN_SWITCH_TIME, COOL_PEAK_DETECT_TIME, HEAT_PEAK_DETECT_TIME) {
-            try {
-                const remote_api = mande("/api/extended/", genCSRFOptions());
-                const response = await remote_api.put({
-                    SETTINGS_CHOICE: SETTINGS_CHOICE,
-                    MIN_COOL_OFF_TIME: MIN_COOL_OFF_TIME,
-                    MIN_HEAT_OFF_TIME: MIN_HEAT_OFF_TIME,
-                    MIN_COOL_ON_TIME: MIN_COOL_ON_TIME,
-                    MIN_HEAT_ON_TIME: MIN_HEAT_ON_TIME,
-                    MIN_COOL_OFF_TIME_FRIDGE_CONSTANT: MIN_COOL_OFF_TIME_FRIDGE_CONSTANT,
-                    MIN_SWITCH_TIME: MIN_SWITCH_TIME,
-                    COOL_PEAK_DETECT_TIME: COOL_PEAK_DETECT_TIME,
-                    HEAT_PEAK_DETECT_TIME: HEAT_PEAK_DETECT_TIME,
-                });
-                if (response && response.message) {
-                    // TODO - Check response.message
-                    await this.getExtendedSettings();
-                    this.minTimesUpdateError = false;
-                } else {
-                    await this.getExtendedSettings();
-                    this.minTimesUpdateError = true;
-                }
-            } catch (error) {
-                await this.getExtendedSettings();
-                this.minTimesUpdateError = true;
-            }
-        }
     },
 });
