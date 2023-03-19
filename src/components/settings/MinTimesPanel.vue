@@ -1,5 +1,5 @@
 <template>
-  <div class="py-6" v-if="MinTimesStore.hasMinTimes">
+  <div class="py-6" v-if="ExtendedSettingsStore.hasExtendedSettings">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
       <div class="py-4">
 
@@ -177,7 +177,7 @@
 </template>
 
 <script>
-import { useMinTimesStore } from "@/stores/MinTimesStore";
+import { useExtendedSettingsStore } from "@/stores/ExtendedSettingsStore";
 import { Switch, SwitchGroup, SwitchLabel } from "@headlessui/vue";
 import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from '@headlessui/vue'
 import { CheckIcon, ChevronDownIcon, ExclamationTriangleIcon } from '@heroicons/vue/20/solid'
@@ -205,7 +205,7 @@ export default {
   },
   setup() {
     return {
-      MinTimesStore: useMinTimesStore(),  // Updated in MinTimesPanel.vue
+      ExtendedSettingsStore: useExtendedSettingsStore(),  // Updated in ExtendedSettingsStore.vue
       minimumTimesSets,
     }
   },
@@ -225,7 +225,8 @@ export default {
   },
   mounted() {
     // Retrieve initial data
-    this.MinTimesStore.getMinTimes().then(() => {
+    this.ExtendedSettingsStore.getExtendedSettings().then(() => {
+      // This is technically also updated in ExtendedSettingsStore... Not sure the best way to ensure updateCachedSettings is called if it is updated there
       this.updateCachedSettings();
     });
 
@@ -240,7 +241,7 @@ export default {
       // Nothing needed here for now, as the form is just switches
 
       let loader = this.$loading.show({});
-      this.MinTimesStore.setMinTimes(this.selectedSettingSet.value, this.MIN_COOL_OFF_TIME, this.MIN_HEAT_OFF_TIME, this.MIN_COOL_ON_TIME, this.MIN_HEAT_ON_TIME,
+      this.ExtendedSettingsStore.setMinTimes(this.selectedSettingSet.value, this.MIN_COOL_OFF_TIME, this.MIN_HEAT_OFF_TIME, this.MIN_COOL_ON_TIME, this.MIN_HEAT_ON_TIME,
           this.MIN_COOL_OFF_TIME_FRIDGE_CONSTANT, this.MIN_SWITCH_TIME, this.COOL_PEAK_DETECT_TIME, this.HEAT_PEAK_DETECT_TIME).then(() => {
         this.updateCachedSettings();
         loader.hide();
@@ -250,16 +251,16 @@ export default {
 
     },
     updateCachedSettings: function() {
-      this.SETTINGS_CHOICE = this.MinTimesStore.SETTINGS_CHOICE;
-      this.MIN_COOL_OFF_TIME = this.MinTimesStore.MIN_COOL_OFF_TIME;
-      this.MIN_HEAT_OFF_TIME = this.MinTimesStore.MIN_HEAT_OFF_TIME;
-      this.MIN_COOL_ON_TIME = this.MinTimesStore.MIN_COOL_ON_TIME;
-      this.MIN_HEAT_ON_TIME = this.MinTimesStore.MIN_HEAT_ON_TIME;
-      this.MIN_COOL_OFF_TIME_FRIDGE_CONSTANT = this.MinTimesStore.MIN_COOL_OFF_TIME_FRIDGE_CONSTANT;
-      this.MIN_SWITCH_TIME = this.MinTimesStore.MIN_SWITCH_TIME;
-      this.COOL_PEAK_DETECT_TIME = this.MinTimesStore.COOL_PEAK_DETECT_TIME;
-      this.HEAT_PEAK_DETECT_TIME = this.MinTimesStore.HEAT_PEAK_DETECT_TIME;
-      this.selectedSettingSet = minimumTimesSets[this.MinTimesStore.SETTINGS_CHOICE];
+      this.SETTINGS_CHOICE = this.ExtendedSettingsStore.SETTINGS_CHOICE;
+      this.MIN_COOL_OFF_TIME = this.ExtendedSettingsStore.MIN_COOL_OFF_TIME;
+      this.MIN_HEAT_OFF_TIME = this.ExtendedSettingsStore.MIN_HEAT_OFF_TIME;
+      this.MIN_COOL_ON_TIME = this.ExtendedSettingsStore.MIN_COOL_ON_TIME;
+      this.MIN_HEAT_ON_TIME = this.ExtendedSettingsStore.MIN_HEAT_ON_TIME;
+      this.MIN_COOL_OFF_TIME_FRIDGE_CONSTANT = this.ExtendedSettingsStore.MIN_COOL_OFF_TIME_FRIDGE_CONSTANT;
+      this.MIN_SWITCH_TIME = this.ExtendedSettingsStore.MIN_SWITCH_TIME;
+      this.COOL_PEAK_DETECT_TIME = this.ExtendedSettingsStore.COOL_PEAK_DETECT_TIME;
+      this.HEAT_PEAK_DETECT_TIME = this.ExtendedSettingsStore.HEAT_PEAK_DETECT_TIME;
+      this.selectedSettingSet = minimumTimesSets[this.ExtendedSettingsStore.SETTINGS_CHOICE];
     }
 
   }
