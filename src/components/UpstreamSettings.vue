@@ -16,6 +16,8 @@
 Upstream Host: {{ UpstreamSettingsStore.upstreamHost }}
 Upstream Port: {{ UpstreamSettingsStore.upstreamPort }}
 Upstream Device ID: {{ UpstreamSettingsStore.deviceID }}
+Upstream Username: {{ UpstreamSettingsStore.username }}
+Upstream API Key: {{ UpstreamSettingsStore.apiKey }}
 </pre>
               </div>
 
@@ -43,6 +45,14 @@ Upstream Device ID: {{ UpstreamSettingsStore.deviceID }}
                       <input id="port" name="port" v-model="UpstreamSettingsStore.upstreamPort" type="text" autocomplete="port" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
                     </div>
                   </div>
+
+                  <div class="sm:col-span-4">
+                    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                    <div class="mt-1">
+                      <input type="text" name="username" v-model="UpstreamSettingsStore.username" id="username" autocomplete="username" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+                    </div>
+                  </div>
+
 
                   <div class="sm:col-span-4">
                     <label for="deviceid" class="block text-sm font-medium text-gray-700">Device ID</label>
@@ -122,8 +132,14 @@ export default {
         return;
       }
 
+      if(this.UpstreamSettingsStore.username.length >= 127) {
+        // TODO - Add feedback here
+        // this.form_error_message = "Username is invalid. Must be less than 127 characters.";
+        return;
+      }
+
       let loader = this.$loading.show({});
-      await this.UpstreamSettingsStore.setUpstreamSettings(this.UpstreamSettingsStore.upstreamHost, this.UpstreamSettingsStore.upstreamPort, this.resetDeviceID);
+      await this.UpstreamSettingsStore.setUpstreamSettings(this.UpstreamSettingsStore.upstreamHost, this.UpstreamSettingsStore.upstreamPort, this.resetDeviceID, this.UpstreamSettingsStore.username);
       loader.hide();
 
       // this.updateSuccessful = res.ok;

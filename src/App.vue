@@ -131,7 +131,7 @@ import { useTempControlStore } from "@/stores/TempControlStore.js";
 
 const navigation = [
   { name: 'Dashboard', icon: HomeIcon, route_name: 'Home' },
-  // { name: 'Fermentrack Settings', icon: CloudArrowUpIcon, route_name: 'UpstreamSettings' },
+  { name: 'Fermentrack Settings', icon: CloudArrowUpIcon, route_name: 'UpstreamSettings' },
   { name: 'Set Up Sensors/Actuators', icon: CpuChipIcon, route_name: 'ConfigSensorsActuators' },
   { name: 'Controller Settings', icon: Cog8ToothIcon, route_name: 'ExtendedSettings' },
   { name: 'About Controller', icon: LightBulbIcon, route_name: 'About' },

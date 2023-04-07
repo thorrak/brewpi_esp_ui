@@ -7,9 +7,12 @@ export const useUpstreamSettingsStore = defineStore("UpstreamSettingsStore", {
         return {
             hasUpstreamSettings: false,
             upstreamSettingsError: false,
-            upstreamHost: "xxxxxx",  // TODO - Fix this
+            upstreamHost: "",
             upstreamPort: 0,
-            deviceID: "ttttt",
+            username: "",  // Generally will not be stored beyond registration
+            apiKey: "",
+            upstreamRegistrationError: 7,
+            deviceID: "",
         };
     },
     actions: {
@@ -23,6 +26,9 @@ export const useUpstreamSettingsStore = defineStore("UpstreamSettingsStore", {
                     this.upstreamHost = response.upstreamHost;
                     this.upstreamPort = response.upstreamPort;
                     this.deviceID = response.deviceID;
+                    this.username = response.username;
+                    this.apiKey = response.apiKey;
+                    this.upstreamRegistrationError = response.upstreamRegistrationError;
 
                 } else {
                     await this.clearUpstreamSettings();
@@ -38,15 +44,20 @@ export const useUpstreamSettingsStore = defineStore("UpstreamSettingsStore", {
             this.upstreamHost = "";
             this.upstreamPort = 0;
             this.deviceID = "";
+            this.username = "";
+            this.apiKey = "";
+            this.upstreamRegistrationError = 7;
         },
-        async setUpstreamSettings(upstreamHost, upstreamPort, resetDeviceID) {
+        async setUpstreamSettings(upstreamHost, upstreamPort, resetDeviceID, username, apiKey) {
             try {
                 const remote_api = mande("/api/upstream/", genCSRFOptions());
                 const response = await remote_api.put({
                     upstreamHost: upstreamHost,  // String
-                    upstreamPort: upstreamPort,  // String
+                    upstreamPort: Number(upstreamPort),  // Integer
                     resetDeviceID: resetDeviceID, // Boolean
-                    // deviceID: deviceID,
+                    username: username, // String
+                    apiKey: apiKey, // String
+                    // deviceID: deviceID, // Not processed in the firmware currently
                 });
                 if (response && response.message) {
                     // TODO - Check response.message
