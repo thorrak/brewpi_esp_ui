@@ -9,21 +9,129 @@
         <div>
           <form class="space-y-8 divide-y divide-gray-200" @submit.prevent="submitForm">
             <div class="space-y-8 divide-y divide-gray-200">
-              <div>
-                <h3 class="text-lg font-medium leading-6 text-gray-900">Upstream Status</h3>
-                <p class="mt-1 text-sm text-gray-500">How this controller communicates with Fermentrack</p>
-<pre>
-Upstream Host: {{ UpstreamSettingsStore.upstreamHost }}
-Upstream Port: {{ UpstreamSettingsStore.upstreamPort }}
-Upstream Device ID: {{ UpstreamSettingsStore.deviceID }}
-Upstream Username: {{ UpstreamSettingsStore.username }}
-Upstream API Key: {{ UpstreamSettingsStore.apiKey }}
-</pre>
-              </div>
-
-
 
               <div v-if="UpstreamSettingsStore.hasUpstreamSettings">
+                <!-- Display errors from the upstream registration process -->
+                <div class="border-l-4 border-red-400 bg-red-50 p-4 mb-4 mt-4" v-if="UpstreamSettingsStore.upstreamRegistrationError === 1 || UpstreamSettingsStore.upstreamRegistrationError === 5 || UpstreamSettingsStore.upstreamRegistrationError === 6">
+                  <!-- Error 1 (missing GUID), Error 5 (missing hardware), Error 6 (missing firmware version) are all internal -->
+                  <div class="flex">
+                    <div class="flex-shrink-0">
+                      <ExclamationTriangleIcon class="h-5 w-5 text-red-400" aria-hidden="true" />
+                    </div>
+                    <div class="ml-3">
+                      <p class="text-sm text-red-700">
+                        There was data missing in the registration message which is typically set internally by the controller.
+                        This most likely means that either the controller firmware or the version of Fermentrack is out of date. Please update the controller firmware and/or Fermentrack and try again.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="border-l-4 border-red-400 bg-red-50 p-4 mb-4 mt-4" v-else-if="UpstreamSettingsStore.upstreamRegistrationError === 3">
+                  <!-- Error 3 - User not found -->
+                  <div class="flex">
+                    <div class="flex-shrink-0">
+                      <ExclamationTriangleIcon class="h-5 w-5 text-red-400" aria-hidden="true" />
+                    </div>
+                    <div class="ml-3">
+                      <p class="text-sm text-red-700">
+                        Username is invalid on the targeted Fermentrack install. Please check the username and try again.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="border-l-4 border-red-400 bg-red-50 p-4 mb-4 mt-4" v-else-if="UpstreamSettingsStore.upstreamRegistrationError === 7">
+                  <!-- Error 7 - API Key is not associated with a brewhouse -->
+                  <div class="flex">
+                    <div class="flex-shrink-0">
+                      <ExclamationTriangleIcon class="h-5 w-5 text-red-400" aria-hidden="true" />
+                    </div>
+                    <div class="ml-3">
+                      <p class="text-sm text-red-700">
+                        API Key does not match a valid brewhouse on the targeted Fermentrack install. Please check the API key (or enter a valid username) and try again.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="border-l-4 border-red-400 bg-red-50 p-4 mb-4 mt-4" v-else-if="UpstreamSettingsStore.upstreamRegistrationError === 4">
+                  <!-- Error 4 - User does not have a brewhouse -->
+                  <div class="flex">
+                    <div class="flex-shrink-0">
+                      <ExclamationTriangleIcon class="h-5 w-5 text-red-400" aria-hidden="true" />
+                    </div>
+                    <div class="ml-3">
+                      <p class="text-sm text-red-700">
+                        The specified Fermentrack user does not have a brewhouse. Please complete setup of this user in Fermentrack and try again.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="border-l-4 border-red-400 bg-red-50 p-4 mb-4 mt-4" v-else-if="UpstreamSettingsStore.upstreamRegistrationError === 2 || (UpstreamSettingsStore.username === '' && UpstreamSettingsStore.apiKey === '')">
+                  <!-- Error 2 - Missing username or API key -->
+                  <div class="flex">
+                    <div class="flex-shrink-0">
+                      <ExclamationTriangleIcon class="h-5 w-5 text-red-400" aria-hidden="true" />
+                    </div>
+                    <div class="ml-3">
+                      <p class="text-sm text-red-700">
+                        No username or API key specified.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="border-l-4 border-yellow-400 bg-yellow-50 p-4 mt-4 mb-4" v-else-if="UpstreamSettingsStore.upstreamRegistrationError === 8">
+                  <!-- Error 2 - Missing username or API key -->
+                  <div class="flex">
+                    <div class="flex-shrink-0">
+                      <ExclamationTriangleIcon class="h-5 w-5 text-yellow-400" aria-hidden="true" />
+                    </div>
+                    <div class="ml-3">
+                      <p class="text-sm text-yellow-700">
+                        Device is waiting to register with Fermentrack. Please wait up to 3 minutes and refresh this page.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="border-l-4 border-red-400 bg-red-50 p-4 mb-4 mt-4" v-else-if="UpstreamSettingsStore.upstreamRegistrationError === 9">
+                  <!-- Error 9 - Registration endpoint error -->
+                  <div class="flex">
+                    <div class="flex-shrink-0">
+                      <ExclamationTriangleIcon class="h-5 w-5 text-red-400" aria-hidden="true" />
+                    </div>
+                    <div class="ml-3">
+                      <p class="text-sm text-red-700">
+                        Controller is unable to reach Fermentrack. Please check that Fermentrack is accessible at the specified hostname/port.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="border-l-4 border-green-400 bg-green-50 p-4 mb-4 mt-4" v-else-if="UpstreamSettingsStore.upstreamRegistrationError === 0">
+                  <!-- Error 0 - No error -->
+                  <div class="flex">
+                    <div class="flex-shrink-0">
+                      <InformationCircleIcon class="h-5 w-5 text-green-400" aria-hidden="true" />
+                    </div>
+                    <div class="ml-3">
+                      <p class="text-sm text-green-700">
+                        Controller is successfully registered with Fermentrack
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="border-l-4 border-red-400 bg-red-50 p-4 mb-4 mt-4" v-else>
+                  <!-- Error code not captured. Means that Fermentrack is probably more recent than this firmware -->
+                  <div class="flex">
+                    <div class="flex-shrink-0">
+                      <ExclamationTriangleIcon class="h-5 w-5 text-red-400" aria-hidden="true" />
+                    </div>
+                    <div class="ml-3">
+                      <p class="text-sm text-red-700">
+                        An unknown error was sent by Fermentrack.
+                        This most likely means that either the controller firmware or the version of Fermentrack is out of date. Please update the controller firmware and/or Fermentrack and try again.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
                 <div>
                   <h3 class="text-lg font-medium leading-6 text-gray-900">Upstream Settings</h3>
                   <!-- TODO - Change "Fermentrack" out here if Lee ever adds support for REST controllers to BPR -->
@@ -46,7 +154,7 @@ Upstream API Key: {{ UpstreamSettingsStore.apiKey }}
                     </div>
                   </div>
 
-                  <div class="sm:col-span-4">
+                  <div class="sm:col-span-4" v-if="UpstreamSettingsStore.deviceID === ''">
                     <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
                     <div class="mt-1">
                       <input type="text" name="username" v-model="UpstreamSettingsStore.username" id="username" autocomplete="username" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
@@ -76,7 +184,6 @@ Upstream API Key: {{ UpstreamSettingsStore.apiKey }}
                     </div>
                   </div>
 
-
                 </div>
               </div>
             </div>
@@ -96,6 +203,7 @@ Upstream API Key: {{ UpstreamSettingsStore.apiKey }}
 
 <script>
 import { useUpstreamSettingsStore } from "@/stores/UpstreamSettingsStore";
+import { ExclamationTriangleIcon, InformationCircleIcon } from '@heroicons/vue/24/outline'
 
 export default {
   name: "UpstreamSettings",
@@ -104,6 +212,11 @@ export default {
       UpstreamSettingsStore: useUpstreamSettingsStore()  // Updated in UpstreamSettings.vue
     }
   },
+  components: {
+    ExclamationTriangleIcon,
+    InformationCircleIcon,
+  },
+
   data() {
     return {
       resetDeviceID: false
