@@ -149,11 +149,6 @@ export default {
     this.BrewPiSensorStore.getDevices().then((response) => {
       this.updateDeviceFunctions();
     });
-
-    // Set up periodic refreshes
-    // window.setInterval(() => {
-    //   this.BrewPiSensorStore.getDevices();
-    // }, 5000)
   },
   setup() {
     const hasFridgeSensor = ref(false);

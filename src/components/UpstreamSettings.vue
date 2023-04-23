@@ -225,11 +225,6 @@ export default {
   mounted() {
     // Retrieve initial data
     this.UpstreamSettingsStore.getUpstreamSettings();
-
-    // Set up periodic refreshes
-    // window.setInterval(() => {
-    //   this.UpstreamSettingsStore.getUpstreamSettings();
-    // }, 30000)  // Do we really want to update this? Probably not.
   },
   methods: {
     async submitForm() {

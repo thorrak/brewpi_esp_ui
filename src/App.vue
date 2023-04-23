@@ -126,7 +126,7 @@ import {
 // import fermenttempLogoUrl from "@/assets/fermenttemp_logo.svg";
 
 
-import { ref, reactive } from "vue";
+import { ref } from "vue";
 import { useTempControlStore } from "@/stores/TempControlStore.js";
 
 const navigation = [
@@ -167,31 +167,27 @@ export default {
       TempControlStore: useTempControlStore()  // Updated in App.vue
     }
   },
+  data() {
+    return {
+      intervalObject: null,
+    }
+  },
   mounted() {
     // Retrieve initial data
     this.TempControlStore.getTempInfo();
 
     // Set up periodic refreshes
-    window.setInterval(() => {
+    this.intervalObject = window.setInterval(() => {
       this.TempControlStore.getTempInfo();
     }, 7000)
   },
-
+  beforeUnmount() {
+    clearInterval(this.intervalObject);
+  },
 }
 </script>
 
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
+
 </style>

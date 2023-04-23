@@ -278,11 +278,6 @@ export default {
     this.ExtendedSettingsStore.getExtendedSettings().then(() => {
       this.updateCachedSettings();
     });
-
-    // Set up periodic refreshes
-    // window.setInterval(() => {
-    //   this.ExtendedSettingsStore.getExtendedSettings();
-    // }, 30000)  // Do we really want to update this? Probably not.
   },
   methods: {
     submitForm: function() {

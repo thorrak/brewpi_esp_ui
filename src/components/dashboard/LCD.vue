@@ -13,7 +13,6 @@
 
 <script>
 import { useLCDStore } from "@/stores/LCDStore";
-import { toRef } from 'vue'
 
 export default {
   name: "LCD",
@@ -58,18 +57,6 @@ export default {
       return lineText;
     }
   },
-  // mounted() {
-  //   this.LCDStore.LCDTextLines = [
-  //       "Loading data from",
-  //       "controler...",
-  //       "",
-  //       ""
-  //   ]
-  //   this.LCDStore.getLCD();
-  //   window.setInterval(() => {
-  //     this.LCDStore.getLCD();
-  //   }, 5000)  // Extending the delay as we don't update that often
-  // },
   setup() {
     return {
       LCDStore: useLCDStore(),

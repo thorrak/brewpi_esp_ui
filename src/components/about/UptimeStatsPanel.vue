@@ -94,13 +94,13 @@ export default {
     this.ResetReasonStore.getResetReason();
 
     // Set up periodic refreshes
-    window.setInterval(() => {
+    this.statsIntervalObject = window.setInterval(() => {
       this.UptimeStatsStore.getUptimeStats();
     }, 10000)
-    window.setInterval(() => {
+    this.heapIntervalObject = window.setInterval(() => {
       this.HeapInfoStore.getHeapInfo();
     }, 9000)
-    window.setInterval(() => {
+    this.resetIntervalObject = window.setInterval(() => {
       this.ResetReasonStore.getResetReason();
     }, 60000)
   },
@@ -111,6 +111,18 @@ export default {
       HeapInfoStore: useHeapInfoStore(),  // Updated in UptimeStatsPanel.vue
       ResetReasonStore: useResetReasonStore(),  // Updated in UptimeStatsPanel.vue
     }
+  },
+  data() {
+    return {
+      statsIntervalObject: null,
+      heapIntervalObject: null,
+      resetIntervalObject: null,
+    }
+  },
+  beforeUnmount() {
+    clearInterval(this.statsIntervalObject);
+    clearInterval(this.heapIntervalObject);
+    clearInterval(this.resetIntervalObject);
   },
 }
 </script>

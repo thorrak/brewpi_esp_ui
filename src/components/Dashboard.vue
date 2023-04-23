@@ -21,7 +21,6 @@
 import { useLCDStore } from "@/stores/LCDStore";
 import { useTempControlStore } from "@/stores/TempControlStore";
 import LCD from "@/components/dashboard/LCD.vue";
-import { toRef } from 'vue'
 import TempControlDashPanel from "@/components/dashboard/TempControlDashPanel.vue";
 
 export default {
@@ -30,14 +29,22 @@ export default {
     TempControlDashPanel,
     LCD
   },
+  data() {
+    return {
+      intervalObject: null,
+    }
+  },
   mounted() {
     // Retrieve initial data
     this.LCDStore.getLCD();
 
     // Set up periodic refreshes
-    window.setInterval(() => {
+    this.intervalObject = window.setInterval(() => {
       this.LCDStore.getLCD();
     }, 5000)
+  },
+  beforeUnmount() {
+    clearInterval(this.intervalObject);
   },
   setup() {
     return {
