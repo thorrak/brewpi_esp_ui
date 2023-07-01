@@ -1,9 +1,9 @@
 <template>
   <div>
   <a href="#" @click="popModal()" class="text-indigo-600 hover:text-indigo-900">
-    <span v-if="sensor.device_function_int === 0">Assign</span>
-    <span v-else>Assign</span>
-    <span class="sr-only">, {{ sensor.device_hardware }}</span>
+    <span v-if="sensor.device_function_int === 0">{{ $t("sensors.assign_sensor_modal.assign") }}</span>
+    <span v-else>{{ $t("sensors.assign_sensor_modal.assign") }}</span>
+    <span class="sr-only">, {{ sensor.device_hardware }} <!-- TODO - Internationalize this --></span>
   </a>
   <TransitionRoot as="template" :show="isOpen">
     <Dialog as="div" class="fixed z-10 inset-0 overflow-y-auto" @close="isOpen = false">
@@ -25,10 +25,10 @@
                   </div>
                   <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900" v-if="sensor.device_function_int === 0">
-                      Assign Device Function
+                      {{ $t("sensors.assign_sensor_modal.assign_device_function") }}
                     </DialogTitle>
                     <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900" v-else>
-                      Configure Device
+                      {{ $t("sensors.assign_sensor_modal.configure_device") }}
                     </DialogTitle>
 
                     <!-- Not using the listbox, as it gets hidden by the modal -->
@@ -59,9 +59,9 @@
 <!--                    </Listbox>-->
 
                     <div>
-                      <label for="device_function" class="block text-sm font-medium text-gray-700">Device Function</label>
+                      <label for="device_function" class="block text-sm font-medium text-gray-700">{{ $t("sensors.assign_sensor_modal.device_function") }}</label>
                       <select id="device_function" name="device_function" v-model="new_function" class="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
-                        <option v-for="valid_function in sensor.valid_functions()" :key="valid_function.id" :value="valid_function.id">{{ valid_function.function_name }}</option>
+                        <option v-for="valid_function in sensor.valid_functions()" :key="valid_function.id" :value="valid_function.id"><!-- TODO - Internationalize this -->{{ valid_function.function_name }}</option>
                       </select>
                     </div>
 
@@ -73,7 +73,7 @@
                         </div>
                         <div class="ml-3">
                           <p class="text-sm text-yellow-700 text-left">
-                            A device with this function already exists. If you continue, it will be removed.
+                            {{ $t("sensors.assign_sensor_modal.already_exists_error") }}
                           </p>
                         </div>
                       </div>
@@ -83,19 +83,19 @@
                     <!-- Temp Calibration Offset -->
                     <div class="relative border border-gray-300 rounded-md px-3 py-2 my-3 shadow-sm focus-within:ring-1 focus-within:ring-indigo-600 focus-within:border-indigo-600"
                           v-if="new_function === 5 || new_function === 6 || new_function === 9">
-                      <label for="calibration" class="absolute -top-2 left-2 -mt-px inline-block px-1 bg-white text-xs font-medium text-gray-900">Sensor Calibration Offset</label>
+                      <label for="calibration" class="absolute -top-2 left-2 -mt-px inline-block px-1 bg-white text-xs font-medium text-gray-900">{{ $t("sensors.assign_sensor_modal.calibration_offset_header") }}</label>
                       <input type="text" ref="calibration" v-model="new_calibration" id="calibration" class="border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm flex-1" placeholder="0.0" />
                       <span class="flex-none w-auto min-w-max max-w-max">&deg; C <!-- TODO - Convert to/from celsius using Javascript --></span>
                     </div>
-                    <span v-if="new_function === 5 || new_function === 6 || new_function === 9" class="flex-none w-auto min-w-max max-w-max">Note - Calibration will be rounded to nearest 1/16&deg; C</span>
+                    <span v-if="new_function === 5 || new_function === 6 || new_function === 9" class="flex-none w-auto min-w-max max-w-max">{{ $t("sensors.assign_sensor_modal.calibration_offset_rounding_note") }}</span>
 
                     <SwitchGroup as="div" class="flex items-center my-3" v-if="new_function !== 0 && sensor.hardware_int === 1">
                       <Switch v-model="new_invert" :class="[new_invert ? 'bg-indigo-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2']">
                         <span aria-hidden="true" :class="[new_invert ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
                       </Switch>
                       <SwitchLabel as="span" class="ml-3">
-                        <span class="text-sm font-medium text-gray-900">Invert Pin</span>
-                        <span class="text-sm text-gray-500 mx-1">(Generally true for mechanical relays)</span>
+                        <span class="text-sm font-medium text-gray-900">{{ $t("sensors.assign_sensor_modal.invert_pin") }}</span>
+                        <span class="text-sm text-gray-500 mx-1">{{ $t("sensors.assign_sensor_modal.invert_pin_note") }}</span>
                       </SwitchLabel>
                     </SwitchGroup>
 
@@ -110,10 +110,10 @@
 
               <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                 <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
-                  Update
+                  {{ $t("sitewide.update") }}
                 </button>
                 <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" @click="isOpen = false" ref="cancelButtonRef">
-                  Cancel
+                  {{ $t("sitewide.cancel") }}
                 </button>
               </div>
             </form>
@@ -140,11 +140,11 @@
               </div>
               <div class="mt-3 text-center sm:mt-5">
                 <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900">
-                  Update Failed
+                  {{ $t("sensors.assign_sensor_modal.update_failed_header") }}
                 </DialogTitle>
                 <div class="mt-2">
                   <p class="text-sm text-gray-500">
-                    Unable to connect to the controller or the update was rejected. Please check the information provided and reattempt to update.
+                    {{ $t("sensors.assign_sensor_modal.update_failed_note") }}
                   </p>
                 </div>
               </div>
@@ -155,11 +155,12 @@
               </div>
               <div class="mt-3 text-center sm:mt-5">
                 <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900">
-                  Update Successful
+                  {{ $t("sensors.assign_sensor_modal.update_successful_header") }}
                 </DialogTitle>
                 <div class="mt-2">
                   <p class="text-sm text-gray-500">
-                    This device definition has been updated.
+                    {{ $t("sensors.assign_sensor_modal.update_successful_note") }}
+
                   </p>
                 </div>
               </div>
@@ -167,7 +168,8 @@
 
             <div class="mt-5 sm:mt-6">
               <button type="button" class="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm" @click="closeResponseModal">
-                Close
+                {{ $t("sitewide.close") }}
+
               </button>
             </div>
           </div>
@@ -195,7 +197,6 @@ import {
 import { CheckIcon, NoSymbolIcon, ChevronUpDownIcon, CogIcon, ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 import FormErrorMsg from "@/components/generic/FormErrorMsg.vue";
 import { useBrewPiSensorStore } from "@/stores/BrewPiSensorStore";
-import { DeviceFunctions } from "@/mixins/BrewPiSensor";
 import { useTempControlStore } from "@/stores/TempControlStore";
 
 
@@ -242,7 +243,6 @@ export default {
     new_invert: true,
     device_index: 0,
     form_error_message: "",
-    DeviceFunctions: DeviceFunctions,
   }),
   props: {
     sensor: {

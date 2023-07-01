@@ -1,7 +1,7 @@
 <template>
   <a href="#" @click="popModal()" class="text-indigo-600 hover:text-indigo-900">
-    <span>Change</span>
-    <span class="sr-only">Mode</span>
+    <span>{{ $t("dashboard.mode_change.change") }}</span>
+    <span class="sr-only">{{ $t("dashboard.mode_change.mode") }}</span>
   </a>
   <TransitionRoot as="template" :show="isOpen">
     <Dialog as="div" class="fixed z-10 inset-0 overflow-y-auto" @close="isOpen = false">
@@ -23,7 +23,7 @@
                   </div>
                   <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900">
-                      Change Control Mode
+                      {{ $t("dashboard.mode_change.change_mode_header") }}
                     </DialogTitle>
 
                     <!-- Not using the listbox, as it gets hidden by the modal -->
@@ -54,10 +54,10 @@
                     <!--                    </Listbox>-->
 
                     <div>
-                      <label for="device_mode" class="block text-sm font-medium text-gray-700 sr-only">Mode</label>
+                      <label for="device_mode" class="block text-sm font-medium text-gray-700 sr-only">{{ $t("dashboard.mode_change.mode") }}</label>
                       <select id="device_mode" name="device_mode" v-model="new_mode" class="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
                         <option v-for="mode in modes" :key="mode.value" :value="mode.value">{{ mode.name }}</option>
-                        <option value="p" v-if="old_mode === 'p'">Beer Profile</option>
+                        <option value="p" v-if="old_mode === 'p'">{{ $t("sitewide.brewpi_modes.beer_profile") }}</option>
                       </select>
                     </div>
 
@@ -69,9 +69,7 @@
                         </div>
                         <div class="ml-3">
                           <p class="text-sm text-yellow-700 text-left">
-                            Controller is currently in beer profile mode, which implies that it is being managed elsewhere.
-                            Mode changes here may interrupt the beer profile, or may be overwritten back to beer profile
-                            mode on next sync.
+                            {{ $t("dashboard.mode_change.beer_profile_switch_warning") }}
                           </p>
                         </div>
                       </div>
@@ -81,7 +79,7 @@
                     <!-- Set Point -->
                     <div class="relative border border-gray-300 rounded-md px-3 py-2 my-3 shadow-sm focus-within:ring-1 focus-within:ring-indigo-600 focus-within:border-indigo-600"
                          v-if="new_mode === 'b' || new_mode === 'f'">
-                      <label for="set_point" class="absolute -top-2 left-2 -mt-px inline-block px-1 bg-white text-xs font-medium text-gray-900">Set Point</label>
+                      <label for="set_point" class="absolute -top-2 left-2 -mt-px inline-block px-1 bg-white text-xs font-medium text-gray-900">{{ $t("dashboard.mode_change.set_point_header") }}</label>
                       <input type="text" ref="set_point" v-model="set_point" id="set_point" class="border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm flex-1" placeholder="62.0" />
                       <span class="flex-none w-auto min-w-max max-w-max">&deg; {{ this.TempControlStore.cc.tempFormat }}</span>
                     </div>
@@ -90,6 +88,7 @@
                 </div>
 
                 <div v-if="form_error_message" class="mt-3">
+                  <!-- TODO - Make sure the below gets translated -->
                   <FormErrorMsg :form_error_message="form_error_message" />
                 </div>
 
@@ -97,10 +96,10 @@
 
               <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                 <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
-                  Set Mode
+                  {{ $t("dashboard.mode_change.set_mode") }}
                 </button>
                 <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" @click="isOpen = false" ref="cancelButtonRef">
-                  Cancel
+                  {{ $t("sitewide.cancel") }}
                 </button>
               </div>
             </form>
@@ -127,11 +126,11 @@
               </div>
               <div class="mt-3 text-center sm:mt-5">
                 <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900">
-                  Update Failed
+                  {{ $t("dashboard.mode_change.update_failed") }}
                 </DialogTitle>
                 <div class="mt-2">
                   <p class="text-sm text-gray-500">
-                    Unable to connect to the controller or the update was rejected. Please check the information provided and reattempt to update.
+                    {{ $t("dashboard.mode_change.update_failed_msg") }}
                   </p>
                 </div>
               </div>
@@ -142,11 +141,11 @@
               </div>
               <div class="mt-3 text-center sm:mt-5">
                 <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900">
-                  Update Successful
+                  {{ $t("dashboard.mode_change.update_succeeded") }}
                 </DialogTitle>
                 <div class="mt-2">
                   <p class="text-sm text-gray-500">
-                    New mode has been set.
+                    {{ $t("dashboard.mode_change.update_succeeded_msg") }}
                   </p>
                 </div>
               </div>
@@ -154,7 +153,7 @@
 
             <div class="mt-5 sm:mt-6">
               <button type="button" class="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm" @click="alertOpen = false">
-                Close
+                {{ $t("sitewide.close") }}
               </button>
             </div>
           </div>
@@ -167,6 +166,8 @@
 
 <script>
 import { ref } from 'vue'
+import { i18n } from "@/main.js";
+
 import {
   Dialog,
   DialogOverlay,
@@ -185,13 +186,12 @@ import {
   HomeIcon, CloudArrowUpIcon, CpuChipIcon, LightBulbIcon
 } from '@heroicons/vue/24/outline'
 import FormErrorMsg from "@/components/generic/FormErrorMsg.vue";
-import { DeviceFunctions } from "@/mixins/BrewPiSensor";
 import { useTempControlStore } from "@/stores/TempControlStore";
 
 const modes = [
-  { name: 'Off', value: 'o' },
-  { name: 'Beer Constant', value: 'b' },
-  { name: 'Fridge Constant', value: 'f' },
+  { name: i18n.global.t('sitewide.brewpi_modes.off'), value: 'o' },
+  { name: i18n.global.t('sitewide.brewpi_modes.beer_constant'), value: 'b' },
+  { name: i18n.global.t('sitewide.brewpi_modes.fridge_constant'), value: 'f' },
 ]
 
 
@@ -233,7 +233,6 @@ export default {
     old_mode: 'o',
     set_point: 0.0,
     form_error_message: "",
-    DeviceFunctions: DeviceFunctions,
   }),
   methods: {
     // submit the form to our backend api

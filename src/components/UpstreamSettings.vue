@@ -1,7 +1,7 @@
 <template>
   <div class="py-6">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
-      <h1 class="text-2xl font-semibold text-gray-900">Fermentrack Settings</h1>
+      <h1 class="text-2xl font-semibold text-gray-900">{{ $t("sitewide.sidebar_options.fermentrack_settings") }}</h1>
     </div>
     <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
       <div class="py-4">
@@ -20,8 +20,7 @@
                     </div>
                     <div class="ml-3">
                       <p class="text-sm text-red-700">
-                        There was data missing in the registration message which is typically set internally by the controller.
-                        This most likely means that either the controller firmware or the version of Fermentrack is out of date. Please update the controller firmware and/or Fermentrack and try again.
+                        {{ $t("upstream_settings.missing_data_error") }}
                       </p>
                     </div>
                   </div>
@@ -34,7 +33,7 @@
                     </div>
                     <div class="ml-3">
                       <p class="text-sm text-red-700">
-                        Username is invalid on the targeted Fermentrack install. Please check the username and try again.
+                        {{ $t("upstream_settings.invalid_username_error") }}
                       </p>
                     </div>
                   </div>
@@ -47,7 +46,7 @@
                     </div>
                     <div class="ml-3">
                       <p class="text-sm text-red-700">
-                        API Key does not match a valid brewhouse on the targeted Fermentrack install. Please check the API key (or enter a valid username) and try again.
+                        {{ $t("upstream_settings.bad_api_key_error") }}
                       </p>
                     </div>
                   </div>
@@ -60,7 +59,7 @@
                     </div>
                     <div class="ml-3">
                       <p class="text-sm text-red-700">
-                        The specified Fermentrack user does not have a brewhouse. Please complete setup of this user in Fermentrack and try again.
+                        {{ $t("upstream_settings.bad_api_key_error") }}
                       </p>
                     </div>
                   </div>
@@ -73,7 +72,7 @@
                     </div>
                     <div class="ml-3">
                       <p class="text-sm text-red-700">
-                        No username or API key specified.
+                        {{ $t("upstream_settings.no_username_error") }}
                       </p>
                     </div>
                   </div>
@@ -86,7 +85,7 @@
                     </div>
                     <div class="ml-3">
                       <p class="text-sm text-yellow-700">
-                        Device is waiting to register with Fermentrack. Please wait up to 3 minutes and refresh this page.
+                        {{ $t("upstream_settings.waiting_to_register_error") }}
                       </p>
                     </div>
                   </div>
@@ -99,7 +98,7 @@
                     </div>
                     <div class="ml-3">
                       <p class="text-sm text-red-700">
-                        Controller is unable to reach Fermentrack. Please check that Fermentrack is accessible at the specified hostname/port.
+                        {{ $t("upstream_settings.waiting_to_register_error") }}
                       </p>
                     </div>
                   </div>
@@ -112,7 +111,7 @@
                     </div>
                     <div class="ml-3">
                       <p class="text-sm text-green-700">
-                        Controller is successfully registered with Fermentrack
+                        {{ $t("upstream_settings.successful_registration_msg") }}
                       </p>
                     </div>
                   </div>
@@ -125,22 +124,21 @@
                     </div>
                     <div class="ml-3">
                       <p class="text-sm text-red-700">
-                        An unknown error was sent by Fermentrack.
-                        This most likely means that either the controller firmware or the version of Fermentrack is out of date. Please update the controller firmware and/or Fermentrack and try again.
+                        {{ $t("upstream_settings.unknown_error") }}
                       </p>
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <h3 class="text-lg font-medium leading-6 text-gray-900">Upstream Settings</h3>
+                  <h3 class="text-lg font-medium leading-6 text-gray-900">{{ $t("upstream_settings.upstream_settings_header") }}</h3>
                   <!-- TODO - Change "Fermentrack" out here if Lee ever adds support for REST controllers to BPR -->
-                  <p class="mt-1 text-sm text-gray-500">How this controller communicates with Fermentrack</p>
+                  <p class="mt-1 text-sm text-gray-500">{{ $t("upstream_settings.upstream_settings_msg") }}</p>
                 </div>
 
                 <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                   <div class="sm:col-span-4">
-                    <label for="hostname" class="block text-sm font-medium text-gray-700">Hostname</label>
+                    <label for="hostname" class="block text-sm font-medium text-gray-700">{{ $t("upstream_settings.hostname") }}</label>
                     <div class="mt-1 flex rounded-md shadow-sm">
                       <span class="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-gray-500 sm:text-sm">http://</span>
                       <input type="text" name="hostname" v-model="UpstreamSettingsStore.upstreamHost" id="hostname" autocomplete="hostname" class="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
@@ -148,14 +146,14 @@
                   </div>
 
                   <div class="sm:col-span-4">
-                    <label for="port" class="block text-sm font-medium text-gray-700">Port</label>
+                    <label for="port" class="block text-sm font-medium text-gray-700">{{ $t("upstream_settings.port") }}</label>
                     <div class="mt-1">
                       <input id="port" name="port" v-model="UpstreamSettingsStore.upstreamPort" type="text" autocomplete="port" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
                     </div>
                   </div>
 
                   <div class="sm:col-span-4" v-if="UpstreamSettingsStore.deviceID === ''">
-                    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                    <label for="username" class="block text-sm font-medium text-gray-700">{{ $t("upstream_settings.username") }}</label>
                     <div class="mt-1">
                       <input type="text" name="username" v-model="UpstreamSettingsStore.username" id="username" autocomplete="username" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
                     </div>
@@ -163,9 +161,9 @@
 
 
                   <div class="sm:col-span-4">
-                    <label for="deviceid" class="block text-sm font-medium text-gray-700">Device ID</label>
+                    <label for="deviceid" class="block text-sm font-medium text-gray-700">{{ $t("upstream_settings.device_id") }}</label>
                     <div class="mt-1">
-                      <span v-if="UpstreamSettingsStore.deviceID.length <= 0">(Not yet registered)</span>
+                      <span v-if="UpstreamSettingsStore.deviceID.length <= 0">{{ $t("upstream_settings.not_yet_registered") }}</span>
                       <span v-else>{{ UpstreamSettingsStore.deviceID }}</span>
 
                       <!--                <input id="deviceid" name="deviceid" v-model="UpstreamSettingsStore.deviceID" type="text" autocomplete="deviceid" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" disabled />-->
@@ -178,8 +176,8 @@
                         <input id="resetDeviceID" name="resetDeviceID" v-model="resetDeviceID" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
                       </div>
                       <div class="ml-3 text-sm">
-                        <label for="resetDeviceID" class="font-medium text-gray-700">Reset Device ID</label>
-                        <p class="text-gray-500">Delete device ID and re-register with upstream. Warning - cannot be undone!</p>
+                        <label for="resetDeviceID" class="font-medium text-gray-700">{{ $t("upstream_settings.reset_device_id") }}</label>
+                        <p class="text-gray-500">{{ $t("upstream_settings.reset_device_id_msg") }}</p>
                       </div>
                     </div>
                   </div>
@@ -191,7 +189,7 @@
             <div class="pt-5">
               <div class="flex justify-end">
                 <!--          <button type="button" class="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Cancel</button>-->
-                <button type="submit" class="ml-3 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Save</button>
+                <button type="submit" class="ml-3 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">{{ $t("sitewide.save") }}</button>
               </div>
             </div>
           </form>

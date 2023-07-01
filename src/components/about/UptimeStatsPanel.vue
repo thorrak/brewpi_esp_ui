@@ -5,7 +5,7 @@
 
         <div class="bg-white px-4 py-5 border-b border-gray-200 sm:px-6">
           <h3 class="text-lg leading-6 font-medium text-gray-900">
-            Version & Uptime Information
+            {{ $t("about.uptime.version_and_uptime") }}
           </h3>
         </div>
 
@@ -17,7 +17,7 @@
                   <tbody class="bg-white divide-y divide-gray-200">
                   <tr>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Firmware Version
+                      {{ $t("about.uptime.firmware_version") }}
                     </th>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       BrewPi-ESP v{{ VersionInfoStore.fermenttempVersion }} ({{ VersionInfoStore.gitRevision }})
@@ -25,46 +25,29 @@
                   </tr>
                   <tr>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Uptime
+                      {{ $t("about.uptime.uptime_header") }}
                     </th>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      Days: {{ UptimeStatsStore.days }}, Hours: {{ UptimeStatsStore.hours }}, Minutes: {{ UptimeStatsStore.minutes }}, Seconds: {{ UptimeStatsStore.seconds }}
+                      {{ $t('about.uptime.uptime_print', { days: UptimeStatsStore.days, hours: UptimeStatsStore.hours, minutes: UptimeStatsStore.minutes, seconds: UptimeStatsStore.seconds}) }}
                     </td>
                   </tr>
                   <tr>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Reset Information
+                      {{ $t("about.uptime.reset_header") }}
                     </th>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      Reason: {{ ResetReasonStore.reason }}, Description: {{ ResetReasonStore.description }}
+                      {{ $t('about.uptime.reset_print', { reason: ResetReasonStore.reason, description: ResetReasonStore.description}) }}
                     </td>
                   </tr>
                   <tr v-if="HeapInfoStore.hasHeapInfo">
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Heap Information
+                      {{ $t("about.uptime.heap_header") }}
                     </th>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      Free Heap: {{ HeapInfoStore.free }}, Max: {{ HeapInfoStore.max }}, Frags: {{ HeapInfoStore.frag }}
+                      {{ $t('about.uptime.heap_print', { free_heap: HeapInfoStore.free, max_heap: HeapInfoStore.max, frags: HeapInfoStore.frag }) }}
                     </td>
                   </tr>
 
-                  <!--                  <tr v-for="person in people" :key="person.email">-->
-                  <!--                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">-->
-                  <!--                      {{ person.name }}-->
-                  <!--                    </td>-->
-                  <!--                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">-->
-                  <!--                      {{ person.title }}-->
-                  <!--                    </td>-->
-                  <!--                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">-->
-                  <!--                      {{ person.email }}-->
-                  <!--                    </td>-->
-                  <!--                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">-->
-                  <!--                      {{ person.role }}-->
-                  <!--                    </td>-->
-                  <!--                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">-->
-                  <!--                      <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>-->
-                  <!--                    </td>-->
-                  <!--                  </tr>-->
                   </tbody>
                 </table>
               </div>

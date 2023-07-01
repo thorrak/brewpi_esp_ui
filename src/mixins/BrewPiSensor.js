@@ -1,33 +1,68 @@
 
-export const DeviceFunctions = [
-    "None",                 // 0
-    "Chamber Door",         // 1
-    "Heating Switch",       // 2 "Chamber Heat"
-    "Cooling Switch",       // 3 "Chamber Cool"
-    "Chamber Light",        // 4 (Maybe unused)
-    "Chamber Temp",         // 5
-    "Room Temp",            // 6
-    "Chamber Fan",          // 7 (Maybe unused)
-    "Chamber Reserved1",    // 8 (Unused)
-    "Beer Temp",            // 9
-    "Secondary Beer Temp",  // 10 (Unused)
-    "Beer Heat",            // 11 (Unused)
-    "Beer Cool",            // 12 (Unused)
-    "Beer SG",              // 13 (Unused*) - We may break this out, due to the reuse of a single tilt for temps and SG
-    "Beer Reserved1",       // 14 (Unused)
-    "Beer Reserved2",       // 15 (Unused)
-]
+function device_function_for_index(function_index) {
+    switch (function_index) {
+        case 0:
+            return i18n.global.t('sitewide.brewpi_device_functions.none');
+        case 1:
+            return i18n.global.t('sitewide.brewpi_device_functions.chamber_door');
+        case 2:
+            return i18n.global.t('sitewide.brewpi_device_functions.heating_switch');
+        case 3:
+            return i18n.global.t('sitewide.brewpi_device_functions.cooling_switch');
+        case 4:
+            return i18n.global.t('sitewide.brewpi_device_functions.chamber_light');
+        case 5:
+            return i18n.global.t('sitewide.brewpi_device_functions.chamber_temp');
+        case 6:
+            return i18n.global.t('sitewide.brewpi_device_functions.room_temp');
+        case 7:
+            return i18n.global.t('sitewide.brewpi_device_functions.chamber_fan');
+        case 8:
+            return i18n.global.t('sitewide.brewpi_device_functions.chamber_reserved_1');
+        case 9:
+            return i18n.global.t('sitewide.brewpi_device_functions.beer_temp');
+        case 10:
+            return i18n.global.t('sitewide.brewpi_device_functions.secondary_beer_temp');
+        case 11:
+            return i18n.global.t('sitewide.brewpi_device_functions.beer_heat');
+        case 12:
+            return i18n.global.t('sitewide.brewpi_device_functions.beer_cool');
+        case 13:
+            return i18n.global.t('sitewide.brewpi_device_functions.beer_sg');
+        case 14:
+            return i18n.global.t('sitewide.brewpi_device_functions.beer_reserved_1');
+        case 15:
+            return i18n.global.t('sitewide.brewpi_device_functions.beer_reserved_2');
+        default:
+            return i18n.global.t('sitewide.unknown');
+    }
+}
 
-export const DeviceHardware = [
-    "None",             // 0
-    "Pin",              // 1
-    "OneWire Temp",     // 2
-    "OneWire 2413",     // 3
-    "",                 // 4 (Reserved, modern BrewPi)
-    "Inkbird Bluetooth",// 5
-    "Tilt",             // 6
-    "TPLink Switch",    // 7
-]
+
+function device_hardware_for_index(index) {
+    switch (index) {
+        case 0:
+            return i18n.global.t('sitewide.brewpi_hardware_types.none');
+        case 1:
+            return i18n.global.t('sitewide.brewpi_hardware_types.pin');
+        case 2:
+            return i18n.global.t('sitewide.brewpi_hardware_types.onewire_temp');
+        case 3:
+            return i18n.global.t('sitewide.brewpi_hardware_types.onewire_2413');
+        case 4:
+            // This is not implemented, and is just here as a placeholder
+            return i18n.global.t('sitewide.brewpi_hardware_types.four');
+        case 5:
+            return i18n.global.t('sitewide.brewpi_hardware_types.inkbird_bluetooth');
+        case 6:
+            return i18n.global.t('sitewide.brewpi_hardware_types.tilt');
+        case 7:
+            return i18n.global.t('sitewide.brewpi_hardware_types.tplink_switch');
+        default:
+            return i18n.global.t('sitewide.brewpi_hardware_types.unknown');
+    }
+}
+
 
 export class BrewPiSensor {
     chamber;
@@ -35,8 +70,8 @@ export class BrewPiSensor {
     device_function_int;
     hardware_int;
     pin;
-    invert;
-    deactivated;
+    invert = false;
+    deactivated = false;
     address = "";
     device_alias = "";
     child_id = "";
@@ -61,21 +96,13 @@ export class BrewPiSensor {
         if(device_spec.j)
             this.calibrate_adjust = device_spec.j;
     }
-
+    
     get device_function() {
-        return DeviceFunctions[this.device_function_int];
+        return device_function_for_index(this.device_function_int);
     }
 
     get device_hardware() {
-        return DeviceHardware[this.hardware_int];
-    }
-
-    set device_function(value) {
-        this.device_function_int = DeviceFunctions.indexOf(value);
-    }
-
-    set device_hardware(value) {
-        this.hardware_int = DeviceHardware.indexOf(value);
+        return device_hardware_for_index(this.hardware_int);
     }
 
     convertToBrewPi() {
@@ -104,23 +131,23 @@ export class BrewPiSensor {
     valid_functions() {
         // List of valid functions for this hardware type
         let valid_functions = [];
-        valid_functions.push({id: 0, function_name: DeviceFunctions[0]});  // None (always available)
+        valid_functions.push({id: 0, function_name: device_function_for_index(0)});  // None (always available)
 
         if(this.hardware_int === 1) {  // Pin
-            valid_functions.push({id: 1, function_name: DeviceFunctions[1]});  // Chamber Door
+            valid_functions.push({id: 1, function_name: device_function_for_index(1)});  // Chamber Door
         }
 
         if(this.hardware_int === 1 || this.hardware_int === 2 || this.hardware_int === 3 || this.hardware_int === 7) {  // Pin / 2413 / TPLink
-            valid_functions.push({id: 2, function_name: DeviceFunctions[2]});  // Chamber Heat
-            valid_functions.push({id: 3, function_name: DeviceFunctions[3]});  // Chamber Cool
-            // valid_functions.push({id: 4, function_name: DeviceFunctions[4]});  // Chamber Light
-            // valid_functions.push({id: 7, function_name: DeviceFunctions[7]});  // Chamber Fan
+            valid_functions.push({id: 2, function_name: device_function_for_index(2)});  // Chamber Heat
+            valid_functions.push({id: 3, function_name: device_function_for_index(3)});  // Chamber Cool
+            // valid_functions.push({id: 4, function_name: device_function_for_index(4)});  // Chamber Light
+            // valid_functions.push({id: 7, function_name: device_function_for_index(7)});  // Chamber Fan
         }
 
         if(this.hardware_int === 2 || this.hardware_int === 5 || this.hardware_int === 6) {  // OW / Inkbird / Tilt
-            valid_functions.push({id: 5, function_name: DeviceFunctions[5]});  // Chamber Temp
-            valid_functions.push({id: 6, function_name: DeviceFunctions[6]});  // Room Temp
-            valid_functions.push({id: 9, function_name: DeviceFunctions[9]});  // Beer Temp
+            valid_functions.push({id: 5, function_name: device_function_for_index(5)});  // Chamber Temp
+            valid_functions.push({id: 6, function_name: device_function_for_index(6)});  // Room Temp
+            valid_functions.push({id: 9, function_name: device_function_for_index(9)});  // Beer Temp
         }
 
         return valid_functions;

@@ -1,13 +1,13 @@
 <template>
   <div class="py-6">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
-      <h1 class="text-2xl font-semibold text-gray-900">Dashboard</h1>
+      <h1 class="text-2xl font-semibold text-gray-900">{{ $t("dashboard.dashboard") }}</h1>
     </div>
     <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
       <div class="py-4">
         <div>
           <div>
-            <h3 class="text-lg font-medium leading-6 text-gray-900">LCD Display</h3>
+            <h3 class="text-lg font-medium leading-6 text-gray-900">{{ $t("dashboard.lcd_display") }}</h3>
             <LCD :line1="LCDStore.LCDTextLines[0]" :line2="LCDStore.LCDTextLines[1]" :line3="LCDStore.LCDTextLines[2]" :line4="LCDStore.LCDTextLines[3]" />
           </div>
           <TempControlDashPanel />

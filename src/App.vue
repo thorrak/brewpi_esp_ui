@@ -12,7 +12,7 @@
               <TransitionChild as="template" enter="ease-in-out duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="ease-in-out duration-300" leave-from="opacity-100" leave-to="opacity-0">
                 <div class="absolute top-0 right-0 -mr-12 pt-2">
                   <button type="button" class="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="sidebarOpen = false">
-                    <span class="sr-only">Close sidebar</span>
+                    <span class="sr-only">{{ $t("sitewide.close_sidebar") }}</span>
                     <XMarkIcon class="h-6 w-6 text-white" aria-hidden="true" />
                   </button>
                 </div>
@@ -89,7 +89,7 @@
     <div class="flex flex-1 flex-col md:pl-64">
       <div class="sticky top-0 z-10 bg-gray-100 pl-1 pt-1 sm:pl-3 sm:pt-3 md:hidden">
         <button type="button" class="-ml-0.5 -mt-0.5 inline-flex h-12 w-12 items-center justify-center rounded-md text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" @click="sidebarOpen = true">
-          <span class="sr-only">Open sidebar</span>
+          <span class="sr-only">{{ $t("sitewide.open_sidebar") }}</span>
           <Bars3Icon class="h-6 w-6" aria-hidden="true" />
         </button>
       </div>
@@ -124,17 +124,18 @@ import {
   Cog8ToothIcon
 } from '@heroicons/vue/24/outline'
 // import fermenttempLogoUrl from "@/assets/fermenttemp_logo.svg";
+import { i18n } from "@/main.js";
 
 
 import { ref } from "vue";
 import { useTempControlStore } from "@/stores/TempControlStore.js";
 
 const navigation = [
-  { name: 'Dashboard', icon: HomeIcon, route_name: 'Home' },
-  { name: 'Fermentrack Settings', icon: CloudArrowUpIcon, route_name: 'UpstreamSettings' },
-  { name: 'Set Up Sensors/Actuators', icon: CpuChipIcon, route_name: 'ConfigSensorsActuators' },
-  { name: 'Controller Settings', icon: Cog8ToothIcon, route_name: 'ExtendedSettings' },
-  { name: 'About Controller', icon: LightBulbIcon, route_name: 'About' },
+  { name: i18n.global.t('sitewide.sidebar_options.dashboard'), icon: HomeIcon, route_name: 'Home' },
+  { name: i18n.global.t('sitewide.sidebar_options.fermentrack_settings'), icon: CloudArrowUpIcon, route_name: 'UpstreamSettings' },
+  { name: i18n.global.t('sitewide.sidebar_options.set_up_sensors'), icon: CpuChipIcon, route_name: 'ConfigSensorsActuators' },
+  { name: i18n.global.t('sitewide.sidebar_options.controller_settings'), icon: Cog8ToothIcon, route_name: 'ExtendedSettings' },
+  { name: i18n.global.t('sitewide.sidebar_options.about_controller'), icon: LightBulbIcon, route_name: 'About' },
 ]
 
 export default {
