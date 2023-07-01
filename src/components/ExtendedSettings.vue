@@ -223,11 +223,12 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { useExtendedSettingsStore } from "@/stores/ExtendedSettingsStore";
 import { Switch, SwitchGroup, SwitchLabel, Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from "@headlessui/vue";
 import { CheckIcon, ChevronDownIcon, ExclamationTriangleIcon } from '@heroicons/vue/20/solid'
 import { i18n } from "@/main.js";
+import { onMounted, ref } from "vue";
 
 // TODO - Translate the below
 const minimumTimesSets = [
@@ -236,85 +237,60 @@ const minimumTimesSets = [
   { title: i18n.global.t('extended_settings.set_custom_times_title'), description: i18n.global.t('extended_settings.set_custom_times_desc'), current: false, value: 2 },
 ]
 
-export default {
-  name: "ExtendedSettings",
-  components: {
-    SwitchLabel,
-    Switch,
-    SwitchGroup,
-    Listbox,
-    ListboxButton,
-    ListboxLabel,
-    ListboxOption,
-    ListboxOptions,
-    CheckIcon,
-    ChevronDownIcon,
-    ExclamationTriangleIcon
-  },
-  setup() {
-    return {
-      ExtendedSettingsStore: useExtendedSettingsStore(),  // Updated in ExtendedSettings.vue
-      minimumTimesSets,
-    }
-  },
-  data() {
-    return {
-      largeTFT: false,
-      glycol: false,
-      invertTFT: false,
+let ExtendedSettingsStore = useExtendedSettingsStore();  // Updated in ExtendedSettings.vue
 
-      SETTINGS_CHOICE: 0,
-      MIN_COOL_OFF_TIME: 0,
-      MIN_HEAT_OFF_TIME: 0,
-      MIN_COOL_ON_TIME: 0,
-      MIN_HEAT_ON_TIME: 0,
-      MIN_COOL_OFF_TIME_FRIDGE_CONSTANT: 0,
-      MIN_SWITCH_TIME: 0,
-      COOL_PEAK_DETECT_TIME: 0,
-      HEAT_PEAK_DETECT_TIME: 0,
-      selectedSettingSet: minimumTimesSets[0],
-    }
-  },
-  mounted() {
-    // Retrieve initial data
-    this.ExtendedSettingsStore.getExtendedSettings().then(() => {
-      this.updateCachedSettings();
-    });
-  },
-  methods: {
-    submitForm: function() {
-      // Validate the information in the form
-      // Nothing needed here for now, as the form is just switches
+let largeTFT = ref(false);
+let glycol = ref(false);
+let invertTFT = ref(false);
+let SETTINGS_CHOICE = ref(0);
+let MIN_COOL_OFF_TIME = ref(0);
+let MIN_HEAT_OFF_TIME = ref(0);
+let MIN_COOL_ON_TIME = ref(0);
+let MIN_HEAT_ON_TIME = ref(0);
+let MIN_COOL_OFF_TIME_FRIDGE_CONSTANT = ref(0);
+let MIN_SWITCH_TIME = ref(0);
+let COOL_PEAK_DETECT_TIME = ref(0);
+let HEAT_PEAK_DETECT_TIME = ref(0);
+let selectedSettingSet = ref(minimumTimesSets[0]);
 
-      let loader = this.$loading.show({});
-      this.ExtendedSettingsStore.setExtendedSettings(this.glycol, this.largeTFT, this.invertTFT, this.selectedSettingSet.value, this.MIN_COOL_OFF_TIME, this.MIN_HEAT_OFF_TIME, this.MIN_COOL_ON_TIME, this.MIN_HEAT_ON_TIME,
-          this.MIN_COOL_OFF_TIME_FRIDGE_CONSTANT, this.MIN_SWITCH_TIME, this.COOL_PEAK_DETECT_TIME, this.HEAT_PEAK_DETECT_TIME).then(() => {
-        this.updateCachedSettings();
-        loader.hide();
-        // this.updateSuccessful = res.ok;
-        // this.alertOpen = true;
-      });
+onMounted(() => {
+  // Retrieve initial data
+  ExtendedSettingsStore.getExtendedSettings().then(() => {
+    updateCachedSettings();
+  });
+});
 
-    },
-    updateCachedSettings: function() {
-      this.largeTFT = this.ExtendedSettingsStore.largeTFT;
-      this.invertTFT = this.ExtendedSettingsStore.invertTFT;
-      this.glycol = this.ExtendedSettingsStore.glycol;
+function submitForm() {
+  // Validate the information in the form
+  // Nothing needed here for now, as the form is just switches
 
-      this.SETTINGS_CHOICE = this.ExtendedSettingsStore.SETTINGS_CHOICE;
-      this.MIN_COOL_OFF_TIME = this.ExtendedSettingsStore.MIN_COOL_OFF_TIME;
-      this.MIN_HEAT_OFF_TIME = this.ExtendedSettingsStore.MIN_HEAT_OFF_TIME;
-      this.MIN_COOL_ON_TIME = this.ExtendedSettingsStore.MIN_COOL_ON_TIME;
-      this.MIN_HEAT_ON_TIME = this.ExtendedSettingsStore.MIN_HEAT_ON_TIME;
-      this.MIN_COOL_OFF_TIME_FRIDGE_CONSTANT = this.ExtendedSettingsStore.MIN_COOL_OFF_TIME_FRIDGE_CONSTANT;
-      this.MIN_SWITCH_TIME = this.ExtendedSettingsStore.MIN_SWITCH_TIME;
-      this.COOL_PEAK_DETECT_TIME = this.ExtendedSettingsStore.COOL_PEAK_DETECT_TIME;
-      this.HEAT_PEAK_DETECT_TIME = this.ExtendedSettingsStore.HEAT_PEAK_DETECT_TIME;
-      this.selectedSettingSet = minimumTimesSets[this.ExtendedSettingsStore.SETTINGS_CHOICE];
-    }
-
-  }
+  let loader = this.$loading.show({});
+  ExtendedSettingsStore.setExtendedSettings(glycol.value, largeTFT.value, invertTFT.value, selectedSettingSet.value.value, MIN_COOL_OFF_TIME.value, MIN_HEAT_OFF_TIME.value, MIN_COOL_ON_TIME.value, MIN_HEAT_ON_TIME.value,
+      MIN_COOL_OFF_TIME_FRIDGE_CONSTANT.value, MIN_SWITCH_TIME.value, COOL_PEAK_DETECT_TIME.value, HEAT_PEAK_DETECT_TIME.value).then(() => {
+    updateCachedSettings();
+    loader.hide();
+    // updateSuccessful.value = res.ok;
+    // alertOpen.value = true;
+  });
 }
+
+function updateCachedSettings() {
+  largeTFT.value = ExtendedSettingsStore.largeTFT;
+  invertTFT.value = ExtendedSettingsStore.invertTFT;
+  glycol.value = ExtendedSettingsStore.glycol;
+
+  SETTINGS_CHOICE.value = ExtendedSettingsStore.SETTINGS_CHOICE;
+  MIN_COOL_OFF_TIME.value = ExtendedSettingsStore.MIN_COOL_OFF_TIME;
+  MIN_HEAT_OFF_TIME.value = ExtendedSettingsStore.MIN_HEAT_OFF_TIME;
+  MIN_COOL_ON_TIME.value = ExtendedSettingsStore.MIN_COOL_ON_TIME;
+  MIN_HEAT_ON_TIME.value = ExtendedSettingsStore.MIN_HEAT_ON_TIME;
+  MIN_COOL_OFF_TIME_FRIDGE_CONSTANT.value = ExtendedSettingsStore.MIN_COOL_OFF_TIME_FRIDGE_CONSTANT;
+  MIN_SWITCH_TIME.value = ExtendedSettingsStore.MIN_SWITCH_TIME;
+  COOL_PEAK_DETECT_TIME.value = ExtendedSettingsStore.COOL_PEAK_DETECT_TIME;
+  HEAT_PEAK_DETECT_TIME.value = ExtendedSettingsStore.HEAT_PEAK_DETECT_TIME;
+  selectedSettingSet.value = minimumTimesSets[ExtendedSettingsStore.SETTINGS_CHOICE];
+}
+
 </script>
 
 <style scoped>

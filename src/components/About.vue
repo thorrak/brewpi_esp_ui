@@ -4,15 +4,8 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import UptimeStatsPanel from "@/components/about/UptimeStatsPanel.vue";
-
-export default {
-  name: "About.vue",
-  components: {
-    UptimeStatsPanel
-  }
-}
 </script>
 
 <style scoped>

@@ -81,7 +81,7 @@
                          v-if="new_mode === 'b' || new_mode === 'f'">
                       <label for="set_point" class="absolute -top-2 left-2 -mt-px inline-block px-1 bg-white text-xs font-medium text-gray-900">{{ $t("dashboard.mode_change.set_point_header") }}</label>
                       <input type="text" ref="set_point" v-model="set_point" id="set_point" class="border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm flex-1" placeholder="62.0" />
-                      <span class="flex-none w-auto min-w-max max-w-max">&deg; {{ this.TempControlStore.cc.tempFormat }}</span>
+                      <span class="flex-none w-auto min-w-max max-w-max">&deg; {{ TempControlStore.cc.tempFormat }}</span>
                     </div>
 
                   </div>
@@ -164,29 +164,25 @@
 
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue'
 import { i18n } from "@/main.js";
-
 import {
   Dialog,
   DialogOverlay,
   DialogTitle,
-  Listbox, ListboxButton,
-  ListboxLabel, ListboxOption, ListboxOptions,
   TransitionChild,
   TransitionRoot,
 } from '@headlessui/vue'
 import {
   CheckIcon,
   NoSymbolIcon,
-  ChevronUpDownIcon,
   CogIcon,
   ExclamationTriangleIcon,
-  HomeIcon, CloudArrowUpIcon, CpuChipIcon, LightBulbIcon
 } from '@heroicons/vue/24/outline'
 import FormErrorMsg from "@/components/generic/FormErrorMsg.vue";
 import { useTempControlStore } from "@/stores/TempControlStore";
+import {useLoading} from "vue-loading-overlay";
 
 const modes = [
   { name: i18n.global.t('sitewide.brewpi_modes.off'), value: 'o' },
@@ -194,87 +190,56 @@ const modes = [
   { name: i18n.global.t('sitewide.brewpi_modes.fridge_constant'), value: 'f' },
 ]
 
+const isOpen = ref(false);
+const alertOpen = ref(false);
+const updateSuccessful = ref(false);
+const TempControlStore = useTempControlStore();  // Updated in App.vue
+let new_mode =  ref('o');
+let old_mode = ref('o');
+let set_point = ref(0.0);
+let form_error_message = ref("");
 
-export default {
-  name: "ModeChangeModal",
-  components: {
-    ListboxOption,
-    ListboxOptions,
-    ListboxButton,
-    ListboxLabel,
-    Listbox,
-    Dialog,
-    DialogOverlay,
-    DialogTitle,
-    TransitionChild,
-    TransitionRoot,
-    FormErrorMsg,
-    CogIcon,
-    CheckIcon,
-    NoSymbolIcon,
-    ChevronUpDownIcon,
-    ExclamationTriangleIcon
-  },
-  setup() {
-    const isOpen = ref(false);
-    const alertOpen = ref(false);
-    const updateSuccessful = ref(false);
+const $loading = useLoading({});
 
-    return {
-      isOpen,
-      alertOpen,
-      updateSuccessful,
-      TempControlStore: useTempControlStore(),  // Updated in App.vue
-      modes
-    }
-  },
-  data: () => ({
-    new_mode: 'o',
-    old_mode: 'o',
-    set_point: 0.0,
-    form_error_message: "",
-  }),
-  methods: {
-    // submit the form to our backend api
-    async submitForm() {
 
-      let setpoint_sendable = parseFloat(this.set_point);
+// submit the form to our backend api
+async function submitForm() {
+  let setpoint_sendable = parseFloat(set_point);
 
-      // Validate the information in the form
-      this.form_error_message = "";
+  // Validate the information in the form
+  form_error_message.value = "";
 
-      if(isNaN(setpoint_sendable)) {
-        this.form_error_message = `Setpoint must be a number`;
-        return;
-      }
+  if(isNaN(setpoint_sendable)) {
+    form_error_message.value = `Setpoint must be a number`;
+    return;
+  }
 
-      if (this.new_mode !== 'b' && this.new_mode !== 'p' && this.new_mode !== 'f') {
-        setpoint_sendable = 0.0;
-      }
+  if (new_mode.value !== 'b' && new_mode.value !== 'p' && new_mode.value !== 'f') {
+    setpoint_sendable = 0.0;
+  }
 
-      this.isOpen = false;
-      let loader = this.$loading.show({});
-      await this.TempControlStore.setMode(this.new_mode, setpoint_sendable);
-      loader.hide();
-      this.updateSuccessful = !this.TempControlStore.setModeError;
-      this.alertOpen = true;
-    },
-
-    popModal: function() {
-      // The prop keeps getting updated in the background - this prevents the data from changing after the form is
-      // displayed
-      // this.device = StructuredClone(this.$props.sensor);
-      this.new_mode = this.TempControlStore.controlMode;
-      this.old_mode = this.TempControlStore.controlMode;
-      if (this.TempControlStore.controlMode === 'f')
-        this.set_point = this.TempControlStore.tempInfo.FridgeSet;
-      else if (this.TempControlStore.controlMode === 'b')
-        this.set_point = this.TempControlStore.tempInfo.BeerSet;
-      this.form_error_message = "";
-      this.isOpen = true;
-    },
-  },
+  isOpen.value = false;
+  let loader = $loading.show({});
+  await TempControlStore.setMode(new_mode.value, setpoint_sendable);
+  loader.hide();
+  updateSuccessful.value = !TempControlStore.setModeError;
+  alertOpen.value = true;
 }
+
+function popModal() {
+  // The prop keeps getting updated in the background - this prevents the data from changing after the form is
+  // displayed
+  // device.value = StructuredClone(this.$props.sensor);
+  new_mode.value = TempControlStore.controlMode;
+  old_mode.value = TempControlStore.controlMode;
+  if (TempControlStore.controlMode === 'f')
+    set_point.value = TempControlStore.tempInfo.FridgeSet;
+  else if (TempControlStore.controlMode === 'b')
+    set_point.value = TempControlStore.tempInfo.BeerSet;
+  form_error_message.value = "";
+  isOpen.value = true;
+}
+
 </script>
 
 <style scoped>

@@ -101,17 +101,11 @@
 </template>
 
 
-<script>
+<script setup>
 import {
   Dialog,
   DialogPanel,
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems, TransitionChild,
+  TransitionChild,
   TransitionRoot
 } from '@headlessui/vue'
 import {
@@ -125,8 +119,7 @@ import {
 } from '@heroicons/vue/24/outline'
 // import fermenttempLogoUrl from "@/assets/fermenttemp_logo.svg";
 import { i18n } from "@/main.js";
-
-
+import {onBeforeUnmount, onMounted} from "vue";
 import { ref } from "vue";
 import { useTempControlStore } from "@/stores/TempControlStore.js";
 
@@ -138,54 +131,24 @@ const navigation = [
   { name: i18n.global.t('sitewide.sidebar_options.about_controller'), icon: LightBulbIcon, route_name: 'About' },
 ]
 
-export default {
-  name: "App",
-  components: {
-    Dialog,
-    DialogPanel,
-    TransitionChild,
-    TransitionRoot,
-    Disclosure,
-    DisclosureButton,
-    DisclosurePanel,
-    Bars3Icon,
-    XMarkIcon,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
-    CpuChipIcon,
-    LightBulbIcon,
-    Cog8ToothIcon
-  },
-  setup() {
-    const sidebarOpen = ref(false);
+const sidebarOpen = ref(false);
+const TempControlStore = useTempControlStore();  // Updated in App.vue
 
-    return {
-      sidebarOpen,
-      navigation,
-      // fermenttempLogoUrl,
-      TempControlStore: useTempControlStore()  // Updated in App.vue
-    }
-  },
-  data() {
-    return {
-      intervalObject: null,
-    }
-  },
-  mounted() {
-    // Retrieve initial data
-    this.TempControlStore.getTempInfo();
+let intervalObject = null;
 
-    // Set up periodic refreshes
-    this.intervalObject = window.setInterval(() => {
-      this.TempControlStore.getTempInfo();
-    }, 7000)
-  },
-  beforeUnmount() {
-    clearInterval(this.intervalObject);
-  },
-}
+onMounted(() => {
+  // Retrieve initial data
+  TempControlStore.getTempInfo();
+
+  // Set up periodic refreshes
+  intervalObject = window.setInterval(() => {
+    TempControlStore.getTempInfo();
+  }, 7000)
+});
+
+onBeforeUnmount(() => {
+  clearInterval(intervalObject);
+});
 </script>
 
 
