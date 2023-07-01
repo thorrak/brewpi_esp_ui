@@ -40,7 +40,7 @@ function getBrowserLocales(options = {}) {
 
 // configure i18n
 import { createI18n } from "vue-i18n";
-console.log("getBrowserLocales: ", getBrowserLocales({ languageCodeOnly: true })[0]);
+// console.log("getBrowserLocales: ", getBrowserLocales({ languageCodeOnly: true })[0]);
 export const i18n = createI18n({
     // legacy: false,
     locale: getBrowserLocales({ languageCodeOnly: true })[0] || "en",
