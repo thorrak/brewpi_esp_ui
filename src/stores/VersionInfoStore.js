@@ -1,54 +1,53 @@
 import { defineStore } from 'pinia';
 import { mande } from 'mande'
 import { genCSRFOptions } from './CSRF';
+import {ref} from "vue";
 
-export const useVersionInfoStore = defineStore("VersionInfoStore", {
-    state: () => {
-        return {
-            hasVersionInfo: false,
-            versionInfoError: false,
-            brewpiVersion: "",
-            gitRevision: "",
-            gitTag: "",
-            brewpiShield: "",
-            brewpiBoard: "",
-            brewpiLogMessagesVersion: "",
-            fermenttempVersion: "",
-        };
-    },
-    actions: {
-        async getVersionInfo() {
-            try {
-                const remote_api = mande("/api/version/", genCSRFOptions());
-                const response = await remote_api.get();
-                if (response && response.v) {
-                    this.hasVersionInfo = true;
-                    this.versionInfoError = false;
-                    this.brewpiVersion = response.v;
-                    this.gitRevision = response.n;
-                    this.gitTag = response.c;
-                    this.brewpiShield = response.s;
-                    this.brewpiBoard = response.b;
-                    this.brewpiLogMessagesVersion = response.l;
-                    this.fermenttempVersion = response.e;
-                } else {
-                    await this.clearVersionInfo();
-                    this.versionInfoError = true;
-                }
-            } catch (error) {
-                await this.clearVersionInfo();
-                this.versionInfoError = true;
+export const useVersionInfoStore = defineStore("VersionInfoStore", () => {
+    const hasVersionInfo = ref(false);
+    const versionInfoError = ref(false);
+    const brewpiVersion = ref("");
+    const gitRevision = ref("");
+    const gitTag = ref("");
+    const brewpiShield = ref("");
+    const brewpiBoard = ref("");
+    const brewpiLogMessagesVersion = ref("");
+    const fermenttempVersion = ref("");
+
+    async function getVersionInfo() {
+        try {
+            const remote_api = mande("/api/version/", genCSRFOptions());
+            const response = await remote_api.get();
+            if (response && response.v) {
+                hasVersionInfo.value = true;
+                versionInfoError.value = false;
+                brewpiVersion.value = response.v;
+                gitRevision.value = response.n;
+                gitTag.value = response.c;
+                brewpiShield.value = response.s;
+                brewpiBoard.value = response.b;
+                brewpiLogMessagesVersion.value = response.l;
+                fermenttempVersion.value = response.e;
+            } else {
+                await clearVersionInfo();
+                versionInfoError.value = true;
             }
-        },
-        async clearVersionInfo() {
-            this.hasVersionInfo = false;
-            this.brewpiVersion = "";
-            this.gitRevision = "";
-            this.gitTag = "";
-            this.brewpiShield = "";
-            this.brewpiBoard = "";
-            this.brewpiLogMessagesVersion = "";
-            this.fermenttempVersion = "";
+        } catch (error) {
+            await clearVersionInfo();
+            versionInfoError.value = true;
         }
-    },
+    }
+
+    async function clearVersionInfo() {
+        hasVersionInfo.value = false;
+        brewpiVersion.value = "";
+        gitRevision.value = "";
+        gitTag.value = "";
+        brewpiShield.value = "";
+        brewpiBoard.value = "";
+        brewpiLogMessagesVersion.value = "";
+        fermenttempVersion.value = "";
+    }
+
+    return { hasVersionInfo, versionInfoError, brewpiVersion, gitRevision, gitTag, brewpiShield, brewpiBoard, brewpiLogMessagesVersion, fermenttempVersion, getVersionInfo, clearVersionInfo };
 });
