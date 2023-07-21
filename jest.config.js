@@ -4,6 +4,10 @@ module.exports = {
     moduleNameMapper: {
         "^@/(.*)$": "<rootDir>/src/$1"
     },
-    transform: {}
+    transform: {
+        '^.+\\.(ts|tsx)?$': 'ts-jest',
+        "^.+\\.(js|jsx)$": "babel-jest",
+    },
+    preset: 'ts-jest',
     //...
 };

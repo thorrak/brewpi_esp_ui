@@ -63,7 +63,7 @@
 
 <script>
 import { useUptimeStatsStore } from "@/stores/UptimeStatsStore";
-import { useVersionInfoStore } from "@/stores/VersionInfoStore";
+import { useVersionInfoStore } from "@/stores/VersionInfoStore.js";
 import { useHeapInfoStore } from "@/stores/HeapInfoStore";
 import { useResetReasonStore } from "@/stores/ResetReasonStore";
 
