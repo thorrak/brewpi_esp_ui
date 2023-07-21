@@ -16,7 +16,7 @@ describe('VersionInfoStore', () => {
     beforeEach(() => {
         // creates a fresh pinia and make it active so it's automatically picked
         // up by any useStore() call without having to pass it to it
-        setActivePinia(createTestingPinia());
+        setActivePinia(createPinia());
     });
 
     it('has correct initial state', () => {
