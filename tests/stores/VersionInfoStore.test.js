@@ -1,12 +1,16 @@
 import { createTestingPinia } from '@pinia/testing';
-import { useVersionInfoStore } from '@/stores/VersionInfoStore';
+import { setActivePinia, createPinia } from 'pinia'
+import { useVersionInfoStore } from '@/stores/VersionInfoStore.js';
 import { mande } from 'mande';
+import { jest } from '@jest/globals';
 
-jest.mock('mande', () => {
-    return {
-        mande: jest.fn(),
-    };
-});
+// jest.mock('mande', () => {
+//     return {
+//         mande: jest.fn(),
+//     };
+// });
+
+jest.mock('mande');
 
 describe('VersionInfoStore', () => {
     beforeEach(() => {
@@ -25,6 +29,7 @@ describe('VersionInfoStore', () => {
     it('clears the version info correctly', async () => {
         const store = useVersionInfoStore();
         // setting some state properties
+        expect(store.hasVersionInfo).toBe(false);
         store.hasVersionInfo = true;
         store.brewpiVersion = "some version";
 
