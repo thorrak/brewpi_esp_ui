@@ -1,49 +1,48 @@
 import { defineStore } from 'pinia';
 import { mande } from 'mande'
 import { genCSRFOptions } from './CSRF';
+import { ref } from 'vue';
 
-export const useUptimeStatsStore = defineStore("UptimeStatsStore", {
-    state: () => {
-        return {
-            days: 0,
-            hours: 0,
-            minutes: 0,
-            seconds: 0,
-            millis: 0,
-            hasUptime: false,
-            uptimeError: false,
-        };
-    },
-    actions: {
-        async getUptimeStats() {
-            try {
-                const remote_api = mande("/api/uptime/", genCSRFOptions());
-                const response = await remote_api.get();
-                if (response) {
-                    this.days = response.days;
-                    this.hours = response.hours;
-                    this.minutes = response.minutes;
-                    this.seconds = response.seconds;
-                    this.millis = response.millis;
-                    this.hasUptime = true;
-                    this.uptimeError = false;
+export const useUptimeStatsStore = defineStore("UptimeStatsStore", () => {
+    const days = ref(0);
+    const hours = ref(0);
+    const minutes = ref(0);
+    const seconds = ref(0);
+    const millis = ref(0);
+    const hasUptime = ref(false);
+    const uptimeError = ref(false);
 
-                } else {
-                    await this.clearUptime();
-                    this.uptimeError = true;
-                }
-            } catch (error) {
-                await this.clearUptime();
-                this.uptimeError = true;
+    async function getUptimeStats() {
+        try {
+            const remote_api = mande("/api/uptime/", genCSRFOptions());
+            const response = await remote_api.get();
+            if (response) {
+                days.value = response.days;
+                hours.value = response.hours;
+                minutes.value = response.minutes;
+                seconds.value = response.seconds;
+                millis.value = response.millis;
+                hasUptime.value = true;
+                uptimeError.value = false;
+
+            } else {
+                await clearUptime();
+                uptimeError.value = true;
             }
-        },
-        async clearUptime() {
-            this.days = 0;
-            this.hours = 0;
-            this.minutes = 0;
-            this.seconds = 0;
-            this.millis = 0;
-            this.hasUptime = false;
+        } catch (error) {
+            await clearUptime();
+            uptimeError.value = true;
         }
-    },
+    }
+
+    async function clearUptime() {
+        days.value = 0;
+        hours.value = 0;
+        minutes.value = 0;
+        seconds.value = 0;
+        millis.value = 0;
+        hasUptime.value = false;
+    }
+
+    return { days, hours, minutes, seconds, millis, hasUptime, uptimeError, getUptimeStats, clearUptime };
 });
