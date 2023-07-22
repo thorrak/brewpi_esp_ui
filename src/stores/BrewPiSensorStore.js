@@ -78,11 +78,11 @@ export const useBrewPiSensorStore = defineStore("BrewPiSensorStore", () => {
     }
 
     function findDeviceByFunction(device_function) {
-        for(let i = 0; i < devices.value.length; i++) {
-            if(devices.value[i].device_function_int === device_function) {
-                return devices.value[i];
+        devices.value.forEach((device) => {
+            if(device.device_function_int === device_function) {
+                return device;
             }
-        }
+        });
         return null;
     }
 
