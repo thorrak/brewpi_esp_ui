@@ -1,7 +1,8 @@
+// This version of VersionInfoStore.js is defined as a "setup" store.
 import { defineStore } from 'pinia';
 import { mande } from 'mande'
 import { genCSRFOptions } from './CSRF';
-import {ref} from "vue";
+import { ref } from "vue";
 
 export const useVersionInfoStore = defineStore("VersionInfoStore", () => {
     const hasVersionInfo = ref(false);

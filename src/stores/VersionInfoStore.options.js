@@ -1,4 +1,4 @@
-// This is a copy of VersionInfoStore.js but created using the options method rather than the setup method
+// This version of VersionInfoStore.js is defined as an "options" store.
 import { defineStore } from 'pinia';
 import { mande } from 'mande'
 import { genCSRFOptions } from './CSRF';
