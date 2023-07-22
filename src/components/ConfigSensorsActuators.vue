@@ -97,23 +97,25 @@
                     <!-- TODO - Add some kind of v-bind key directive here -->
                     <tr v-for="sensor in BrewPiSensorStore.devices" >
                       <td class="whitespace-nowrap py-4 pl-6 pr-3 text-sm font-medium text-gray-900">
-                        {{ sensor.device_hardware }}
+                        {{ $t("sitewide.brewpi_hardware_types." + sensor.device_hardware) }}
                         <div class="md:hidden">
-                          <div class="text-gray-500" v-if="sensor.device_hardware === 'Pin'">{{ $t('sensors.pin_device_number', { pin_number: sensor.pin}) }}</div>
-                          <div class="text-gray-400" v-if="sensor.device_hardware === 'Pin' && sensor.device_alias.length > 0"><!-- TODO - Figure out how to internationalize alias here -->({{ sensor.device_alias }})</div>
-                          <div class="text-gray-500" v-if="sensor.device_hardware === 'OneWire Temp' || sensor.device_hardware === 'OneWire 2413' || sensor.device_hardware === 'Inkbird Bluetooth'">{{ sensor.address }}</div>
-                          <div class="text-gray-500" v-if="sensor.device_hardware === 'TPLink Switch' || sensor.device_hardware === 'Tilt'"><!-- TODO - Figure out how to internationalize alias here -->{{ sensor.device_alias }}</div>
-                          <div class="text-gray-400" v-if="sensor.device_hardware === 'TPLink Switch'">{{ sensor.address }}</div>
+                          <div class="text-gray-500" v-if="sensor.device_hardware === 'pin'">{{ $t('sensors.pin_device_number', { pin_number: sensor.pin}) }}</div>
+                          <div class="text-gray-400" v-if="sensor.device_hardware === 'pin' && sensor.device_alias.length > 0"><!-- TODO - Figure out how to internationalize alias here -->({{ sensor.device_alias }})</div>
+                          <div class="text-gray-500" v-if="sensor.device_hardware === 'onewire_temp' || sensor.device_hardware === 'onewire_2413' || sensor.device_hardware === 'inkbird_bluetooth'">{{ sensor.address }}</div>
+                          <div class="text-gray-500" v-if="sensor.device_hardware === 'tplink_switch' || sensor.device_hardware === 'tilt'"><!-- TODO - Figure out how to internationalize alias here -->{{ sensor.device_alias }}</div>
+                          <div class="text-gray-400" v-if="sensor.device_hardware === 'tplink_switch'">{{ sensor.address }}</div>
                         </div>
                       </td>
                       <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 hidden md:table-cell">
-                        <div class="text-gray-900" v-if="sensor.device_hardware === 'Pin'">{{ $t('sensors.pin_device_number', { pin_number: sensor.pin}) }}</div>
-                        <div class="text-gray-500" v-if="sensor.device_hardware === 'Pin' && sensor.device_alias.length > 0"><!-- TODO - Figure out how to internationalize alias here -->({{ sensor.device_alias }})</div>
-                        <div class="text-gray-900" v-if="sensor.device_hardware === 'OneWire Temp' || sensor.device_hardware === 'OneWire 2413' || sensor.device_hardware === 'Inkbird Bluetooth'">{{ sensor.address }}</div>
-                        <div class="text-gray-900" v-if="sensor.device_hardware === 'TPLink Switch' || sensor.device_hardware === 'Tilt'"><!-- TODO - Figure out how to internationalize alias here -->{{ sensor.device_alias }}</div>
-                        <div class="text-gray-500" v-if="sensor.device_hardware === 'TPLink Switch'">{{ sensor.address }}</div>
+                        <div class="text-gray-900" v-if="sensor.device_hardware === 'pin'">{{ $t('sensors.pin_device_number', { pin_number: sensor.pin}) }}</div>
+                        <div class="text-gray-500" v-if="sensor.device_hardware === 'pin' && sensor.device_alias.length > 0"><!-- TODO - Figure out how to internationalize alias here -->({{ sensor.device_alias }})</div>
+                        <div class="text-gray-900" v-if="sensor.device_hardware === 'onewire_temp' || sensor.device_hardware === 'onewire_2413' || sensor.device_hardware === 'inkbird_bluetooth'">{{ sensor.address }}</div>
+                        <div class="text-gray-900" v-if="sensor.device_hardware === 'tplink_switch' || sensor.device_hardware === 'tilt'"><!-- TODO - Figure out how to internationalize alias here -->{{ sensor.device_alias }}</div>
+                        <div class="text-gray-500" v-if="sensor.device_hardware === 'tplink_switch'">{{ sensor.address }}</div>
                       </td>
-                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ sensor.device_function }}</td>
+                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        {{ $t("sitewide.brewpi_device_functions." + sensor.device_function) }}
+                      </td>
                       <td class="relative whitespace-nowrap py-4 pl-3 pr-6 text-right text-sm font-medium">
                         <AssignSensorModal :sensor="sensor" v-on:device-updated="refreshDevices" />
                       </td>
