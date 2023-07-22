@@ -1,0 +1,18 @@
+{
+  "extendedSettings": {
+    "glycol": true,
+    "largeTFT": true,
+    "invertTFT": true
+  },
+  "minTimes": {
+    "SETTINGS_CHOICE": 1,
+    "MIN_COOL_OFF_TIME": 100,
+    "MIN_HEAT_OFF_TIME": 200,
+    "MIN_COOL_ON_TIME": 300,
+    "MIN_HEAT_ON_TIME": 400,
+    "MIN_COOL_OFF_TIME_FRIDGE_CONSTANT": 500,
+    "MIN_SWITCH_TIME": 600,
+    "COOL_PEAK_DETECT_TIME": 700,
+    "HEAT_PEAK_DETECT_TIME": 800
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "cc": {
+    "tempFormat": "F"
+  },
+  "cv": {},
+  "cs": {
+    "mode": "f"
+  },
+  "temp": {
+    "FridgeTemp": 10,
+    "BeerTemp": 10,
+    "RoomTemp": 10,
+    "State": 1
+  }
+}
