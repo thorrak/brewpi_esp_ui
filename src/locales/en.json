@@ -35,7 +35,8 @@
       "beer_cool": "@:sitewide.unused",
       "beer_sg": "Specific Gravity,",
       "beer_reserved_1": "@:sitewide.unused",
-      "beer_reserved_2": "@:sitewide.unused"
+      "beer_reserved_2": "@:sitewide.unused",
+      "unknown": "@:sitewide.unknown"
     },
     "brewpi_hardware_types": {
       "none": "@:sitewide.brewpi_device_functions.none",

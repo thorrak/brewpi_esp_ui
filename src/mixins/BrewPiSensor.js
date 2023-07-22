@@ -1,65 +1,69 @@
 
 function device_function_for_index(function_index) {
+    // Internationalization is handled inside the components that use these names
+    // e.g. {{ $t("sensors.assign_sensor_modal." + valid_function.function_name) }}
     switch (function_index) {
         case 0:
-            return i18n.global.t('sitewide.brewpi_device_functions.none');
+            return 'none';
         case 1:
-            return i18n.global.t('sitewide.brewpi_device_functions.chamber_door');
+            return 'chamber_door';
         case 2:
-            return i18n.global.t('sitewide.brewpi_device_functions.heating_switch');
+            return 'heating_switch';
         case 3:
-            return i18n.global.t('sitewide.brewpi_device_functions.cooling_switch');
+            return 'cooling_switch';
         case 4:
-            return i18n.global.t('sitewide.brewpi_device_functions.chamber_light');
+            return 'chamber_light';
         case 5:
-            return i18n.global.t('sitewide.brewpi_device_functions.chamber_temp');
+            return 'chamber_temp';
         case 6:
-            return i18n.global.t('sitewide.brewpi_device_functions.room_temp');
+            return 'room_temp';
         case 7:
-            return i18n.global.t('sitewide.brewpi_device_functions.chamber_fan');
+            return 'chamber_fan';
         case 8:
-            return i18n.global.t('sitewide.brewpi_device_functions.chamber_reserved_1');
+            return 'chamber_reserved_1';
         case 9:
-            return i18n.global.t('sitewide.brewpi_device_functions.beer_temp');
+            return 'beer_temp';
         case 10:
-            return i18n.global.t('sitewide.brewpi_device_functions.secondary_beer_temp');
+            return 'secondary_beer_temp';
         case 11:
-            return i18n.global.t('sitewide.brewpi_device_functions.beer_heat');
+            return 'beer_heat';
         case 12:
-            return i18n.global.t('sitewide.brewpi_device_functions.beer_cool');
+            return 'beer_cool';
         case 13:
-            return i18n.global.t('sitewide.brewpi_device_functions.beer_sg');
+            return 'beer_sg';
         case 14:
-            return i18n.global.t('sitewide.brewpi_device_functions.beer_reserved_1');
+            return 'beer_reserved_1';
         case 15:
-            return i18n.global.t('sitewide.brewpi_device_functions.beer_reserved_2');
+            return 'beer_reserved_2';
         default:
-            return i18n.global.t('sitewide.unknown');
+            return 'unknown';
     }
 }
 
 
 function device_hardware_for_index(index) {
+    // Internationalization is handled inside the components that use these names
+    // e.g. {{ $t("sitewide.brewpi_hardware_types." + sensor.device_hardware) }}
     switch (index) {
         case 0:
-            return i18n.global.t('sitewide.brewpi_hardware_types.none');
+            return 'none';
         case 1:
-            return i18n.global.t('sitewide.brewpi_hardware_types.pin');
+            return 'pin';
         case 2:
-            return i18n.global.t('sitewide.brewpi_hardware_types.onewire_temp');
+            return 'onewire_temp';
         case 3:
-            return i18n.global.t('sitewide.brewpi_hardware_types.onewire_2413');
+            return 'onewire_2413';
         case 4:
             // This is not implemented, and is just here as a placeholder
-            return i18n.global.t('sitewide.brewpi_hardware_types.four');
+            return 'four';
         case 5:
-            return i18n.global.t('sitewide.brewpi_hardware_types.inkbird_bluetooth');
+            return 'inkbird_bluetooth';
         case 6:
-            return i18n.global.t('sitewide.brewpi_hardware_types.tilt');
+            return 'tilt';
         case 7:
-            return i18n.global.t('sitewide.brewpi_hardware_types.tplink_switch');
+            return 'tplink_switch';
         default:
-            return i18n.global.t('sitewide.brewpi_hardware_types.unknown');
+            return 'unknown';
     }
 }
 

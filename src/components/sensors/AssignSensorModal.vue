@@ -3,7 +3,7 @@
   <a href="#" @click="popModal()" class="text-indigo-600 hover:text-indigo-900">
     <span v-if="sensor.device_function_int === 0">{{ $t("sensors.assign_sensor_modal.assign") }}</span>
     <span v-else>{{ $t("sensors.assign_sensor_modal.assign") }}</span>
-    <span class="sr-only">, {{ sensor.device_hardware }} <!-- TODO - Internationalize this --></span>
+    <span class="sr-only">, {{ $t("sitewide.brewpi_hardware_types." + sensor.device_hardware) }}</span>
   </a>
   <TransitionRoot as="template" :show="isOpen">
     <Dialog as="div" class="fixed z-10 inset-0 overflow-y-auto" @close="isOpen = false">
@@ -61,7 +61,9 @@
                     <div>
                       <label for="device_function" class="block text-sm font-medium text-gray-700">{{ $t("sensors.assign_sensor_modal.device_function") }}</label>
                       <select id="device_function" name="device_function" v-model="new_function" class="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
-                        <option v-for="valid_function in sensor.valid_functions()" :key="valid_function.id" :value="valid_function.id"><!-- TODO - Internationalize this -->{{ valid_function.function_name }}</option>
+                        <option v-for="valid_function in sensor.valid_functions()" :key="valid_function.id" :value="valid_function.id">
+                          {{ $t("sitewide.brewpi_device_functions." + valid_function.function_name) }}
+                        </option>
                       </select>
                     </div>
 

@@ -245,8 +245,11 @@ export default {
       }
 
       let loader = this.$loading.show({});
+      // TODO - Convert this from await to a promise
       await this.UpstreamSettingsStore.setUpstreamSettings(this.UpstreamSettingsStore.upstreamHost, this.UpstreamSettingsStore.upstreamPort, this.resetDeviceID, this.UpstreamSettingsStore.username);
+      await this.UpstreamSettingsStore.getUpstreamSettings(); // Once we've set the upstream settings, let's retrieve them to make sure they saved
       loader.hide();
+      // TODO - Add some kind of error checking/handling here
 
       // this.updateSuccessful = res.ok;
       // this.alertOpen = true;

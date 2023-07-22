@@ -1,5 +1,6 @@
 import { setActivePinia, createPinia } from 'pinia';
 import { useBrewPiSensorStore } from '@/stores/BrewPiSensorStore.js';
+import { BrewPiSensor } from '@/mixins/BrewPiSensor';
 import { mande } from 'mande';
 import { jest } from '@jest/globals';
 import fs from 'fs';
@@ -51,8 +52,14 @@ describe('BrewPiSensorStore', () => {
     it('finds device by function correctly', () => {
         const store = useBrewPiSensorStore();
         const mockFunction = 1;
-        const mockDevice = { device_function_int: mockFunction };
-        store.devices = [mockDevice];
+
+        const mockDevice = new BrewPiSensor();
+        mockDevice.device_function_int = mockFunction;
+
+        const mockDevice2 = new BrewPiSensor();
+        mockDevice.device_function_int = mockFunction+1;
+
+        store.devices = [mockDevice, mockDevice2];
 
         const foundDevice = store.findDeviceByFunction(mockFunction);
 
