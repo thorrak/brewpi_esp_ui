@@ -66,6 +66,36 @@ describe('UpstreamSettingsStore', () => {
         expect(store.upstreamPort).toBe(fixtureData.upstreamPort);
         expect(store.username).toBe(fixtureData.username);
         expect(store.apiKey).toBe(fixtureData.apiKey);
-        // Assert other state properties here as needed
+        // TODO - Assert other state properties here as needed
     });
+
+    it('sets upstream settings correctly', async () => {
+        const fixtureData = JSON.parse(fs.readFileSync(path.resolve(__dirname, './fixtures/api.upstream.json'), 'utf-8'));
+
+        const mockPut = jest.fn().mockResolvedValue({ message: "Settings updated" });
+        mande.mockImplementation(() => {
+            return {
+                put: mockPut,
+            };
+        });
+
+        const store = useUpstreamSettingsStore();
+
+        await store.setUpstreamSettings(
+            fixtureData.upstreamHost,
+            fixtureData.upstreamPort,
+            fixtureData.resetDeviceID,
+            fixtureData.username,
+            fixtureData.apiKey
+        );
+
+        expect(store.hasUpstreamSettings).toBe(true);
+        expect(store.upstreamSettingsError).toBe(false);
+        expect(store.upstreamHost).toBe(fixtureData.upstreamHost);
+        expect(store.upstreamPort).toBe(fixtureData.upstreamPort);
+        expect(store.username).toBe(fixtureData.username);
+        expect(store.apiKey).toBe(fixtureData.apiKey);
+        // TODO - Assert other state properties here as needed
+    });
+
 });

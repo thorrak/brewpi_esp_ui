@@ -59,6 +59,7 @@ export const useUpstreamSettingsStore = defineStore("UpstreamSettingsStore", () 
                 // deviceID: deviceID, // Not processed in the firmware currently
             });
             if (response && response.message) {
+                // TODO - Remove this, as it doesn't make sense for us to force-get here
                 await getUpstreamSettings();
             } else {
                 await clearUpstreamSettings();
