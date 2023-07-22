@@ -1,39 +1,38 @@
 import { defineStore } from 'pinia';
-import { mande } from 'mande'
+import { mande } from 'mande';
 import { genCSRFOptions } from './CSRF';
+import { ref } from 'vue';
 
-export const useResetReasonStore = defineStore("ResetReasonStore", {
-    state: () => {
-        return {
-            reason: "",
-            description: "",
-            hasResetReason: false,
-            resetReasonError: false,
-        };
-    },
-    actions: {
-        async getResetReason() {
-            try {
-                const remote_api = mande("/api/resetreason/", genCSRFOptions());
-                const response = await remote_api.get();
-                if (response && response.reason) {
-                    this.reason = response.reason;
-                    this.description = response.description;
-                    this.hasResetReason = true;
-                    this.resetReasonError = false;
-                } else {
-                    await this.clearResetReason();
-                    this.resetReasonError = true;
-                }
-            } catch (error) {
-                await this.clearResetReason();
-                this.resetReasonError = true;
+export const useResetReasonStore = defineStore("ResetReasonStore", () => {
+    const reason = ref("");
+    const description = ref("");
+    const hasResetReason = ref(false);
+    const resetReasonError = ref(false);
+
+    async function getResetReason() {
+        try {
+            const remote_api = mande("/api/resetreason/", genCSRFOptions());
+            const response = await remote_api.get();
+            if (response && response.reason) {
+                reason.value = response.reason;
+                description.value = response.description;
+                hasResetReason.value = true;
+                resetReasonError.value = false;
+            } else {
+                await clearResetReason();
+                resetReasonError.value = true;
             }
-        },
-        async clearResetReason() {
-            this.reason = "";
-            this.description = "";
-            this.hasResetReason = false;
+        } catch (error) {
+            await clearResetReason();
+            resetReasonError.value = true;
         }
-    },
+    }
+
+    async function clearResetReason() {
+        reason.value = "";
+        description.value = "";
+        hasResetReason.value = false;
+    }
+
+    return { reason, description, hasResetReason, resetReasonError, getResetReason, clearResetReason };
 });

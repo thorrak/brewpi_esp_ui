@@ -1,42 +1,41 @@
 import { defineStore } from 'pinia';
-import { mande } from 'mande'
+import { mande } from 'mande';
 import { genCSRFOptions } from './CSRF';
+import { ref } from 'vue';
 
-export const useHeapInfoStore = defineStore("HeapInfoStore", {
-    state: () => {
-        return {
-            free: 0,
-            max: 0,
-            frag: 0,
-            hasHeapInfo: false,
-            heapError: false,
-        };
-    },
-    actions: {
-        async getHeapInfo() {
-            try {
-                const remote_api = mande("/api/heap/", genCSRFOptions());
-                const response = await remote_api.get();
-                if (response && response.free) {
-                    this.free = response.free;
-                    this.max = response.max;
-                    this.frag = response.frag;
-                    this.hasHeapInfo = true;
-                    this.heapError = false;
-                } else {
-                    await this.clearHeapInfo();
-                    this.heapError = true;
-                }
-            } catch (error) {
-                await this.clearHeapInfo();
-                this.heapError = true;
+export const useHeapInfoStore = defineStore("HeapInfoStore", () => {
+    const free = ref(0);
+    const max = ref(0);
+    const frag = ref(0);
+    const hasHeapInfo = ref(false);
+    const heapError = ref(false);
+
+    async function getHeapInfo() {
+        try {
+            const remote_api = mande("/api/heap/", genCSRFOptions());
+            const response = await remote_api.get();
+            if (response && response.free) {
+                free.value = response.free;
+                max.value = response.max;
+                frag.value = response.frag;
+                hasHeapInfo.value = true;
+                heapError.value = false;
+            } else {
+                await clearHeapInfo();
+                heapError.value = true;
             }
-        },
-        async clearHeapInfo() {
-            this.free = 0;
-            this.max = 0;
-            this.frag = 0;
-            this.hasHeapInfo = false;
+        } catch (error) {
+            await clearHeapInfo();
+            heapError.value = true;
         }
-    },
+    }
+
+    async function clearHeapInfo() {
+        free.value = 0;
+        max.value = 0;
+        frag.value = 0;
+        hasHeapInfo.value = false;
+    }
+
+    return { free, max, frag, hasHeapInfo, heapError, getHeapInfo, clearHeapInfo };
 });

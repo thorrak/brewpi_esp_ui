@@ -1,107 +1,104 @@
 import { defineStore } from 'pinia';
-import { mande } from 'mande'
+import { mande } from 'mande';
 import { genCSRFOptions } from './CSRF';
+import { ref } from 'vue';
 
-export const useExtendedSettingsStore = defineStore("ExtendedSettingsStore", {
-    state: () => {
-        return {
-            hasExtendedSettings: false,
-            extendedSettingsError: false,
-            extendedSettingsUpdateError: false,
+export const useExtendedSettingsStore = defineStore("ExtendedSettingsStore", () => {
+    const hasExtendedSettings = ref(false);
+    const extendedSettingsError = ref(false);
+    const extendedSettingsUpdateError = ref(false);
 
-            glycol: false,
-            largeTFT: false,
-            invertTFT: false,
+    const glycol = ref(false);
+    const largeTFT = ref(false);
+    const invertTFT = ref(false);
 
-            SETTINGS_CHOICE: 0,  // 0 = defaults, 1 = lowdelay, 2 = custom
-            MIN_COOL_OFF_TIME: 0,
-            MIN_HEAT_OFF_TIME: 0,
-            MIN_COOL_ON_TIME: 0,
-            MIN_HEAT_ON_TIME: 0,
-            MIN_COOL_OFF_TIME_FRIDGE_CONSTANT: 0,
-            MIN_SWITCH_TIME: 0,
-            COOL_PEAK_DETECT_TIME: 0,
-            HEAT_PEAK_DETECT_TIME: 0,
+    const SETTINGS_CHOICE = ref(0);
+    const MIN_COOL_OFF_TIME = ref(0);
+    const MIN_HEAT_OFF_TIME = ref(0);
+    const MIN_COOL_ON_TIME = ref(0);
+    const MIN_HEAT_ON_TIME = ref(0);
+    const MIN_COOL_OFF_TIME_FRIDGE_CONSTANT = ref(0);
+    const MIN_SWITCH_TIME = ref(0);
+    const COOL_PEAK_DETECT_TIME = ref(0);
+    const HEAT_PEAK_DETECT_TIME = ref(0);
 
-        };
-    },
-    actions: {
-        async getExtendedSettings() {
-            try {
-                const remote_api = mande("/api/extended/", genCSRFOptions());
-                const response = await remote_api.get();
-                if (response && response.extendedSettings) {
-                    this.hasExtendedSettings = true;
-                    this.extendedSettingsError = false;
+    async function getExtendedSettings() {
+        try {
+            const remote_api = mande("/api/extended/", genCSRFOptions());
+            const response = await remote_api.get();
+            if (response && response.extendedSettings) {
+                hasExtendedSettings.value = true;
+                extendedSettingsError.value = false;
 
-                    this.glycol = response.extendedSettings.glycol;
-                    this.largeTFT = response.extendedSettings.largeTFT;
-                    this.invertTFT = response.extendedSettings.invertTFT;
+                glycol.value = response.extendedSettings.glycol;
+                largeTFT.value = response.extendedSettings.largeTFT;
+                invertTFT.value = response.extendedSettings.invertTFT;
 
-                    this.SETTINGS_CHOICE = response.minTimes.SETTINGS_CHOICE;
-                    this.MIN_COOL_OFF_TIME = response.minTimes.MIN_COOL_OFF_TIME;
-                    this.MIN_HEAT_OFF_TIME = response.minTimes.MIN_HEAT_OFF_TIME;
-                    this.MIN_COOL_ON_TIME = response.minTimes.MIN_COOL_ON_TIME;
-                    this.MIN_HEAT_ON_TIME = response.minTimes.MIN_HEAT_ON_TIME;
-                    this.MIN_COOL_OFF_TIME_FRIDGE_CONSTANT = response.minTimes.MIN_COOL_OFF_TIME_FRIDGE_CONSTANT;
-                    this.MIN_SWITCH_TIME = response.minTimes.MIN_SWITCH_TIME;
-                    this.COOL_PEAK_DETECT_TIME = response.minTimes.COOL_PEAK_DETECT_TIME;
-                    this.HEAT_PEAK_DETECT_TIME = response.minTimes.HEAT_PEAK_DETECT_TIME;
-                } else {
-                    await this.clearExtendedSettings();
-                    this.extendedSettingsError = true;
-                }
-            } catch (error) {
-                await this.clearExtendedSettings();
-                this.extendedSettingsError = true;
+                SETTINGS_CHOICE.value = response.minTimes.SETTINGS_CHOICE;
+                MIN_COOL_OFF_TIME.value = response.minTimes.MIN_COOL_OFF_TIME;
+                MIN_HEAT_OFF_TIME.value = response.minTimes.MIN_HEAT_OFF_TIME;
+                MIN_COOL_ON_TIME.value = response.minTimes.MIN_COOL_ON_TIME;
+                MIN_HEAT_ON_TIME.value = response.minTimes.MIN_HEAT_ON_TIME;
+                MIN_COOL_OFF_TIME_FRIDGE_CONSTANT.value = response.minTimes.MIN_COOL_OFF_TIME_FRIDGE_CONSTANT;
+                MIN_SWITCH_TIME.value = response.minTimes.MIN_SWITCH_TIME;
+                COOL_PEAK_DETECT_TIME.value = response.minTimes.COOL_PEAK_DETECT_TIME;
+                HEAT_PEAK_DETECT_TIME.value = response.minTimes.HEAT_PEAK_DETECT_TIME;
+            } else {
+                await clearExtendedSettings();
+                extendedSettingsError.value = true;
             }
-        },
-        async clearExtendedSettings() {
-            this.hasExtendedSettings = false;
-            this.glycol = false;
-            this.largeTFT = false;
-            this.invertTFT = false;
+        } catch (error) {
+            await clearExtendedSettings();
+            extendedSettingsError.value = true;
+        }
+    }
 
-            this.SETTINGS_CHOICE = 0;
-            this.MIN_COOL_OFF_TIME = 0;
-            this.MIN_HEAT_OFF_TIME = 0;
-            this.MIN_COOL_ON_TIME = 0;
-            this.MIN_HEAT_ON_TIME = 0;
-            this.MIN_COOL_OFF_TIME_FRIDGE_CONSTANT = 0;
-            this.MIN_SWITCH_TIME = 0;
-            this.COOL_PEAK_DETECT_TIME = 0;
-            this.HEAT_PEAK_DETECT_TIME = 0;
-        },
-        async setExtendedSettings(glycol, largeTFT, invertTFT, SETTINGS_CHOICE, MIN_COOL_OFF_TIME, MIN_HEAT_OFF_TIME, MIN_COOL_ON_TIME, MIN_HEAT_ON_TIME, MIN_COOL_OFF_TIME_FRIDGE_CONSTANT, MIN_SWITCH_TIME, COOL_PEAK_DETECT_TIME, HEAT_PEAK_DETECT_TIME) {
-            try {
-                const remote_api = mande("/api/extended/", genCSRFOptions());
-                const response = await remote_api.put({
-                    glycol: glycol,  // Boolean
-                    largeTFT: largeTFT,  // Boolean
-                    invertTFT: invertTFT, // Boolean
+    async function clearExtendedSettings() {
+        hasExtendedSettings.value = false;
+        glycol.value = false;
+        largeTFT.value = false;
+        invertTFT.value = false;
 
-                    SETTINGS_CHOICE: SETTINGS_CHOICE,
-                    MIN_COOL_OFF_TIME: MIN_COOL_OFF_TIME,
-                    MIN_HEAT_OFF_TIME: MIN_HEAT_OFF_TIME,
-                    MIN_COOL_ON_TIME: MIN_COOL_ON_TIME,
-                    MIN_HEAT_ON_TIME: MIN_HEAT_ON_TIME,
-                    MIN_COOL_OFF_TIME_FRIDGE_CONSTANT: MIN_COOL_OFF_TIME_FRIDGE_CONSTANT,
-                    MIN_SWITCH_TIME: MIN_SWITCH_TIME,
-                    COOL_PEAK_DETECT_TIME: COOL_PEAK_DETECT_TIME,
-                    HEAT_PEAK_DETECT_TIME: HEAT_PEAK_DETECT_TIME,
-                });
-                if (response && response.message) {
-                    // TODO - Check response.message
-                    await this.getExtendedSettings();
-                    this.extendedSettingsUpdateError = false;
-                } else {
-                    await this.clearExtendedSettings();
-                    this.extendedSettingsUpdateError = true;
-                }
-            } catch (error) {
-                await this.clearExtendedSettings();
-                this.extendedSettingsUpdateError = true;
+        SETTINGS_CHOICE.value = 0;
+        MIN_COOL_OFF_TIME.value = 0;
+        MIN_HEAT_OFF_TIME.value = 0;
+        MIN_COOL_ON_TIME.value = 0;
+        MIN_HEAT_ON_TIME.value = 0;
+        MIN_COOL_OFF_TIME_FRIDGE_CONSTANT.value = 0;
+        MIN_SWITCH_TIME.value = 0;
+        COOL_PEAK_DETECT_TIME.value = 0;
+        HEAT_PEAK_DETECT_TIME.value = 0;
+    }
+
+    async function setExtendedSettings(glycolInput, largeTFTInput, invertTFTInput, SETTINGS_CHOICEInput, MIN_COOL_OFF_TIMEInput, MIN_HEAT_OFF_TIMEInput, MIN_COOL_ON_TIMEInput, MIN_HEAT_ON_TIMEInput, MIN_COOL_OFF_TIME_FRIDGE_CONSTANTInput, MIN_SWITCH_TIMEInput, COOL_PEAK_DETECT_TIMEInput, HEAT_PEAK_DETECT_TIMEInput) {
+        try {
+            const remote_api = mande("/api/extended/", genCSRFOptions());
+            const response = await remote_api.put({
+                glycol: glycolInput,
+                largeTFT: largeTFTInput,
+                invertTFT: invertTFTInput,
+                SETTINGS_CHOICE: SETTINGS_CHOICEInput,
+                MIN_COOL_OFF_TIME: MIN_COOL_OFF_TIMEInput,
+                MIN_HEAT_OFF_TIME: MIN_HEAT_OFF_TIMEInput,
+                MIN_COOL_ON_TIME: MIN_COOL_ON_TIMEInput,
+                MIN_HEAT_ON_TIME: MIN_HEAT_ON_TIMEInput,
+                MIN_COOL_OFF_TIME_FRIDGE_CONSTANT: MIN_COOL_OFF_TIME_FRIDGE_CONSTANTInput,
+                MIN_SWITCH_TIME: MIN_SWITCH_TIMEInput,
+                COOL_PEAK_DETECT_TIME: COOL_PEAK_DETECT_TIMEInput,
+                HEAT_PEAK_DETECT_TIME: HEAT_PEAK_DETECT_TIMEInput,
+            });
+            if (response && response.message) {
+                await getExtendedSettings();
+                extendedSettingsUpdateError.value = false;
+            } else {
+                await clearExtendedSettings();
+                extendedSettingsUpdateError.value = true;
             }
-        },
-    },
+        } catch (error) {
+            await clearExtendedSettings();
+            extendedSettingsUpdateError.value = true;
+        }
+    }
+
+    return { hasExtendedSettings, extendedSettingsError, extendedSettingsUpdateError, glycol, largeTFT, invertTFT, SETTINGS_CHOICE, MIN_COOL_OFF_TIME, MIN_HEAT_OFF_TIME, MIN_COOL_ON_TIME, MIN_HEAT_ON_TIME, MIN_COOL_OFF_TIME_FRIDGE_CONSTANT, MIN_SWITCH_TIME, COOL_PEAK_DETECT_TIME, HEAT_PEAK_DETECT_TIME, getExtendedSettings, clearExtendedSettings, setExtendedSettings };
 });
