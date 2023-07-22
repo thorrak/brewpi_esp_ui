@@ -59,8 +59,16 @@ export const useUpstreamSettingsStore = defineStore("UpstreamSettingsStore", () 
                 // deviceID: deviceID, // Not processed in the firmware currently
             });
             if (response && response.message) {
-                // TODO - Remove this, as it doesn't make sense for us to force-get here
-                await getUpstreamSettings();
+                // TODO - Make sure the response is successful
+                // TODO - Test once we add a check to make sure the response is successful
+
+                // On success, update the store
+                this.hasUpstreamSettings = true;
+                this.upstreamHost = upstreamHostParam;
+                this.upstreamPort = Number(upstreamPortParam);
+                this.resetDeviceID = resetDeviceID;
+                this.username = usernameParam;
+                this.apiKey = apiKeyParam;
             } else {
                 await clearUpstreamSettings();
                 upstreamSettingsError.value = true;
