@@ -1,8 +1,3 @@
-import { createI18n } from "vue-i18n";
-
-import en from "@/locales/en.json";
-export const i18n = createI18n({locale: "en", fallbackLocale: "en", messages: { en },});
-
 import { BrewPiSensor } from '@/mixins/BrewPiSensor.js';
 
 describe('BrewPiSensor', () => {
@@ -96,8 +91,8 @@ describe('BrewPiSensor', () => {
 
         const device_function = sensor.device_function;
 
-        expect(device_function).toBe(i18n.global.t('sitewide.brewpi_device_functions.chamber_door'));
-        // add similar checks for other values
+        expect(device_function).toBe('chamber_door');
+        // TODO - add similar checks for other values
     });
 
     it('returns the correct device hardware', () => {
@@ -106,8 +101,8 @@ describe('BrewPiSensor', () => {
 
         const device_hardware = sensor.device_hardware;
 
-        expect(device_hardware).toBe(i18n.global.t('sitewide.brewpi_hardware_types.pin'));
-        // add similar checks for other values
+        expect(device_hardware).toBe('pin');
+        // TODO - add similar checks for other values
     });
 
     it('returns the correct valid functions for hardware type', () => {
@@ -116,9 +111,9 @@ describe('BrewPiSensor', () => {
 
         const valid_functions = sensor.valid_functions();
 
-        // add checks for each function
-        expect(valid_functions).toContainEqual({id: 0, function_name: i18n.global.t('sitewide.brewpi_device_functions.none')});
-        expect(valid_functions).toContainEqual({id: 1, function_name: i18n.global.t('sitewide.brewpi_device_functions.chamber_door')});
+        // TODO - add checks for each function
+        expect(valid_functions).toContainEqual({id: 0, function_name: 'none'});
+        expect(valid_functions).toContainEqual({id: 1, function_name: 'chamber_door'});
         // ...
     });
 });
