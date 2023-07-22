@@ -1,0 +1,7 @@
+{
+  "upstreamHost":"localhost.localdomain",
+  "upstreamPort":80,
+  "resetDeviceID":false,
+  "username":"thorrak",
+  "apiKey":"abcd-1234-12121212"
+}
