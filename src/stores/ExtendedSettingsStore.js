@@ -88,7 +88,20 @@ export const useExtendedSettingsStore = defineStore("ExtendedSettingsStore", () 
                 HEAT_PEAK_DETECT_TIME: HEAT_PEAK_DETECT_TIMEInput,
             });
             if (response && response.message) {
-                await getExtendedSettings();
+                // TODO - Check if the response is valid/a success
+                // TODO - Clear settings if the response is invalid/not a success
+                glycol.value = glycolInput;
+                largeTFT.value = largeTFTInput;
+                invertTFT.value = invertTFTInput;
+                SETTINGS_CHOICE.value = SETTINGS_CHOICEInput;
+                MIN_COOL_OFF_TIME.value = MIN_COOL_OFF_TIMEInput;
+                MIN_HEAT_OFF_TIME.value = MIN_HEAT_OFF_TIMEInput;
+                MIN_COOL_ON_TIME.value = MIN_COOL_ON_TIMEInput;
+                MIN_HEAT_ON_TIME.value = MIN_HEAT_ON_TIMEInput;
+                MIN_COOL_OFF_TIME_FRIDGE_CONSTANT.value = MIN_COOL_OFF_TIME_FRIDGE_CONSTANTInput;
+                MIN_SWITCH_TIME.value = MIN_SWITCH_TIMEInput;
+                COOL_PEAK_DETECT_TIME.value = COOL_PEAK_DETECT_TIMEInput;
+                HEAT_PEAK_DETECT_TIME.value = HEAT_PEAK_DETECT_TIMEInput;
                 extendedSettingsUpdateError.value = false;
             } else {
                 await clearExtendedSettings();

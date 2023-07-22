@@ -267,8 +267,11 @@ function submitForm() {
   let loader = this.$loading.show({});
   ExtendedSettingsStore.setExtendedSettings(glycol.value, largeTFT.value, invertTFT.value, selectedSettingSet.value.value, MIN_COOL_OFF_TIME.value, MIN_HEAT_OFF_TIME.value, MIN_COOL_ON_TIME.value, MIN_HEAT_ON_TIME.value,
       MIN_COOL_OFF_TIME_FRIDGE_CONSTANT.value, MIN_SWITCH_TIME.value, COOL_PEAK_DETECT_TIME.value, HEAT_PEAK_DETECT_TIME.value).then(() => {
-    updateCachedSettings();
-    loader.hide();
+        ExtendedSettingsStore.getExtendedSettings().then(() => {
+          updateCachedSettings();
+          loader.hide();
+        });
+    // TODO - Handle errors here
     // updateSuccessful.value = res.ok;
     // alertOpen.value = true;
   });
