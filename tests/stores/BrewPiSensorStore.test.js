@@ -51,19 +51,19 @@ describe('BrewPiSensorStore', () => {
 
     it('finds device by function correctly', () => {
         const store = useBrewPiSensorStore();
-        const mockFunction = 1;
+        const mockFunction = 2;
 
         const mockDevice = new BrewPiSensor();
         mockDevice.device_function_int = mockFunction;
 
         const mockDevice2 = new BrewPiSensor();
-        mockDevice.device_function_int = mockFunction+1;
+        mockDevice2.device_function_int = mockFunction+1;
 
         store.devices = [mockDevice, mockDevice2];
 
         const foundDevice = store.findDeviceByFunction(mockFunction);
 
-        expect(foundDevice).toBe(mockDevice);
+        expect(foundDevice).toStrictEqual(mockDevice);
     });
 
     it('checks for device by function correctly', () => {
