@@ -1,4 +1,4 @@
 {
-  "reason": "Power on",
-  "description": "The device was powered on or reset."
+    "reason": "ESP_RST_WDT",
+    "description": "Reset due to other watchdogs"
 }

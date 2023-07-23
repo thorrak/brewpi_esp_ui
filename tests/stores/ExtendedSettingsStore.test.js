@@ -17,7 +17,19 @@ describe('ExtendedSettingsStore', () => {
         const store = useExtendedSettingsStore();
         expect(store.hasExtendedSettings).toBe(false);
         expect(store.extendedSettingsError).toBe(false);
-        // TODO - add similar checks for other state properties
+        expect(store.extendedSettingsUpdateError).toBe(false);
+        expect(store.glycol).toBe(false);
+        expect(store.largeTFT).toBe(false);
+        expect(store.invertTFT).toBe(false);
+        expect(store.SETTINGS_CHOICE).toBe(0);
+        expect(store.MIN_COOL_OFF_TIME).toBe(0);
+        expect(store.MIN_HEAT_OFF_TIME).toBe(0);
+        expect(store.MIN_COOL_ON_TIME).toBe(0);
+        expect(store.MIN_HEAT_ON_TIME).toBe(0);
+        expect(store.MIN_COOL_OFF_TIME_FRIDGE_CONSTANT).toBe(0);
+        expect(store.MIN_SWITCH_TIME).toBe(0);
+        expect(store.COOL_PEAK_DETECT_TIME).toBe(0);
+        expect(store.HEAT_PEAK_DETECT_TIME).toBe(0);
     });
 
     it('clears the extended settings correctly', async () => {
@@ -31,7 +43,16 @@ describe('ExtendedSettingsStore', () => {
         expect(store.hasExtendedSettings).toBe(false);
         expect(store.glycol).toBe(false);
         expect(store.largeTFT).toBe(false);
-        // TODO - add similar checks for other state properties
+        expect(store.invertTFT).toBe(false);
+        expect(store.SETTINGS_CHOICE).toBe(0);
+        expect(store.MIN_COOL_OFF_TIME).toBe(0);
+        expect(store.MIN_HEAT_OFF_TIME).toBe(0);
+        expect(store.MIN_COOL_ON_TIME).toBe(0);
+        expect(store.MIN_HEAT_ON_TIME).toBe(0);
+        expect(store.MIN_COOL_OFF_TIME_FRIDGE_CONSTANT).toBe(0);
+        expect(store.MIN_SWITCH_TIME).toBe(0);
+        expect(store.COOL_PEAK_DETECT_TIME).toBe(0);
+        expect(store.HEAT_PEAK_DETECT_TIME).toBe(0);
     });
 
     it('gets extended settings correctly', async () => {
@@ -49,12 +70,18 @@ describe('ExtendedSettingsStore', () => {
 
         await store.getExtendedSettings();
 
-        expect(store.glycol).toBe(true);
-        expect(store.largeTFT).toBe(true);
-        expect(store.invertTFT).toBe(true);
-        expect(store.SETTINGS_CHOICE).toBe(1);
-        expect(store.MIN_COOL_OFF_TIME).toBe(100);
-        // TODO - add similar checks for other state properties
+        expect(store.glycol).toBe(fixture.extendedSettings.glycol);
+        expect(store.largeTFT).toBe(fixture.extendedSettings.largeTFT);
+        expect(store.invertTFT).toBe(fixture.extendedSettings.invertTFT);
+        expect(store.SETTINGS_CHOICE).toBe(fixture.minTimes.SETTINGS_CHOICE);
+        expect(store.MIN_COOL_OFF_TIME).toBe(fixture.minTimes.MIN_COOL_OFF_TIME);
+        expect(store.MIN_HEAT_OFF_TIME).toBe(fixture.minTimes.MIN_HEAT_OFF_TIME);
+        expect(store.MIN_COOL_ON_TIME).toBe(fixture.minTimes.MIN_COOL_ON_TIME);
+        expect(store.MIN_HEAT_ON_TIME).toBe(fixture.minTimes.MIN_HEAT_ON_TIME);
+        expect(store.MIN_COOL_OFF_TIME_FRIDGE_CONSTANT).toBe(fixture.minTimes.MIN_COOL_OFF_TIME_FRIDGE_CONSTANT);
+        expect(store.MIN_SWITCH_TIME).toBe(fixture.minTimes.MIN_SWITCH_TIME);
+        expect(store.COOL_PEAK_DETECT_TIME).toBe(fixture.minTimes.COOL_PEAK_DETECT_TIME);
+        expect(store.HEAT_PEAK_DETECT_TIME).toBe(fixture.minTimes.HEAT_PEAK_DETECT_TIME);
     });
 
     it('sets extended settings correctly', async () => {
@@ -81,7 +108,13 @@ describe('ExtendedSettingsStore', () => {
         expect(store.invertTFT).toBe(true);
         expect(store.SETTINGS_CHOICE).toBe(1);
         expect(store.MIN_COOL_OFF_TIME).toBe(100);
-        // add similar checks for other state properties
+        expect(store.MIN_HEAT_OFF_TIME).toBe(200);
+        expect(store.MIN_COOL_ON_TIME).toBe(300);
+        expect(store.MIN_HEAT_ON_TIME).toBe(400);
+        expect(store.MIN_COOL_OFF_TIME_FRIDGE_CONSTANT).toBe(500);
+        expect(store.MIN_SWITCH_TIME).toBe(600);
+        expect(store.COOL_PEAK_DETECT_TIME).toBe(700);
+        expect(store.HEAT_PEAK_DETECT_TIME).toBe(800);
 
         // Check that the API was called with the correct parameters
         expect(mockPut).toHaveBeenCalledWith({
