@@ -124,7 +124,7 @@ export class BrewPiSensor {
             device_spec.a = this.address;
         // if(this.device_alias.length > 0)
         //     device_spec.r = this.device_alias;
-        if(this.child_id.length > 0)
+        if(this.hardware_int === 7)
             device_spec.n = this.child_id;
         if(this.calibrate_adjust !== 0 && (this.hardware_int === 2 || this.hardware_int === 5 || this.hardware_int === 6))
             device_spec.j = this.calibrate_adjust;
