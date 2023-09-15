@@ -148,7 +148,7 @@
     "upstream_settings_msg": "How this controller communicates with Fermentrack",
     "hostname": "Hostname",
     "port": "Port",
-    "username": "Username",
+    "username": "Fermentrack Username",
     "api_key": "API Key",
     "device_id": "Device ID",
     "not_yet_registered": "(Not yet registered)",

@@ -7,9 +7,11 @@
       <div class="py-4">
 
         <div>
-          <form class="space-y-8 divide-y divide-gray-200" @submit.prevent="submitForm">
+          <form class="space-y-8 divide-y divide-gray-200" @submit.prevent="submitForm" data-form-type="other">
             <div class="space-y-8 divide-y divide-gray-200">
 
+              <!-- TODO - Fix the error messages below. -->
+              <!--  Currently, they show up when the user is typing into the form, rather than after a registration attempt is made -->
               <div v-if="UpstreamSettingsStore.hasUpstreamSettings">
                 <!-- Display errors from the upstream registration process -->
                 <div class="border-l-4 border-red-400 bg-red-50 p-4 mb-4 mt-4" v-if="UpstreamSettingsStore.upstreamRegistrationError === 1 || UpstreamSettingsStore.upstreamRegistrationError === 5 || UpstreamSettingsStore.upstreamRegistrationError === 6">
@@ -132,30 +134,31 @@
 
                 <div>
                   <h3 class="text-lg font-medium leading-6 text-gray-900">{{ $t("upstream_settings.upstream_settings_header") }}</h3>
-                  <!-- TODO - Change "Fermentrack" out here if Lee ever adds support for REST controllers to BPR -->
                   <p class="mt-1 text-sm text-gray-500">{{ $t("upstream_settings.upstream_settings_msg") }}</p>
                 </div>
+
+                <!-- TODO - Make it so there is a "default options" setting for Fermentrack.net rather than having the user enter their username and API key -->
 
                 <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                   <div class="sm:col-span-4">
                     <label for="hostname" class="block text-sm font-medium text-gray-700">{{ $t("upstream_settings.hostname") }}</label>
                     <div class="mt-1 flex rounded-md shadow-sm">
                       <span class="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-gray-500 sm:text-sm">http://</span>
-                      <input type="text" name="hostname" v-model="UpstreamSettingsStore.upstreamHost" id="hostname" autocomplete="hostname" class="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+                      <input type="text" name="hostname" v-model="UpstreamSettingsStore.upstreamHost" id="hostname" class="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
                     </div>
                   </div>
 
                   <div class="sm:col-span-4">
                     <label for="port" class="block text-sm font-medium text-gray-700">{{ $t("upstream_settings.port") }}</label>
                     <div class="mt-1">
-                      <input id="port" name="port" v-model="UpstreamSettingsStore.upstreamPort" type="text" autocomplete="port" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+                      <input id="port" name="port" v-model="UpstreamSettingsStore.upstreamPort" type="text" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
                     </div>
                   </div>
 
                   <div class="sm:col-span-4" v-if="UpstreamSettingsStore.deviceID === ''">
                     <label for="username" class="block text-sm font-medium text-gray-700">{{ $t("upstream_settings.username") }}</label>
                     <div class="mt-1">
-                      <input type="text" name="username" v-model="UpstreamSettingsStore.username" id="username" autocomplete="username" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+                      <input type="text" name="username" v-model="UpstreamSettingsStore.username" id="username" data-form-type="other" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
                     </div>
                   </div>
 
@@ -170,7 +173,7 @@
                     </div>
                   </div>
 
-                  <div class="sm:col-span-4">
+                  <div class="sm:col-span-4" v-if="UpstreamSettingsStore.deviceID.length > 0">
                     <div class="relative flex items-start">
                       <div class="flex h-5 items-center">
                         <input id="resetDeviceID" name="resetDeviceID" v-model="resetDeviceID" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
