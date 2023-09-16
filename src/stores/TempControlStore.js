@@ -63,7 +63,7 @@ export const useTempControlStore = defineStore("TempControlStore", () => {
         try {
             const remote_api = mande("/api/mode/", genCSRFOptions());
             const response = await remote_api.put({
-                mode: new_mode,  // Char (String)
+                newMode: new_mode,  // Char (String)
                 setPoint: new_setpoint,  // Double
             });
             if (response && response.message) {
@@ -73,6 +73,7 @@ export const useTempControlStore = defineStore("TempControlStore", () => {
                 setModeError.value = true;
             }
         } catch (error) {
+            // TODO - Raise error, or otherwise process
             await clearTempInfo();
             setModeError.value = true;
         }

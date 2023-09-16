@@ -79,8 +79,8 @@
                     <!-- Set Point -->
                     <div class="relative border border-gray-300 rounded-md px-3 py-2 my-3 shadow-sm focus-within:ring-1 focus-within:ring-indigo-600 focus-within:border-indigo-600"
                          v-if="new_mode === 'b' || new_mode === 'f'">
-                      <label for="set_point" class="absolute -top-2 left-2 -mt-px inline-block px-1 bg-white text-xs font-medium text-gray-900">{{ $t("dashboard.mode_change.set_point_header") }}</label>
-                      <input type="text" ref="set_point" v-model="set_point" id="set_point" class="border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm flex-1" placeholder="62.0" />
+                      <label for="set_point_ele" class="absolute -top-2 left-2 -mt-px inline-block px-1 bg-white text-xs font-medium text-gray-900">{{ $t("dashboard.mode_change.set_point_header") }}</label>
+                      <input type="text" ref="set_point_ele" v-model="set_point" id="set_point_ele" class="border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm flex-1" placeholder="62.0" />
                       <span class="flex-none w-auto min-w-max max-w-max">&deg; {{ TempControlStore.cc.tempFormat }}</span>
                     </div>
 
@@ -204,7 +204,7 @@ const $loading = useLoading({});
 
 // submit the form to our backend api
 async function submitForm() {
-  let setpoint_sendable = parseFloat(set_point);
+  let setpoint_sendable = parseFloat(set_point.value);
 
   // Validate the information in the form
   form_error_message.value = "";
