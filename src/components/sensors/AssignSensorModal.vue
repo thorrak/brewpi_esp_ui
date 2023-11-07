@@ -275,7 +275,7 @@ export default {
 
       // Update the calibration, but only if it's a temperature sensor
       if(function_sendable === 5 || function_sendable === 6 || function_sendable === 9)
-        device_definition.c = calibration_sendable;
+        device_definition.j = calibration_sendable;
 
       if(device_definition.i === -1) {
         // This is a new device - we need to assign it a device index
