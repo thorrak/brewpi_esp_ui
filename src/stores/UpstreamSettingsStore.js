@@ -47,15 +47,14 @@ export const useUpstreamSettingsStore = defineStore("UpstreamSettingsStore", () 
         upstreamRegistrationError.value = 7;
     }
 
-    async function setUpstreamSettings(upstreamHostParam, upstreamPortParam, resetDeviceID, usernameParam, apiKeyParam) {
+    async function setUpstreamSettings(upstreamHostParam, upstreamPortParam, usernameParam, apiKeyParam) {
         try {
             const remote_api = mande("/api/upstream/", genCSRFOptions());
             const response = await remote_api.put({
                 upstreamHost: upstreamHostParam,  // String
                 upstreamPort: Number(upstreamPortParam),  // Integer
-                resetDeviceID: resetDeviceID, // Boolean
                 username: usernameParam, // String
-                apiKey: apiKeyParam, // String
+                // apiKey: apiKeyParam, // String
                 // deviceID: deviceID, // Not processed in the firmware currently
             });
             if (response && response.message) {
@@ -66,7 +65,6 @@ export const useUpstreamSettingsStore = defineStore("UpstreamSettingsStore", () 
                 this.hasUpstreamSettings = true;
                 this.upstreamHost = upstreamHostParam;
                 this.upstreamPort = Number(upstreamPortParam);
-                this.resetDeviceID = resetDeviceID;
                 this.username = usernameParam;
                 this.apiKey = apiKeyParam;
             } else {

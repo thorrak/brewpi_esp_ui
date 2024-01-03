@@ -188,18 +188,6 @@
                     </div>
                   </div>
 
-                  <div class="sm:col-span-4" v-if="UpstreamSettingsStore.deviceID.length > 0">
-                    <div class="relative flex items-start">
-                      <div class="flex h-5 items-center">
-                        <input id="resetDeviceID" name="resetDeviceID" v-model="resetDeviceID" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
-                      </div>
-                      <div class="ml-3 text-sm">
-                        <label for="resetDeviceID" class="font-medium text-gray-700">{{ $t("upstream_settings.reset_device_id") }}</label>
-                        <p class="text-gray-500">{{ $t("upstream_settings.reset_device_id_msg") }}</p>
-                      </div>
-                    </div>
-                  </div>
-
                 </div>
               </div>
             </div>
@@ -226,7 +214,6 @@ import {onMounted, ref} from "vue";
 
 const UpstreamSettingsStore = useUpstreamSettingsStore();  // Updated in UpstreamSettings.vue
 
-const resetDeviceID = ref(false);
 let loader;
 
 
