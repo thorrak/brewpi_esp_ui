@@ -118,6 +118,19 @@
                     </div>
                   </div>
                 </div>
+                <div class="border-l-4 border-green-400 bg-green-50 p-4 mb-4 mt-4" v-else-if="UpstreamSettingsStore.upstreamRegistrationError === 0">
+                  <!-- Note about telnet being disabled -->
+                  <div class="flex">
+                    <div class="flex-shrink-0">
+                      <InformationCircleIcon class="h-5 w-5 text-green-400" aria-hidden="true" />
+                    </div>
+                    <div class="ml-3">
+                      <p class="text-sm text-green-700">
+                        {{ $t("upstream_settings.telnet_interface_unavailable") }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
                 <div class="border-l-4 border-red-400 bg-red-50 p-4 mb-4 mt-4" v-else>
                   <!-- Error code not captured. Means that Fermentrack is probably more recent than this firmware -->
                   <div class="flex">
@@ -143,7 +156,9 @@
                   <div class="sm:col-span-4">
                     <label for="hostname" class="block text-sm font-medium text-gray-700">{{ $t("upstream_settings.hostname") }}</label>
                     <div class="mt-1 flex rounded-md shadow-sm">
-                      <span class="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-gray-500 sm:text-sm">http://</span>
+                      <!-- Note - There is no actual differentiation between HTTPS and HTTP as the controller currently only can use HTTP for outgoing connections -->
+                      <span class="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-gray-500 sm:text-sm" v-if="UpstreamSettingsStore.upstreamPort === 443">http://</span>
+                      <span class="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-gray-500 sm:text-sm" v-else>http://</span>
                       <input type="text" name="hostname" v-model="UpstreamSettingsStore.upstreamHost" id="hostname" class="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
                     </div>
                   </div>
@@ -202,65 +217,62 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { useUpstreamSettingsStore } from "@/stores/UpstreamSettingsStore";
 import { ExclamationTriangleIcon, InformationCircleIcon } from '@heroicons/vue/24/outline'
+import { useLoading } from "vue-loading-overlay";
+const $loading = useLoading({});
+import {onMounted, ref} from "vue";
 
-export default {
-  name: "UpstreamSettings",
-  setup() {
-    return {
-      UpstreamSettingsStore: useUpstreamSettingsStore()  // Updated in UpstreamSettings.vue
-    }
-  },
-  components: {
-    ExclamationTriangleIcon,
-    InformationCircleIcon,
-  },
+const UpstreamSettingsStore = useUpstreamSettingsStore();  // Updated in UpstreamSettings.vue
 
-  data() {
-    return {
-      resetDeviceID: false
-    }
-  },
-  mounted() {
-    // Retrieve initial data
-    this.UpstreamSettingsStore.getUpstreamSettings();
-  },
-  methods: {
-    async submitForm() {
-      // Validate the information in the form
-      if(this.UpstreamSettingsStore.upstreamHost.length >= 127) {
-        // TODO - Add feedback here
-        // this.form_error_message = "Hostname is invalid. Must be less than 127 characters.";
-        return;
-      }
+const resetDeviceID = ref(false);
+let loader;
 
-      if(parseInt(this.UpstreamSettingsStore.upstreamPort) >= 65535 || parseInt(this.UpstreamSettingsStore.upstreamPort) <= 10) {
-        this.form_error_message = "Port number must be between 10 and 65535 (but is typically 80)";
-        return;
-      }
 
-      if(this.UpstreamSettingsStore.username.length >= 127) {
-        // TODO - Add feedback here
-        // this.form_error_message = "Username is invalid. Must be less than 127 characters.";
-        return;
-      }
+onMounted(() => {
+  // Retrieve initial data
+  loader = $loading.show({});
+  UpstreamSettingsStore.getUpstreamSettings().then(() => {
+    loader.hide();
+  }).catch(() => {
+    loader.hide();
+  });
+});
 
-      let loader = this.$loading.show({});
-      // TODO - Convert this from await to a promise
-      await this.UpstreamSettingsStore.setUpstreamSettings(this.UpstreamSettingsStore.upstreamHost, this.UpstreamSettingsStore.upstreamPort, this.resetDeviceID, this.UpstreamSettingsStore.username);
-      await this.UpstreamSettingsStore.getUpstreamSettings(); // Once we've set the upstream settings, let's retrieve them to make sure they saved
-      loader.hide();
-      // TODO - Add some kind of error checking/handling here
 
-      // this.updateSuccessful = res.ok;
-      // this.alertOpen = true;
-      // this.UpstreamSettingsStore.saveUpstreamSettings();
-    },
 
+async function submitForm() {
+  // Validate the information in the form
+  if(UpstreamSettingsStore.upstreamHost.length >= 127) {
+    // TODO - Add feedback here
+    // this.form_error_message = "Hostname is invalid. Must be less than 127 characters.";
+    return;
   }
+
+  if(parseInt(UpstreamSettingsStore.upstreamPort) >= 65535 || parseInt(UpstreamSettingsStore.upstreamPort) <= 10) {
+    this.form_error_message = "Port number must be between 10 and 65535 (but is typically 80)";
+    return;
+  }
+
+  if(UpstreamSettingsStore.username.length >= 127) {
+    // TODO - Add feedback here
+    // this.form_error_message = "Username is invalid. Must be less than 127 characters.";
+    return;
+  }
+
+  loader = $loading.show({});
+  // TODO - Convert this from await to a promise
+  await UpstreamSettingsStore.setUpstreamSettings(UpstreamSettingsStore.upstreamHost, UpstreamSettingsStore.upstreamPort, UpstreamSettingsStore.username, UpstreamSettingsStore.apiKey);
+  await UpstreamSettingsStore.getUpstreamSettings(); // Once we've set the upstream settings, let's retrieve them to make sure they saved
+  loader.hide();
+  // TODO - Add some kind of error checking/handling here
+
+  // this.updateSuccessful = res.ok;
+  // this.alertOpen = true;
+  // this.UpstreamSettingsStore.saveUpstreamSettings();
 }
+
 </script>
 
 <style scoped>
