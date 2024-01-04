@@ -6,6 +6,8 @@ import { ref } from 'vue';
 export const useUpstreamSettingsStore = defineStore("UpstreamSettingsStore", () => {
     const hasUpstreamSettings = ref(false);
     const upstreamSettingsError = ref(false);
+    const loadedUpstreamSettingsFromDevice = ref(false);
+    const awaitingRegistration = ref(false);
     const upstreamHost = ref("");
     const upstreamPort = ref(0);
     const username = ref("");
@@ -26,6 +28,10 @@ export const useUpstreamSettingsStore = defineStore("UpstreamSettingsStore", () 
                 username.value = response.username;
                 apiKey.value = response.apiKey;
                 upstreamRegistrationError.value = response.upstreamRegistrationError;
+
+                // Since the form edits the store directly, cache if we loaded the settings from the device (so we
+                // know if there are settings only because the user is typing them in)
+                loadedUpstreamSettingsFromDevice.value = response.upstreamHost.length > 0;
 
             } else {
                 await clearUpstreamSettings();
@@ -67,6 +73,10 @@ export const useUpstreamSettingsStore = defineStore("UpstreamSettingsStore", () 
                 this.upstreamPort = Number(upstreamPortParam);
                 this.username = usernameParam;
                 this.apiKey = apiKeyParam;
+
+                // If we were unsetting the host or username, we aren't waiting for registration
+                awaitingRegistration.value = (this.upstreamHost.length > 0 && this.username.length > 0);
+
             } else {
                 await clearUpstreamSettings();
                 upstreamSettingsError.value = true;
@@ -77,5 +87,5 @@ export const useUpstreamSettingsStore = defineStore("UpstreamSettingsStore", () 
         }
     }
 
-    return { hasUpstreamSettings, upstreamSettingsError, upstreamHost, upstreamPort, username, apiKey, upstreamRegistrationError, deviceID, getUpstreamSettings, clearUpstreamSettings, setUpstreamSettings };
+    return { hasUpstreamSettings, upstreamSettingsError, awaitingRegistration, loadedUpstreamSettingsFromDevice, upstreamHost, upstreamPort, username, apiKey, upstreamRegistrationError, deviceID, getUpstreamSettings, clearUpstreamSettings, setUpstreamSettings };
 });

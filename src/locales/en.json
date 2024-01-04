@@ -76,7 +76,7 @@
       "reset_header":"Reset Information",
       "reset_print":"Reason: {reason}, Description: {description}",
       "heap_header":"Heap Information",
-      "heap_print":"Free Heap: {free_heap}, Max: {HeapInfoStore.max_heap}, Frags: {frags}"
+      "heap_print":"Free Heap: {free_heap}, Max: {max_heap}, Frags: {frags}"
     }
   },
   "dashboard":{
@@ -143,6 +143,7 @@
     "waiting_to_register_error": "Device is waiting to register with Fermentrack. Please wait up to 3 minutes and refresh this page.",
     "unable_to_reach_fermentrack_error": "Controller is unable to reach Fermentrack. Please check that Fermentrack is accessible at the specified hostname/port.",
     "successful_registration_msg": "Controller is successfully registered with Fermentrack",
+    "telnet_interface_unavailable": "The telnet interface (for legacy Fermentrack/Brewpi-Remix) is disabled while registered with Fermentrack for REST control",
     "unknown error": "An unknown error was sent by Fermentrack. This most likely means that either the controller firmware or the version of Fermentrack is out of date. Please update the controller firmware and/or Fermentrack and try again.",
     "upstream_settings_header": "Upstream Settings",
     "upstream_settings_msg": "How this controller communicates with Fermentrack",
@@ -153,7 +154,8 @@
     "device_id": "Device ID",
     "not_yet_registered": "(Not yet registered)",
     "reset_device_id": "Reset Device ID",
-    "reset_device_id_msg": "Delete device ID and re-register with upstream. Warning - cannot be undone!"
+    "reset_device_id_msg": "Delete device ID and re-register with upstream. Warning - cannot be undone!",
+    "reset_registration": "Reset Registration"
   },
   "extended_settings": {
     "controller_settings": "Controller Settings",
