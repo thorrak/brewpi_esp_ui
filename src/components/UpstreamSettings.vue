@@ -200,6 +200,13 @@
                     </div>
                   </div>
 
+                  <div class="sm:col-span-4">
+                    <label for="deviceid" class="block text-sm font-medium text-gray-700">GUID</label>
+                    <div class="mt-1">
+                      <span>{{ UpstreamSettingsStore.guid }}</span>
+                    </div>
+                  </div>
+
                 </div>
               </div>
             </div>

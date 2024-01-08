@@ -12,6 +12,7 @@ export const useUpstreamSettingsStore = defineStore("UpstreamSettingsStore", () 
     const upstreamPort = ref(0);
     const username = ref("");
     const apiKey = ref("");
+    const guid = ref("");
     const upstreamRegistrationError = ref(7);
     const deviceID = ref("");
 
@@ -27,6 +28,7 @@ export const useUpstreamSettingsStore = defineStore("UpstreamSettingsStore", () 
                 deviceID.value = response.deviceID;
                 username.value = response.username;
                 apiKey.value = response.apiKey;
+                guid.value = response.guid;
                 upstreamRegistrationError.value = response.upstreamRegistrationError;
 
                 // Since the form edits the store directly, cache if we loaded the settings from the device (so we
@@ -50,6 +52,7 @@ export const useUpstreamSettingsStore = defineStore("UpstreamSettingsStore", () 
         deviceID.value = "";
         username.value = "";
         apiKey.value = "";
+        guid.value = "";
         upstreamRegistrationError.value = 7;
     }
 
@@ -87,5 +90,20 @@ export const useUpstreamSettingsStore = defineStore("UpstreamSettingsStore", () 
         }
     }
 
-    return { hasUpstreamSettings, upstreamSettingsError, awaitingRegistration, loadedUpstreamSettingsFromDevice, upstreamHost, upstreamPort, username, apiKey, upstreamRegistrationError, deviceID, getUpstreamSettings, clearUpstreamSettings, setUpstreamSettings };
+    return {
+        hasUpstreamSettings,
+        upstreamSettingsError,
+        awaitingRegistration,
+        loadedUpstreamSettingsFromDevice,
+        upstreamHost,
+        upstreamPort,
+        username,
+        apiKey,
+        guid,
+        upstreamRegistrationError,
+        deviceID,
+
+        getUpstreamSettings,
+        clearUpstreamSettings,
+        setUpstreamSettings };
 });
