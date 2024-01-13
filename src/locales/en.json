@@ -184,7 +184,7 @@
     "min_cool_on_time_desc": "Minimum amount of time (in seconds) that the cooling must remain on before turning off again",
     "min_heat_on_time": "Min Heat On Time",
     "min_heat_on_time_desc": "Minimum amount of time (in seconds) that the heating must remain on before turning off again",
-    "min_cool_off_time_fridge_constant": "",
+    "min_cool_off_time_fridge_constant": "Min Cool Off Time (Fridge Constant mode)",
     "min_cool_off_time_fridge_constant_desc": "Minimum amount of time (in seconds) that the cooling must remain off before turning on again when in \"fridge constant\" mode",
     "min_switch_time": "Min Switch Time",
     "min_switch_time_desc": "Minimum amount of time (in seconds) to wait before switching from heating to cooling (or vice versa)",
