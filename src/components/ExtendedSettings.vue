@@ -231,11 +231,10 @@ import { i18n } from "@/main.js";
 import { onMounted, ref } from "vue";
 import { useLoading } from "vue-loading-overlay";
 
-// TODO - Translate the below
 const minimumTimesSets = [
-  { title: i18n.global.t('extended_settings.set_defaults_title'), description: i18n.global.t('extended_settings.set_defaults_desc'), current: true, value: 0 },
-  { title: i18n.global.t('extended_settings.set_low_delay_title'), description: i18n.global.t('extended_settings.set_low_delay_desc'), current: false, value: 1 },
-  { title: i18n.global.t('extended_settings.set_custom_times_title'), description: i18n.global.t('extended_settings.set_custom_times_desc'), current: false, value: 2 },
+  { title: i18n.global.t('extended_settings.set_defaults_title'), description: i18n.global.t('extended_settings.set_defaults_desc'), value: 0 },
+  { title: i18n.global.t('extended_settings.set_low_delay_title'), description: i18n.global.t('extended_settings.set_low_delay_desc'), value: 1 },
+  { title: i18n.global.t('extended_settings.set_custom_times_title'), description: i18n.global.t('extended_settings.set_custom_times_desc'), value: 2 },
 ]
 
 const $loading = useLoading({});
