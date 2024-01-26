@@ -135,6 +135,7 @@
   },
   "upstream_settings": {
     "fermentrack_settings": "Fermentrack Settings",
+    "fermentrack_settings_desc": "How this controller communicates with Fermentrack",
     "missing_data_error": "There was data missing in the registration message which is typically set internally by the controller. This most likely means that either the controller firmware or the version of Fermentrack is out of date. Please update the controller firmware and/or Fermentrack and try again.",
     "invalid_username_error": "Username is invalid on the targeted Fermentrack install. Please check the username and try again.",
     "bad_api_key_error": "API Key does not match a valid brewhouse on the targeted Fermentrack install. Please check the API key (or enter a valid username) and try again.",
@@ -145,17 +146,24 @@
     "successful_registration_msg": "Controller is successfully registered with Fermentrack",
     "telnet_interface_unavailable": "The telnet interface (for legacy Fermentrack/Brewpi-Remix) is disabled while registered with Fermentrack for REST control",
     "unknown error": "An unknown error was sent by Fermentrack. This most likely means that either the controller firmware or the version of Fermentrack is out of date. Please update the controller firmware and/or Fermentrack and try again.",
-    "upstream_settings_header": "Upstream Settings",
-    "upstream_settings_msg": "How this controller communicates with Fermentrack",
     "hostname": "Hostname",
     "port": "Port",
     "username": "Fermentrack Username",
+    "ft_net_username": "Fermentrack.net Username",
     "api_key": "API Key",
     "device_id": "Device ID",
     "not_yet_registered": "(Not yet registered)",
     "reset_device_id": "Reset Device ID",
     "reset_device_id_msg": "Delete device ID and re-register with upstream. Warning - cannot be undone!",
-    "reset_registration": "Reset Registration"
+    "reset_registration": "Reset Registration",
+    "upstream_presets": {
+      "legacy_fermentrack": "Legacy Fermentrack/Brewpi-Remix",
+      "legacy_fermentrack_desc": "Use this controller with the legacy Fermentrack / Brewpi-Remix telnet interface",
+      "fermentrack_net": "Fermentrack.net",
+      "fermentrack_net_desc": "Use Fermentrack.net to control this controller",
+      "fermentrack_local": "Fermentrack 2 (Local/Custom)",
+      "fermentrack_local_desc": "Use a local Fermentrack 2 instance (other than Fermentrack.net) to control this controller"
+    }
   },
   "extended_settings": {
     "controller_settings": "Controller Settings",

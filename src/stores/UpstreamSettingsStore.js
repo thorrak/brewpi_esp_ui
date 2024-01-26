@@ -3,6 +3,9 @@ import { mande } from 'mande'
 import { genCSRFOptions } from './CSRF';
 import { ref } from 'vue';
 
+export const ft_net_host = "www.fermentrack.net";
+export const ft_net_port = 80;
+
 export const useUpstreamSettingsStore = defineStore("UpstreamSettingsStore", () => {
     const hasUpstreamSettings = ref(false);
     const upstreamSettingsError = ref(false);
