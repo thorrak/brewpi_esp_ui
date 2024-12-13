@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { LoadingPlugin } from 'vue-loading-overlay';
-import { getBrowserLocales } from 'mixins/GetBrowserLocales'
+import { getBrowserLocales } from './mixins/GetBrowserLocales'
 
 import router from './router'
 import App from './App.vue'

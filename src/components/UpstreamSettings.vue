@@ -26,7 +26,7 @@
                         <p class="text-sm font-semibold">{{ selectedSettingSet.title }}</p>
                       </div>
                       <ListboxButton class="inline-flex items-center rounded-l-none rounded-r-md bg-indigo-600 p-2 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 focus:ring-offset-gray-50">
-                        <span class="sr-only">Change Fermentrack 2 contact setting</span>
+                        <span class="sr-only">Change Fermentrack 2 contact setting</span><!-- TODO - Translate -->
                         <ChevronDownIcon class="h-5 w-5 text-white" aria-hidden="true" />
                       </ListboxButton>
                     </div>

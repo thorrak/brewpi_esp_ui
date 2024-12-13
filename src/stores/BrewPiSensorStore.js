@@ -90,5 +90,22 @@ export const useBrewPiSensorStore = defineStore("BrewPiSensorStore", () => {
         return findDeviceByFunction(device_function) != null;
     }
 
-    return { devices, loaded, devicesError, deviceUpdateError, getDevices, sendDeviceDefinition, clearDevices, findNextDeviceIndex, findDeviceByFunction, hasDeviceWithFunction };
+    function getLowerMacAddress(macAddress) {
+        const macAddressParts = macAddress.split(':').map(part => parseInt(part, 16));
+        macAddressParts[0] -= 1; // Decrement the first byte by 1
+        return macAddressParts.map(part => part.toString(16).padStart(2, '0')).join(':');
+    }
+
+    function lowerMacAddressInDevices(targetMac) {
+        const lowerMac = getLowerMacAddress(targetMac);
+        for (const device of devices.value) {
+            if (device.address === lowerMac) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    return { devices, loaded, devicesError, deviceUpdateError, getDevices, sendDeviceDefinition, clearDevices, findNextDeviceIndex, findDeviceByFunction, hasDeviceWithFunction, getLowerMacAddress, lowerMacAddressInDevices };
 });
