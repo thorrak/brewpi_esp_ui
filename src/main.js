@@ -11,8 +11,11 @@ import 'vue-loading-overlay/dist/css/index.css';
 
 
 // import translations
+import de from "./locales/de.json";
 import es from "./locales/es.json";
 import en from "./locales/en.json";
+import nl from "./locales/nl.json";
+import pt from "./locales/pt.json";
 
 // configure i18n
 import { createI18n } from "vue-i18n";
@@ -21,7 +24,7 @@ export const i18n = createI18n({
     // legacy: false,
     locale: getBrowserLocales({ languageCodeOnly: true })[0] || "en",
     fallbackLocale: "en",
-    messages: { es, en },
+    messages: { de, es, en, nl, pt },
 });
 
 
