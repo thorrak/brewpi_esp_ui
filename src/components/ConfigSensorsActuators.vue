@@ -107,8 +107,7 @@
                             <span v-else>{{ sensor.address }}</span>
                           </div>
                           <div class="text-gray-400" v-if="sensor.device_hardware === 'inkbird_bluetooth' && BrewPiSensorStore.lowerMacAddressInDevices(sensor.address)">
-                            <!-- TODO - Translate this -->
-                            (External Probe)
+                            ({{ $t('sensors.inkbird_external_probe') }})
                           </div>
 
                           <div class="text-gray-500" v-if="sensor.device_hardware === 'tplink_switch' || sensor.device_hardware === 'tilt'"><!-- TODO - Figure out how to internationalize alias here -->{{ sensor.device_alias }}</div>
@@ -124,8 +123,7 @@
                           <span v-else>{{ sensor.address }}</span>
                         </div>
                         <div class="text-gray-500" v-if="sensor.device_hardware === 'inkbird_bluetooth' && BrewPiSensorStore.lowerMacAddressInDevices(sensor.address)">
-                          <!-- TODO - Translate this -->
-                          (External Probe)
+                          ({{ $t('sensors.inkbird_external_probe') }})
                         </div>
                         <div class="text-gray-900" v-if="sensor.device_hardware === 'tplink_switch' || sensor.device_hardware === 'tilt'"><!-- TODO - Figure out how to internationalize alias here -->{{ sensor.device_alias }}</div>
                         <div class="text-gray-500" v-if="sensor.device_hardware === 'tplink_switch'">{{ sensor.address }}</div>

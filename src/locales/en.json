@@ -131,7 +131,8 @@
     "device_function_header":"Function",
     "refresh_devices_long":"Refresh Devices",
     "refresh_devices_short":"Refresh",
-    "pin_device_number":"Pin {pin_number}"
+    "pin_device_number":"Pin {pin_number}",
+    "inkbird_external_probe": "External Probe"
   },
   "upstream_settings": {
     "fermentrack_settings": "Fermentrack Settings",
