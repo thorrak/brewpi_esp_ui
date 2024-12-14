@@ -157,6 +157,9 @@
     "reset_device_id": "Reset Device ID",
     "reset_device_id_msg": "Delete device ID and re-register with upstream. Warning - cannot be undone!",
     "reset_registration": "Reset Registration",
+    "hostname_too_long_error": "Hostname is invalid. Must be less than 127 characters.",
+    "port_out_of_range_error": "Port number must be between 10 and 65535 (but is typically 80)",
+    "upstream_settings_sr_text": "Change Fermentrack 2 contact settings",
     "upstream_presets": {
       "legacy_fermentrack": "Legacy Fermentrack/Brewpi-Remix",
       "legacy_fermentrack_desc": "Use this controller with the legacy Fermentrack / Brewpi-Remix telnet interface",

@@ -20,7 +20,7 @@
                       {{ $t("about.uptime.firmware_version") }}
                     </th>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      BrewPi-ESP v{{ VersionInfoStore.fermenttempVersion }} ({{ VersionInfoStore.gitRevision }})
+                      BrewPi-ESP {{ VersionInfoStore.fermenttempVersion }} ({{ VersionInfoStore.gitRevision }})
                     </td>
                   </tr>
                   <tr>

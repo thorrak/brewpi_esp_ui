@@ -26,7 +26,7 @@
                         <p class="text-sm font-semibold">{{ selectedSettingSet.title }}</p>
                       </div>
                       <ListboxButton class="inline-flex items-center rounded-l-none rounded-r-md bg-indigo-600 p-2 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 focus:ring-offset-gray-50">
-                        <span class="sr-only">Change Fermentrack 2 contact setting</span><!-- TODO - Translate -->
+                        <span class="sr-only">{{ $t('upstream_settings.upstream_settings_sr_text') }}</span>
                         <ChevronDownIcon class="h-5 w-5 text-white" aria-hidden="true" />
                       </ListboxButton>
                     </div>
@@ -209,13 +209,11 @@
                       </div>
                       <span v-else-if="selectedSettingSet.value === 1">
                         <!-- Technically, this is currently incorrect, but if I convert to port 443 I can presume this is then valid -->
-                        <span v-if="ft_net_port === 443">https://</span>
-                        <span v-else>http://</span>
-                        {{ ft_net_host }}
+                        <span v-if="ft_net_port === 443">https://</span><span v-else>http://</span>{{ ft_net_host }}
                       </span>
                       <span v-else>
                         <!-- Effectively only shows when selectedSettingSet.value === 2 -->
-                        <span v-if="UpstreamSettingsStore.upstreamPort === 443">http://</span><span v-else>http://</span>{{ UpstreamSettingsStore.upstreamHost }}
+                        <span v-if="UpstreamSettingsStore.upstreamPort === 443">https://</span><span v-else>http://</span>{{ UpstreamSettingsStore.upstreamHost }}
                       </span>
                     </div>
                   </div>
@@ -342,13 +340,12 @@ async function submitForm() {
   }
 
   if(UpstreamSettingsStore.upstreamHost.length >= 127) {
-    // TODO - Internationalize this
-    this.form_error_message = "Hostname is invalid. Must be less than 127 characters.";
+    this.form_error_message = this.$t("upstream_settings.hostname_too_long_error");
     return;
   }
 
   if(parseInt(UpstreamSettingsStore.upstreamPort) >= 65535 || parseInt(UpstreamSettingsStore.upstreamPort) <= 10) {
-    this.form_error_message = "Port number must be between 10 and 65535 (but is typically 80)";
+    this.form_error_message = this.$t("upstream_settings.port_out_of_range_error");
     return;
   }
 
