@@ -89,7 +89,8 @@
                       <input type="text" ref="calibration" v-model="new_calibration" id="calibration" class="border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm flex-1" placeholder="0.0" />
                       <span class="flex-none w-auto min-w-max max-w-max">&deg; C <!-- TODO - Convert to/from celsius using Javascript --></span>
                     </div>
-                    <span v-if="new_function === 5 || new_function === 6 || new_function === 9" class="flex-none w-auto min-w-max max-w-max">{{ $t("sensors.assign_sensor_modal.calibration_offset_rounding_note") }}</span>
+                    <!-- Calibration Warning -->
+                    <span v-if="new_function === 5 || new_function === 6 || new_function === 9" class="flex-none w-auto min-w-max max-w-max" v-html="$t('sensors.assign_sensor_modal.calibration_offset_rounding_note')"></span>
 
                     <SwitchGroup as="div" class="flex items-center my-3" v-if="new_function !== 0 && sensor.hardware_int === 1">
                       <Switch v-model="new_invert" :class="[new_invert ? 'bg-indigo-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2']">
@@ -277,7 +278,7 @@ export default {
 
       // Update the calibration, but only if it's a temperature sensor
       if(function_sendable === 5 || function_sendable === 6 || function_sendable === 9)
-        device_definition.c = calibration_sendable;
+        device_definition.j = calibration_sendable;
 
       if(device_definition.i === -1) {
         // This is a new device - we need to assign it a device index
