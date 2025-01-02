@@ -106,7 +106,7 @@
                       </div>
                       <div class="ml-3">
                         <p class="text-sm text-red-700">
-                          {{ $t("upstream_settings.bad_api_key_error") }}
+                          {{ $t("upstream_settings.missing_brewhouse_error") }}
                         </p>
                       </div>
                     </div>
@@ -245,13 +245,12 @@
                     <div class="mt-1">
                       <span v-if="UpstreamSettingsStore.deviceID.length <= 0">{{ $t("upstream_settings.not_yet_registered") }}</span>
                       <span v-else>{{ UpstreamSettingsStore.deviceID }}</span>
-
-                      <!--                <input id="deviceid" name="deviceid" v-model="UpstreamSettingsStore.deviceID" type="text" autocomplete="deviceid" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" disabled />-->
                     </div>
                   </div>
 
-                  <div class="sm:col-span-4" v-if="UpstreamSettingsStore.hasUpstreamSettings">
-                    <label for="deviceid" class="block text-sm font-medium text-gray-700">GUID</label>
+                  <!-- Always display the Hardware GUID, as it is part of what is registered with Fermentrack -->
+                  <div class="sm:col-span-4">
+                    <label for="deviceid" class="block text-sm font-medium text-gray-700">{{ $t("upstream_settings.hardware_guid") }}</label>
                     <div class="mt-1">
                       <span>{{ UpstreamSettingsStore.guid }}</span>
                     </div>
