@@ -132,7 +132,7 @@
                         {{ $t("sitewide.brewpi_device_functions." + sensor.device_function) }}
                       </td>
                       <td class="relative whitespace-nowrap py-4 pl-3 pr-6 text-right text-sm font-medium">
-                        <AssignSensorModal :sensor="sensor" v-on:device-updated="refreshDevices" />
+                        <AssignSensorModal :sensor="sensor" v-on:device-updated="delayedRefreshDevices" />
                       </td>
                     </tr>
                     </tbody>
@@ -183,6 +183,18 @@ export default {
     }
   },
   methods: {
+    delayedRefreshDevices: async function() {
+      let loader = this.$loading.show({});
+
+      // Delay 5 seconds before executing the below to let the device store update on the controller
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      await this.BrewPiSensorStore.clearDevices();
+      await this.BrewPiSensorStore.getDevices();
+      this.updateDeviceFunctions();
+      loader.hide();
+
+    },
+
     refreshDevices: async function() {
       let loader = this.$loading.show({});
       await this.BrewPiSensorStore.clearDevices();
