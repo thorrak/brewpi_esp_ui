@@ -39,7 +39,7 @@ export const useBrewPiSensorStore = defineStore("BrewPiSensorStore", () => {
             const remote_api = mande("/api/devices/", genCSRFOptions());
             // newDeviceDefinition is assumed to be in the BrewPi native format
             const response = await remote_api.put(newDeviceDefinition);
-            deviceUpdateError.value = !(response && response.message);
+            deviceUpdateError.value = !(response && response.status);
         } catch (error) {
             deviceUpdateError.value = true;
         }

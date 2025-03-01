@@ -69,7 +69,7 @@ export const useUpstreamSettingsStore = defineStore("UpstreamSettingsStore", () 
                 // apiKey: apiKeyParam, // String
                 // deviceID: deviceID, // Not processed in the firmware currently
             });
-            if (response && response.message) {
+            if (response && response.status) {
                 // TODO - Make sure the response is successful
                 // TODO - Test once we add a check to make sure the response is successful
 

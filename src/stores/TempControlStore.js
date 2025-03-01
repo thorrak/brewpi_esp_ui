@@ -66,7 +66,7 @@ export const useTempControlStore = defineStore("TempControlStore", () => {
                 newMode: new_mode,  // Char (String)
                 setPoint: new_setpoint,  // Double
             });
-            if (response && response.message) {
+            if (response && response.status) {
                 setModeError.value = false;
             } else {
                 await clearTempInfo();

@@ -87,7 +87,7 @@ export const useExtendedSettingsStore = defineStore("ExtendedSettingsStore", () 
                 COOL_PEAK_DETECT_TIME: COOL_PEAK_DETECT_TIMEInput,
                 HEAT_PEAK_DETECT_TIME: HEAT_PEAK_DETECT_TIMEInput,
             });
-            if (response && response.message) {
+            if (response && response.status) {
                 // TODO - Check if the response is valid/a success
                 // TODO - Clear settings if the response is invalid/not a success
                 glycol.value = glycolInput;
