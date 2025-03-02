@@ -110,7 +110,7 @@
   </TransitionRoot>
 
   <TransitionRoot as="template" :show="alertOpen">
-    <Dialog as="div" class="fixed z-10 inset-0 overflow-y-auto" @close="alertOpen = false">
+    <Dialog as="div" class="fixed z-10 inset-0 overflow-y-auto" @close="closeAlert()">
       <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
           <DialogOverlay class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
@@ -152,7 +152,7 @@
             </div>
 
             <div class="mt-5 sm:mt-6">
-              <button type="button" class="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm" @click="alertOpen = false">
+              <button type="button" class="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm" @click="closeAlert()">
                 {{ $t("sitewide.close") }}
               </button>
             </div>
@@ -238,6 +238,13 @@ function popModal() {
     set_point.value = TempControlStore.tempInfo.BeerSet;
   form_error_message.value = "";
   isOpen.value = true;
+}
+
+function closeAlert() {
+  // There's almost certainly a better way to refactor all this, but for now, this works
+  // When the user closes the "alert" popup, we need to close BOTH the alert (alertOpen) and the modal (isOpen)
+  alertOpen.value = false;
+  isOpen.value = false;
 }
 
 </script>

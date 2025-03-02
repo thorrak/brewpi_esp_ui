@@ -55,30 +55,17 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { useTempControlStore } from "@/stores/TempControlStore";
 import { ExclamationTriangleIcon, InformationCircleIcon } from '@heroicons/vue/24/outline'
 import ModeChangeModal from "@/components/dashboard/ModeChangeModal.vue";
 
-export default {
-  name: "TempControlDashPanel",
-  components: {
-    ModeChangeModal,
-    ExclamationTriangleIcon,
-    InformationCircleIcon
-  },
-  setup() {
-    return {
-      TempControlStore: useTempControlStore()
-    }
-  },
-  methods: {
-    formatTemp(temp) {
+const TempControlStore = useTempControlStore();
+
+function formatTemp(temp) {
       const temp_num = Number.parseFloat(temp);
-      if(isNaN(temp_num)) return "--" + "&deg; " + this.TempControlStore.cc.tempFormat;
-      return temp_num.toFixed(1) + "&deg; " + this.TempControlStore.cc.tempFormat;
-    },
-  },
+  if (isNaN(temp_num)) return "--" + "&deg; " + TempControlStore.cc.tempFormat;
+  return temp_num.toFixed(1) + "&deg; " + TempControlStore.cc.tempFormat;
 }
 </script>
 
