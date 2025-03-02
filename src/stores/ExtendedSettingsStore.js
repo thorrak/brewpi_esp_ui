@@ -11,6 +11,7 @@ export const useExtendedSettingsStore = defineStore("ExtendedSettingsStore", () 
     const glycol = ref(false);
     const largeTFT = ref(false);
     const invertTFT = ref(false);
+    const resetScreenOnPin = ref(false);
 
     const SETTINGS_CHOICE = ref(0);
     const MIN_COOL_OFF_TIME = ref(0);
@@ -33,6 +34,7 @@ export const useExtendedSettingsStore = defineStore("ExtendedSettingsStore", () 
                 glycol.value = response.extendedSettings.glycol;
                 largeTFT.value = response.extendedSettings.largeTFT;
                 invertTFT.value = response.extendedSettings.invertTFT;
+                resetScreenOnPin.value = response.extendedSettings.resetScreenOnPin;
 
                 SETTINGS_CHOICE.value = response.minTimes.SETTINGS_CHOICE;
                 MIN_COOL_OFF_TIME.value = response.minTimes.MIN_COOL_OFF_TIME;
@@ -58,6 +60,7 @@ export const useExtendedSettingsStore = defineStore("ExtendedSettingsStore", () 
         glycol.value = false;
         largeTFT.value = false;
         invertTFT.value = false;
+        resetScreenOnPin.value = false;
 
         SETTINGS_CHOICE.value = 0;
         MIN_COOL_OFF_TIME.value = 0;
@@ -70,13 +73,14 @@ export const useExtendedSettingsStore = defineStore("ExtendedSettingsStore", () 
         HEAT_PEAK_DETECT_TIME.value = 0;
     }
 
-    async function setExtendedSettings(glycolInput, largeTFTInput, invertTFTInput, SETTINGS_CHOICEInput, MIN_COOL_OFF_TIMEInput, MIN_HEAT_OFF_TIMEInput, MIN_COOL_ON_TIMEInput, MIN_HEAT_ON_TIMEInput, MIN_COOL_OFF_TIME_FRIDGE_CONSTANTInput, MIN_SWITCH_TIMEInput, COOL_PEAK_DETECT_TIMEInput, HEAT_PEAK_DETECT_TIMEInput) {
+    async function setExtendedSettings(glycolInput, largeTFTInput, invertTFTInput, resetScreenOnPinInput, SETTINGS_CHOICEInput, MIN_COOL_OFF_TIMEInput, MIN_HEAT_OFF_TIMEInput, MIN_COOL_ON_TIMEInput, MIN_HEAT_ON_TIMEInput, MIN_COOL_OFF_TIME_FRIDGE_CONSTANTInput, MIN_SWITCH_TIMEInput, COOL_PEAK_DETECT_TIMEInput, HEAT_PEAK_DETECT_TIMEInput) {
         try {
             const remote_api = mande("/api/extended/", genCSRFOptions());
             const response = await remote_api.put({
                 glycol: glycolInput,
                 largeTFT: largeTFTInput,
                 invertTFT: invertTFTInput,
+                resetScreenOnPin: resetScreenOnPinInput,
                 SETTINGS_CHOICE: SETTINGS_CHOICEInput,
                 MIN_COOL_OFF_TIME: MIN_COOL_OFF_TIMEInput,
                 MIN_HEAT_OFF_TIME: MIN_HEAT_OFF_TIMEInput,
@@ -93,6 +97,7 @@ export const useExtendedSettingsStore = defineStore("ExtendedSettingsStore", () 
                 glycol.value = glycolInput;
                 largeTFT.value = largeTFTInput;
                 invertTFT.value = invertTFTInput;
+                resetScreenOnPin.value = resetScreenOnPinInput;
                 SETTINGS_CHOICE.value = SETTINGS_CHOICEInput;
                 MIN_COOL_OFF_TIME.value = MIN_COOL_OFF_TIMEInput;
                 MIN_HEAT_OFF_TIME.value = MIN_HEAT_OFF_TIMEInput;
@@ -113,5 +118,5 @@ export const useExtendedSettingsStore = defineStore("ExtendedSettingsStore", () 
         }
     }
 
-    return { hasExtendedSettings, extendedSettingsError, extendedSettingsUpdateError, glycol, largeTFT, invertTFT, SETTINGS_CHOICE, MIN_COOL_OFF_TIME, MIN_HEAT_OFF_TIME, MIN_COOL_ON_TIME, MIN_HEAT_ON_TIME, MIN_COOL_OFF_TIME_FRIDGE_CONSTANT, MIN_SWITCH_TIME, COOL_PEAK_DETECT_TIME, HEAT_PEAK_DETECT_TIME, getExtendedSettings, clearExtendedSettings, setExtendedSettings };
+    return { hasExtendedSettings, extendedSettingsError, extendedSettingsUpdateError, glycol, largeTFT, invertTFT, resetScreenOnPin, SETTINGS_CHOICE, MIN_COOL_OFF_TIME, MIN_HEAT_OFF_TIME, MIN_COOL_ON_TIME, MIN_HEAT_ON_TIME, MIN_COOL_OFF_TIME_FRIDGE_CONSTANT, MIN_SWITCH_TIME, COOL_PEAK_DETECT_TIME, HEAT_PEAK_DETECT_TIME, getExtendedSettings, clearExtendedSettings, setExtendedSettings };
 });

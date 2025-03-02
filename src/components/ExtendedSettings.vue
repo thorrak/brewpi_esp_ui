@@ -50,6 +50,18 @@
                   </SwitchLabel>
                 </SwitchGroup>
 
+                <!-- ResetScreenOnPin -->
+                <SwitchGroup as="div" class="flex items-center my-3">
+                  <Switch v-model="resetScreenOnPin" :class="[resetScreenOnPin ? 'bg-indigo-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2']">
+                    <span aria-hidden="true" :class="[resetScreenOnPin ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                  </Switch>
+                  <SwitchLabel as="span" class="ml-3">
+                    <span class="text-sm font-medium text-gray-900">{{ $t("extended_settings.reset_screen_on_pin") }}</span>
+                    <span class="text-sm text-gray-500 mx-1">{{ $t("extended_settings.reset_screen_on_pin_desc") }}</span>
+                  </SwitchLabel>
+                </SwitchGroup>
+
+
               </div>
 
               <div>
@@ -244,6 +256,7 @@ let ExtendedSettingsStore = useExtendedSettingsStore();  // Updated in ExtendedS
 let largeTFT = ref(false);
 let glycol = ref(false);
 let invertTFT = ref(false);
+let resetScreenOnPin = ref(false);
 let SETTINGS_CHOICE = ref(0);
 let MIN_COOL_OFF_TIME = ref(0);
 let MIN_HEAT_OFF_TIME = ref(0);
@@ -267,7 +280,7 @@ function submitForm() {
   // Nothing needed here for now, as the form is just switches
 
   let loader = $loading.show({});
-  ExtendedSettingsStore.setExtendedSettings(glycol.value, largeTFT.value, invertTFT.value, selectedSettingSet.value.value, MIN_COOL_OFF_TIME.value, MIN_HEAT_OFF_TIME.value, MIN_COOL_ON_TIME.value, MIN_HEAT_ON_TIME.value,
+  ExtendedSettingsStore.setExtendedSettings(glycol.value, largeTFT.value, invertTFT.value, resetScreenOnPin.value, selectedSettingSet.value.value, MIN_COOL_OFF_TIME.value, MIN_HEAT_OFF_TIME.value, MIN_COOL_ON_TIME.value, MIN_HEAT_ON_TIME.value,
       MIN_COOL_OFF_TIME_FRIDGE_CONSTANT.value, MIN_SWITCH_TIME.value, COOL_PEAK_DETECT_TIME.value, HEAT_PEAK_DETECT_TIME.value).then(() => {
         ExtendedSettingsStore.getExtendedSettings().then(() => {
           updateCachedSettings();
@@ -282,6 +295,7 @@ function submitForm() {
 function updateCachedSettings() {
   largeTFT.value = ExtendedSettingsStore.largeTFT;
   invertTFT.value = ExtendedSettingsStore.invertTFT;
+  resetScreenOnPin.value = ExtendedSettingsStore.resetScreenOnPin;
   glycol.value = ExtendedSettingsStore.glycol;
 
   SETTINGS_CHOICE.value = ExtendedSettingsStore.SETTINGS_CHOICE;

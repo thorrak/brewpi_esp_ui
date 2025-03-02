@@ -175,6 +175,8 @@
     "controller_settings_msg": "Controller-wide settings that impact operation",
     "rotate_tft": "Rotate TFT",
     "rotate_tft_desc": "(Rotates a TFT display if it is currently upside-down)",
+    "reset_screen_on_pin": "Reset Screen on Pin Toggle",
+    "reset_screen_on_pin_desc": "(Resets the screen when a relay pin toggles - useful if the screen frequently freezes or gets corrupted)",
     "min_times_header": "Minimum Times",
     "min_times_desc": "Temperature control compressor/heater protection delays",
     "min_times_set": "Minimum Times Set",
