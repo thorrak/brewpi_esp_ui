@@ -244,7 +244,7 @@
                     <label for="deviceid" class="block text-sm font-medium text-gray-700">{{ $t("upstream_settings.device_id") }}</label>
                     <div class="mt-1">
                       <span v-if="UpstreamSettingsStore.deviceID.length <= 0">{{ $t("upstream_settings.not_yet_registered") }}</span>
-                      <span v-else>{{ UpstreamSettingsStore.deviceID }}</span>
+                      <span v-else><a :href="device_uri" class="text-indigo-600">{{ UpstreamSettingsStore.deviceID }}</a></span>
                     </div>
                   </div>
 
@@ -280,7 +280,7 @@ import { useUpstreamSettingsStore, ft_net_host, ft_net_port } from "@/stores/Ups
 import { ExclamationTriangleIcon, InformationCircleIcon } from '@heroicons/vue/24/outline'
 import { useLoading } from "vue-loading-overlay";
 const $loading = useLoading({});
-import {onMounted, ref} from "vue";
+import {onMounted, ref, computed} from "vue";
 import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from "@headlessui/vue";
 import {CheckIcon, ChevronDownIcon} from "@heroicons/vue/20/solid";
 import {i18n} from "@/main";
@@ -377,6 +377,14 @@ async function clearRegistration() {
   // this.alertOpen = true;
   // this.UpstreamSettingsStore.saveUpstreamSettings();
 }
+
+const device_uri = computed(() => {
+  let http_protocol = "http://";
+  if(UpstreamSettingsStore.upstreamPort == 443)
+    http_protocol = "https://";
+  return http_protocol + UpstreamSettingsStore.upstreamHost + ":" + UpstreamSettingsStore.upstreamPort + "/device/tc/" + UpstreamSettingsStore.deviceID + "/";
+})
+
 
 </script>
 
