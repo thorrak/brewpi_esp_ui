@@ -18,8 +18,21 @@
 <!--            </div>-->
           </div>
 
-          <div class="border-l-4 border-red-400 bg-red-50 p-4 mt-8" v-if="!hasFridgeSensor">
-            <!-- If no fridge/chamber temp sensor is configured, show this warning -->
+          <!-- Glycol mode: Beer sensor is required, fridge sensor is not used -->
+          <div class="border-l-4 border-red-400 bg-red-50 p-4 mt-8" v-if="ExtendedSettingsStore.glycol && !hasBeerSensor">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <ExclamationTriangleIcon class="h-5 w-5 text-red-400" aria-hidden="true" />
+              </div>
+              <div class="ml-3">
+                <p class="text-sm text-red-700">
+                  {{ $t("sensors.no_beer_warning_glycol") }}
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Compressor mode: Fridge sensor is required -->
+          <div class="border-l-4 border-red-400 bg-red-50 p-4 mt-8" v-else-if="!ExtendedSettingsStore.glycol && !hasFridgeSensor">
             <div class="flex">
               <div class="flex-shrink-0">
                 <ExclamationTriangleIcon class="h-5 w-5 text-red-400" aria-hidden="true" />
@@ -31,8 +44,8 @@
               </div>
             </div>
           </div>
-          <div class="border-l-4 border-yellow-400 bg-yellow-50 p-4 mt-8" v-else-if="!hasBeerSensor">
-            <!-- If no beer temp sensor is configured, show this warning -->
+          <!-- Compressor mode: Beer sensor is optional but recommended -->
+          <div class="border-l-4 border-yellow-400 bg-yellow-50 p-4 mt-8" v-else-if="!ExtendedSettingsStore.glycol && !hasBeerSensor">
             <div class="flex">
               <div class="flex-shrink-0">
                 <ExclamationTriangleIcon class="h-5 w-5 text-yellow-400" aria-hidden="true" />
@@ -151,6 +164,7 @@
 
 <script>
 import { useBrewPiSensorStore } from "@/stores/BrewPiSensorStore";
+import { useExtendedSettingsStore } from "@/stores/ExtendedSettingsStore";
 import AssignSensorModal from "@/components/sensors/AssignSensorModal.vue";
 import { ExclamationTriangleIcon, InformationCircleIcon } from '@heroicons/vue/24/outline'
 import { ref } from "vue";
@@ -163,9 +177,11 @@ export default {
     InformationCircleIcon,
   },
   mounted() {
-    // Retrieve initial data
-    this.BrewPiSensorStore.getDevices().then((response) => {
-      this.updateDeviceFunctions();
+    // Retrieve initial data -- extended settings first so we don't display erroneous warnings
+    this.ExtendedSettingsStore.getExtendedSettings().then((response) => {
+      this.BrewPiSensorStore.getDevices().then((response) => {
+        this.updateDeviceFunctions();
+      });
     });
   },
   setup() {
@@ -176,6 +192,7 @@ export default {
 
     return {
       BrewPiSensorStore: useBrewPiSensorStore(),  // Updated in ConfigSensorsActuators.vue
+      ExtendedSettingsStore: useExtendedSettingsStore(),
       hasFridgeSensor,
       hasBeerSensor,
       hasHeatActuator,
