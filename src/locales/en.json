@@ -123,6 +123,7 @@
     "detected_devices_desc":"A list of all sensors & actuators detected by the controller.",
     "no_fridge_warning":"No fridge/chamber temperature sensor selected. No temperature control can take place.",
     "no_beer_warning":"No beer temperature sensor selected. Cannot use beer constant/profile control modes.",
+    "no_beer_warning_glycol":"No beer temperature sensor selected. Glycol mode requires a beer sensor for temperature control.",
     "no_relay_warning":"Neither a heat or cool switch/relay is selected. No temperature control can take place.",
     "no_heat_warning":"No heat switch/relay is selected - temperature control will be cooling only.",
     "no_cool_warning":"No cooling switch/relay is selected - temperature control will be heating only.",
@@ -173,6 +174,9 @@
   "extended_settings": {
     "controller_settings": "Controller Settings",
     "controller_settings_msg": "Controller-wide settings that impact operation",
+    "glycol_mode": "Glycol Mode",
+    "glycol_mode_desc": "(Modifies the controller to manage a glycol pump for temperature control rather than compressor-based cooling)",
+    "glycol_mode_warning": "Enabling Glycol Mode will stop any active temperature control. You will need to set a new control mode after saving this setting.",
     "rotate_tft": "Rotate TFT",
     "rotate_tft_desc": "(Rotates a TFT display if it is currently upside-down)",
     "reset_screen_on_pin": "Reset Screen on Pin Toggle",

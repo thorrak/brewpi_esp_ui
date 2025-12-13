@@ -28,15 +28,29 @@
 <!--                  </SwitchLabel>-->
 <!--                </SwitchGroup>-->
 
-<!--                <SwitchGroup as="div" class="flex items-center my-3">-->
-<!--                  <Switch v-model="glycol" :class="[glycol ? 'bg-indigo-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2']">-->
-<!--                    <span aria-hidden="true" :class="[glycol ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />-->
-<!--                  </Switch>-->
-<!--                  <SwitchLabel as="span" class="ml-3">-->
-<!--                    <span class="text-sm font-medium text-gray-900">Glycol Mode</span>-->
-<!--                    <span class="text-sm text-gray-500 mx-1">(Lowers wait times)</span>-->
-<!--                  </SwitchLabel>-->
-<!--                </SwitchGroup>-->
+                <SwitchGroup as="div" class="flex items-center my-3">
+                  <Switch v-model="glycol" :class="[glycol ? 'bg-indigo-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2']">
+                    <span aria-hidden="true" :class="[glycol ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']" />
+                  </Switch>
+                  <SwitchLabel as="span" class="ml-3">
+                    <span class="text-sm font-medium text-gray-900">{{ $t("extended_settings.glycol_mode") }}</span>
+                    <span class="text-sm text-gray-500 mx-1">{{ $t("extended_settings.glycol_mode_desc") }}</span>
+                  </SwitchLabel>
+                </SwitchGroup>
+
+                <div class="rounded-md bg-yellow-50 p-4 my-3" v-if="glycol && !ExtendedSettingsStore.glycol">
+                  <div class="flex">
+                    <div class="flex-shrink-0">
+                      <ExclamationTriangleIcon class="h-5 w-5 text-yellow-400" aria-hidden="true" />
+                    </div>
+                    <div class="ml-3">
+                      <h3 class="text-sm font-medium text-yellow-800">{{ $t("sitewide.warning") }}</h3>
+                      <div class="mt-2 text-sm text-yellow-700">
+                        <p>{{ $t("extended_settings.glycol_mode_warning") }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
                 <!-- InvertTFT -->
                 <!-- TODO - hide this if using an IIC display -->

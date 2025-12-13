@@ -165,7 +165,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { i18n } from "@/main.js";
 import {
   Dialog,
@@ -182,13 +182,22 @@ import {
 } from '@heroicons/vue/24/outline'
 import FormErrorMsg from "@/components/generic/FormErrorMsg.vue";
 import { useTempControlStore } from "@/stores/TempControlStore";
+import { useExtendedSettingsStore } from "@/stores/ExtendedSettingsStore";
 import {useLoading} from "vue-loading-overlay";
 
-const modes = [
-  { name: i18n.global.t('sitewide.brewpi_modes.off'), value: 'o' },
-  { name: i18n.global.t('sitewide.brewpi_modes.beer_constant'), value: 'b' },
-  { name: i18n.global.t('sitewide.brewpi_modes.fridge_constant'), value: 'f' },
-]
+const ExtendedSettingsStore = useExtendedSettingsStore();
+
+const modes = computed(() => {
+  const availableModes = [
+    { name: i18n.global.t('sitewide.brewpi_modes.off'), value: 'o' },
+    { name: i18n.global.t('sitewide.brewpi_modes.beer_constant'), value: 'b' },
+  ];
+  // Fridge Constant is not available in glycol mode
+  if (!ExtendedSettingsStore.glycol) {
+    availableModes.push({ name: i18n.global.t('sitewide.brewpi_modes.fridge_constant'), value: 'f' });
+  }
+  return availableModes;
+})
 
 const isOpen = ref(false);
 const alertOpen = ref(false);
@@ -244,7 +253,6 @@ function closeAlert() {
   // There's almost certainly a better way to refactor all this, but for now, this works
   // When the user closes the "alert" popup, we need to close BOTH the alert (alertOpen) and the modal (isOpen)
   alertOpen.value = false;
-  isOpen.value = false;
 }
 
 </script>
