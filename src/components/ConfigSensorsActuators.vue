@@ -186,7 +186,8 @@ export default {
     delayedRefreshDevices: async function() {
       let loader = this.$loading.show({});
 
-      // Delay 5 seconds before executing the below to let the device store update on the controller
+      // Delay 2 seconds before executing the below to let the device store update on the controller
+      // (this is in addition to the 3 second delay in displaying the "success" message)
       await new Promise(resolve => setTimeout(resolve, 2000));
       await this.BrewPiSensorStore.clearDevices();
       await this.BrewPiSensorStore.getDevices();
