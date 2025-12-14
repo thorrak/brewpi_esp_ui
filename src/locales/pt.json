@@ -73,15 +73,27 @@
       "firmware_version": "Versão do Firmware",
       "uptime_header": "Tempo de Atividade",
       "uptime_print": "Dias: {days}, Horas: {hours}, Minutos: {minutes}, Segundos: {seconds}",
-      "reset_header": "Informações de Reset",
+      "reset_header": "Informações de Reinicialização",
       "reset_print": "Razão: {reason}, Descrição: {description}",
-      "heap_header": "Informações de Heap",
+      "heap_header": "Informações do Heap",
       "heap_print": "Heap Livre: {free_heap}, Máx: {max_heap}, Fragmentos: {frags}"
     }
   },
   "dashboard": {
     "dashboard": "Painel de Controle",
     "lcd_display": "Display LCD",
+    "temp_units_change": {
+      "change": "Alterar",
+      "units": "Unidades",
+      "change_units_header": "Alterar Unidades de Temperatura",
+      "celsius": "Celsius",
+      "fahrenheit": "Fahrenheit",
+      "set_units": "Definir Unidades",
+      "update_failed": "Atualização Falhou",
+      "update_failed_msg": "Incapaz de conectar ao controlador ou a atualização foi rejeitada. Por favor, tente novamente.",
+      "update_succeeded": "Atualização Bem Sucedida",
+      "update_succeeded_msg": "As unidades de temperatura foram atualizadas."
+    },
     "mode_change": {
       "change": "Alterar",
       "mode": "Modo",
@@ -123,9 +135,9 @@
     "detected_devices_desc": "Uma lista de todos os sensores e atuadores detectados pelo controlador.",
     "no_fridge_warning": "Nenhum sensor de temperatura de geladeira/câmara selecionado. Nenhum controle de temperatura pode ser realizado.",
     "no_beer_warning": "Nenhum sensor de temperatura de cerveja selecionado. Não é possível usar modos de controle constante/perfil da cerveja.",
-    "no_relay_warning": "Nenhum interruptor relé de aquecimento ou resfriamento selecionado. Nenhum controle de temperatura pode ser realizado.",
-    "no_heat_warning": "Nenhum interruptor relé de aquecimento selecionado - o controle de temperatura será apenas para resfriamento.",
-    "no_cool_warning": "Nenhum interruptor relé de resfriamento selecionado - o controle de temperatura será apenas para aquecimento.",
+    "no_relay_warning": "Nenhum relé de aquecimento ou de resfriamento selecionado. Nenhum controle de temperatura pode ser realizado.",
+    "no_heat_warning": "Nenhum relé de aquecimento selecionado - o controle de temperatura será apenas de resfriamento.",
+    "no_cool_warning": "Nenhum relé de resfriamento selecionado - o controle de temperatura será apenas de aquecimento.",
     "device_type_header": "Tipo",
     "device_identifier_header": "Identificador",
     "device_function_header": "Função",
@@ -139,7 +151,7 @@
     "fermentrack_settings_desc": "Como este controlador se comunica com o Fermentrack",
     "missing_data_error": "Faltaram dados na mensagem de registro que normalmente são definidos internamente pelo controlador. Isso provavelmente significa que ou o firmware do controlador ou a versão do Fermentrack estão desatualizados. Por favor, atualize o firmware do controlador e/ou o Fermentrack e tente novamente.",
     "invalid_username_error": "O nome de usuário é inválido na instalação do Fermentrack alvo. Por favor, verifique o nome de usuário e tente novamente.",
-    "bad_api_key_error": "A chave da API não corresponde a uma brewhouse válida na instalação do Fermentrack alvo. Por favor, verifique a chave da API (ou insira um nome de usuário válido) e tente novamente.",
+    "bad_api_key_error": "A chave da API não corresponde a uma brewhouse válida na instalação do Fermentrack alvo. Por favor, insira um nome de usuário válido e tente novamente.",
     "missing_brewhouse_error": "O usuário do Fermentrack especificado não possui uma brewhouse. Por favor, complete a configuração deste usuário no Fermentrack e tente novamente.",
     "no_username_error": "Nenhum nome de usuário ou chave da API especificado.",
     "waiting_to_register_error": "O dispositivo está aguardando para se registrar no Fermentrack. Por favor, aguarde até 3 minutos e atualize esta página.",
@@ -204,6 +216,9 @@
     "set_custom_times_title": "Tempos Personalizados",
     "set_defaults_desc": "Tempos padrão, destinados a resfriamento baseado em compressor",
     "set_low_delay_desc": "Modo \"Baixo Atraso\", destinado a resfriamento não baseado em compressor",
-    "set_custom_times_desc": "Atrasos personalizados definidos pelo usuário"
+    "set_custom_times_desc": "Atrasos personalizados definidos pelo usuário",
+    "temperature_units": "Unidades de Temperatura",
+    "temperature_units_msg": "Alterar as unidades de temperatura usadas pelo controlador",
+    "current_temperature_units": "Unidades Atuais"
   }
 }

@@ -82,6 +82,18 @@
   "dashboard":{
     "dashboard":"Dashboard",
     "lcd_display":"LCD Display",
+    "temp_units_change":{
+      "change":"Change",
+      "units":"Units",
+      "change_units_header":"Change Temperature Units",
+      "celsius":"Celsius",
+      "fahrenheit":"Fahrenheit",
+      "set_units":"Set Units",
+      "update_failed":"Update Failed",
+      "update_failed_msg":"Unable to connect to the controller or the update was rejected. Please try again.",
+      "update_succeeded":"Update Successful",
+      "update_succeeded_msg":"Temperature units have been updated."
+    },
     "mode_change":{
       "change":"Change",
       "mode":"Mode",
@@ -204,6 +216,9 @@
     "set_custom_times_title": "Custom Times",
     "set_defaults_desc": "Default times, intended for compressor-based cooling",
     "set_low_delay_desc": "\"Low Delay\" mode, intended for non-compressor-based cooling",
-    "set_custom_times_desc": "Custom, user-defined delays"
+    "set_custom_times_desc": "Custom, user-defined delays",
+    "temperature_units": "Temperature Units",
+    "temperature_units_msg": "Change the temperature units used by the controller",
+    "current_temperature_units": "Current Units"
   }
 }

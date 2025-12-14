@@ -4,6 +4,7 @@ node_modules
 
 
 # local env files
+.env
 .env.local
 .env.*.local
 
@@ -29,3 +30,5 @@ coverage/
 # WIP translation tool
 translate/
 
+# Temporary translation output
+src/locales/tiebreaker_logs/
