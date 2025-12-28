@@ -234,6 +234,19 @@
 
             </div>
 
+            <div class="pt-4">
+              <div class="pb-3">
+                <h3 class="text-lg font-medium leading-6 text-gray-900">{{ $t("extended_settings.temperature_units") }}</h3>
+                <p class="mt-1 text-sm text-gray-500">{{ $t("extended_settings.temperature_units_msg") }}</p>
+              </div>
+
+
+              <span class="text-sm font-medium text-gray-900">{{ $t("extended_settings.current_temperature_units") }}:
+                <span class="pl-2"><TempUnitsChangeModal /></span>
+              </span>
+            </div>
+
+
             <div class="pt-5">
               <div class="flex justify-end">
                 <!--          <button type="button" class="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Cancel</button>-->
@@ -256,6 +269,8 @@ import { CheckIcon, ChevronDownIcon, ExclamationTriangleIcon } from '@heroicons/
 import { i18n } from "@/main.js";
 import { onMounted, ref } from "vue";
 import { useLoading } from "vue-loading-overlay";
+import { useControlConstantsStore } from "@/stores/ControlConstantsStore";
+import TempUnitsChangeModal from "@/components/dashboard/TempUnitsChangeModal.vue";
 
 const minimumTimesSets = [
   { title: i18n.global.t('extended_settings.set_defaults_title'), description: i18n.global.t('extended_settings.set_defaults_desc'), value: 0 },
@@ -266,6 +281,7 @@ const minimumTimesSets = [
 const $loading = useLoading({});
 
 let ExtendedSettingsStore = useExtendedSettingsStore();  // Updated in ExtendedSettings.vue
+let ControlConstantsStore = useControlConstantsStore();  // Updated in ExtendedSettings.vue
 
 let largeTFT = ref(false);
 let glycol = ref(false);
@@ -282,11 +298,16 @@ let COOL_PEAK_DETECT_TIME = ref(0);
 let HEAT_PEAK_DETECT_TIME = ref(0);
 let selectedSettingSet = ref(minimumTimesSets[0]);
 
+let tempUnits = ref("");
+
 onMounted(() => {
   // Retrieve initial data
   ExtendedSettingsStore.getExtendedSettings().then(() => {
     updateCachedSettings();
   });
+  ControlConstantsStore.getControlConstants().then(() => {
+    tempUnits.value = ControlConstantsStore.tempFormat;
+  })
 });
 
 function submitForm() {

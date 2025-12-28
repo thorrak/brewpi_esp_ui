@@ -77,11 +77,42 @@
       "reset_print":"Reason: {reason}, Description: {description}",
       "heap_header":"Heap Information",
       "heap_print":"Free Heap: {free_heap}, Max: {max_heap}, Frags: {frags}"
+    },
+    "controller_actions": {
+      "header": "Controller Actions",
+      "description": "Perform maintenance actions on the controller",
+      "warning": "These actions will interrupt temperature control. The controller will restart after each action.",
+      "restart_button": "Restart Controller",
+      "reset_connection_button": "Reset Connection",
+      "reset_config_button": "Reset Configuration",
+      "confirm": "Confirm",
+      "confirm_restart_title": "Restart Controller?",
+      "confirm_restart_msg": "The controller will restart. Temperature control will be interrupted briefly.",
+      "confirm_reset_connection_title": "Reset Connection?",
+      "confirm_reset_connection_msg": "WiFi connection will be reset and the controller will restart. You may need to reconnect to this device.",
+      "confirm_reset_config_title": "Reset Configuration?",
+      "confirm_reset_config_msg": "All configuration will be reset to factory defaults. This cannot be undone. You will need to reconfigure the controller.",
+      "action_triggered": "Action Triggered",
+      "action_triggered_msg": "The controller is restarting. This page may become unresponsive for a few moments.",
+      "action_failed": "Action Failed",
+      "action_failed_msg": "Unable to send action to the controller. Please check the connection and try again."
     }
   },
   "dashboard":{
     "dashboard":"Dashboard",
     "lcd_display":"LCD Display",
+    "temp_units_change":{
+      "change":"Change",
+      "units":"Units",
+      "change_units_header":"Change Temperature Units",
+      "celsius":"Celsius",
+      "fahrenheit":"Fahrenheit",
+      "set_units":"Set Units",
+      "update_failed":"Update Failed",
+      "update_failed_msg":"Unable to connect to the controller or the update was rejected. Please try again.",
+      "update_succeeded":"Update Successful",
+      "update_succeeded_msg":"Temperature units have been updated."
+    },
     "mode_change":{
       "change":"Change",
       "mode":"Mode",
@@ -208,6 +239,9 @@
     "set_custom_times_title": "Custom Times",
     "set_defaults_desc": "Default times, intended for compressor-based cooling",
     "set_low_delay_desc": "\"Low Delay\" mode, intended for non-compressor-based cooling",
-    "set_custom_times_desc": "Custom, user-defined delays"
+    "set_custom_times_desc": "Custom, user-defined delays",
+    "temperature_units": "Temperature Units",
+    "temperature_units_msg": "Change the temperature units used by the controller",
+    "current_temperature_units": "Current Units"
   }
 }

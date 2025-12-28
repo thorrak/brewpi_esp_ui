@@ -293,7 +293,8 @@ export default {
       this.isOpen = false;
       let loader = this.$loading.show({});
       this.BrewPiSensorStore.sendDeviceDefinition(device_definition).then(
-          () => {
+          async () => {
+            await new Promise(resolve => setTimeout(resolve, 3000));
             this.alertOpen = true;
             loader.hide();
             this.updateSuccessful = this.BrewPiSensorStore.deviceUpdateError;
