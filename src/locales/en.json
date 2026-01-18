@@ -184,6 +184,8 @@
     "ft_net_username": "Fermentrack.net Username",
     "api_key": "API Key",
     "device_id": "Device ID",
+    "device_name": "Device Name (Optional)",
+    "device_name_desc": "A friendly name for this device as it will appear in Fermentrack",
     "not_yet_registered": "(Not yet registered)",
     "hardware_guid": "Hardware GUID",
     "reset_device_id": "Reset Device ID",
@@ -191,6 +193,8 @@
     "reset_registration": "Reset Registration",
     "hostname_too_long_error": "Hostname is invalid. Must be less than 127 characters.",
     "port_out_of_range_error": "Port number must be between 10 and 65535 (but is typically 80)",
+    "username_too_long_error": "Username is invalid. Must be less than 127 characters.",
+    "device_name_too_long_error": "Device name is invalid. Must be 63 characters or fewer.",
     "upstream_settings_sr_text": "Change Fermentrack 2 contact settings",
     "upstream_presets": {
       "legacy_fermentrack": "Legacy Fermentrack/Brewpi-Remix",

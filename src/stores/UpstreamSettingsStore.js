@@ -18,6 +18,7 @@ export const useUpstreamSettingsStore = defineStore("UpstreamSettingsStore", () 
     const guid = ref("");
     const upstreamRegistrationError = ref(7);
     const deviceID = ref("");
+    const name = ref("");
 
     async function getUpstreamSettings() {
         try {
@@ -33,6 +34,7 @@ export const useUpstreamSettingsStore = defineStore("UpstreamSettingsStore", () 
                 apiKey.value = response.apiKey;
                 guid.value = response.guid;
                 upstreamRegistrationError.value = response.upstreamRegistrationError;
+                name.value = response.name || "";
 
                 // Since the form edits the store directly, cache if we loaded the settings from the device (so we
                 // know if there are settings only because the user is typing them in)
@@ -57,18 +59,23 @@ export const useUpstreamSettingsStore = defineStore("UpstreamSettingsStore", () 
         apiKey.value = "";
         guid.value = "";
         upstreamRegistrationError.value = 7;
+        name.value = "";
     }
 
-    async function setUpstreamSettings(upstreamHostParam, upstreamPortParam, usernameParam, apiKeyParam) {
+    async function setUpstreamSettings(upstreamHostParam, upstreamPortParam, usernameParam, apiKeyParam, nameParam = "") {
         try {
             const remote_api = mande("/api/upstream/", genCSRFOptions());
-            const response = await remote_api.put({
+            const payload = {
                 upstreamHost: upstreamHostParam,  // String
                 upstreamPort: Number(upstreamPortParam),  // Integer
                 username: usernameParam, // String
                 // apiKey: apiKeyParam, // String
                 // deviceID: deviceID, // Not processed in the firmware currently
-            });
+            };
+            if (nameParam) {
+                payload.name = nameParam;  // Optional device name (max 63 chars)
+            }
+            const response = await remote_api.put(payload);
             if (response && response.status) {
                 // TODO - Make sure the response is successful
                 // TODO - Test once we add a check to make sure the response is successful
@@ -79,6 +86,7 @@ export const useUpstreamSettingsStore = defineStore("UpstreamSettingsStore", () 
                 this.upstreamPort = Number(upstreamPortParam);
                 this.username = usernameParam;
                 this.apiKey = apiKeyParam;
+                name.value = nameParam;
 
                 // If we were unsetting the host or username, we aren't waiting for registration
                 awaitingRegistration.value = (this.upstreamHost.length > 0 && this.username.length > 0);
@@ -105,6 +113,7 @@ export const useUpstreamSettingsStore = defineStore("UpstreamSettingsStore", () 
         guid,
         upstreamRegistrationError,
         deviceID,
+        name,
 
         getUpstreamSettings,
         clearUpstreamSettings,

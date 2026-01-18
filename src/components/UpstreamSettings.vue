@@ -196,6 +196,20 @@
                   </div>
                 </div>
 
+                <!-- Display form validation errors -->
+                <div class="border-l-4 border-red-400 bg-red-50 p-4 mb-4 mt-4" v-if="form_error_message">
+                  <div class="flex">
+                    <div class="flex-shrink-0">
+                      <ExclamationTriangleIcon class="h-5 w-5 text-red-400" aria-hidden="true" />
+                    </div>
+                    <div class="ml-3">
+                      <p class="text-sm text-red-700">
+                        {{ form_error_message }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                   <!-- Hide the below unless the user is using a custom upstream -->
                   <div class="sm:col-span-4">
@@ -239,6 +253,14 @@
                     </div>
                   </div>
 
+                  <!-- Optional device name field - only show when not yet registered -->
+                  <div class="sm:col-span-4" v-if="UpstreamSettingsStore.deviceID === '' && !UpstreamSettingsStore.awaitingRegistration">
+                    <label for="deviceName" class="block text-sm font-medium text-gray-700">{{ $t("upstream_settings.device_name") }}</label>
+                    <div class="mt-1">
+                      <input type="text" name="deviceName" v-model="UpstreamSettingsStore.name" id="deviceName" maxlength="63" data-form-type="other" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+                    </div>
+                    <p class="mt-1 text-sm text-gray-500">{{ $t("upstream_settings.device_name_desc") }}</p>
+                  </div>
 
                   <div class="sm:col-span-4" v-if="UpstreamSettingsStore.hasUpstreamSettings">
                     <label for="deviceid" class="block text-sm font-medium text-gray-700">{{ $t("upstream_settings.device_id") }}</label>
@@ -302,6 +324,7 @@ let selectedSettingSet = ref(upstreamSettingsSets[0]);
 const UpstreamSettingsStore = useUpstreamSettingsStore();  // Updated in UpstreamSettings.vue
 
 let loader;
+const form_error_message = ref("");
 
 
 onMounted(() => {
@@ -327,6 +350,7 @@ onMounted(() => {
 
 async function submitForm() {
   // Validate the information in the form
+  form_error_message.value = "";  // Clear any previous error
 
   if(selectedSettingSet.value.value === 1) {
     // If the user has selected FT.net, use the FT.net host/port
@@ -339,23 +363,27 @@ async function submitForm() {
   }
 
   if(UpstreamSettingsStore.upstreamHost.length >= 127) {
-    this.form_error_message = this.$t("upstream_settings.hostname_too_long_error");
+    form_error_message.value = i18n.global.t("upstream_settings.hostname_too_long_error");
     return;
   }
 
   if(parseInt(UpstreamSettingsStore.upstreamPort) >= 65535 || parseInt(UpstreamSettingsStore.upstreamPort) <= 10) {
-    this.form_error_message = this.$t("upstream_settings.port_out_of_range_error");
+    form_error_message.value = i18n.global.t("upstream_settings.port_out_of_range_error");
     return;
   }
 
   if(UpstreamSettingsStore.username.length >= 127) {
-    // TODO - Add feedback here
-    // this.form_error_message = "Username is invalid. Must be less than 127 characters.";
+    form_error_message.value = i18n.global.t("upstream_settings.username_too_long_error");
+    return;
+  }
+
+  if(UpstreamSettingsStore.name.length > 63) {
+    form_error_message.value = i18n.global.t("upstream_settings.device_name_too_long_error");
     return;
   }
 
   loader = $loading.show({});
-  UpstreamSettingsStore.setUpstreamSettings(UpstreamSettingsStore.upstreamHost, UpstreamSettingsStore.upstreamPort, UpstreamSettingsStore.username, UpstreamSettingsStore.apiKey).then(() => {
+  UpstreamSettingsStore.setUpstreamSettings(UpstreamSettingsStore.upstreamHost, UpstreamSettingsStore.upstreamPort, UpstreamSettingsStore.username, UpstreamSettingsStore.apiKey, UpstreamSettingsStore.name).then(() => {
     UpstreamSettingsStore.getUpstreamSettings().finally(() => {
       loader.hide();
     }); // Once we've set the upstream settings, let's retrieve them to make sure they saved
