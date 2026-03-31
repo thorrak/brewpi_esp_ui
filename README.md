@@ -39,7 +39,7 @@ me, don't worry about it.
 ### Recommended IDE Setup
 
 A free option some people have had success with for development is:
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- [VS Code](https://code.visualstudio.com/) + [Vue - Official](https://marketplace.visualstudio.com/items?itemName=Vue.volar).
 
 Personally, I use [WebStorm](https://www.jetbrains.com/webstorm/) which is not free, but I find it to be a very good 
 IDE -- especially for anyone who is experienced with other JetBrains products like PyCharm or IntelliJ.
