@@ -95,7 +95,11 @@
       "action_triggered": "Action Triggered",
       "action_triggered_msg": "The controller is restarting. This page may become unresponsive for a few moments.",
       "action_failed": "Action Failed",
-      "action_failed_msg": "Unable to send action to the controller. Please check the connection and try again."
+      "action_failed_msg": "Unable to send action to the controller. Please check the connection and try again.",
+      "_comment_clear_glycol_log": "TODO: REMOVE BEFORE FINAL RELEASE - clear_glycol_log translations below",
+      "clear_glycol_log_button": "Clear Glycol Log",
+      "confirm_clear_glycol_log_title": "Clear Glycol Log?",
+      "confirm_clear_glycol_log_msg": "This will clear the on-device glycol log. This action cannot be undone."
     }
   },
   "dashboard":{
