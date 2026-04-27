@@ -122,6 +122,7 @@ import { i18n } from "@/main.js";
 import {onBeforeUnmount, onMounted} from "vue";
 import { ref } from "vue";
 import { useTempControlStore } from "@/stores/TempControlStore.js";
+import { useExtendedSettingsStore } from "@/stores/ExtendedSettingsStore.js";
 
 const navigation = [
   { name: i18n.global.t('sitewide.sidebar_options.dashboard'), icon: HomeIcon, route_name: 'Home' },
@@ -133,12 +134,14 @@ const navigation = [
 
 const sidebarOpen = ref(false);
 const TempControlStore = useTempControlStore();  // Updated in App.vue
+const ExtendedSettingsStore = useExtendedSettingsStore();  // Updated in App.vue
 
 let intervalObject = null;
 
 onMounted(() => {
   // Retrieve initial data
   TempControlStore.getTempInfo();
+  ExtendedSettingsStore.getExtendedSettings();
 
   // Set up periodic refreshes
   intervalObject = window.setInterval(() => {
